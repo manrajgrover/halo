@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import, print_function
 
 import sys
@@ -15,25 +15,29 @@ class Halo(object):
     CLEAR_LINE = '\033[K'
 
     def __init__(self, options):
-        if type(options) == unicode:
+        if type(options) == unicode or type(options) == str:
             text = options
             options = {}
             options['text'] = text
 
         if is_supported():
+            default_spinner = Spinners['dots'].value
+
             if 'spinner' in options:
-                spinner = option['spinner']
+                spinner = options['spinner']
                 if type(spinner) == dict:
                     self._spinner = spinner
-                elif spinner in Spinners:
+                elif spinner in Spinners.__members__:
                     self._spinner = Spinners[spinner].value
+                else:
+                    self._spinner = default_spinner
             else:
-                self._spinner = Spinners['dots'].value
+                self._spinner = default_spinner
         else:
             self._spinner = Spinners['line'].value
 
         if 'frames' not in self._spinner:
-            raise Exception('Spinner must define frames')
+            raise ValueError('Spinner must define frames')
 
         self._interval = options['interval'] if 'interval' in options else self._spinner['interval']
         self._text = options['text'] if 'text' in options else None
@@ -67,6 +71,8 @@ class Halo(object):
         sys.stdout.write(self.CLEAR_LINE)
         sys.stdout.flush()
 
+        return self
+
     def render(self):
         while not self._stop_spinner.is_set():
             frame = self.frame()
@@ -74,6 +80,8 @@ class Halo(object):
             self.clear()
             sys.stdout.write(output)
             time.sleep(0.001 * self._interval)
+
+        return self
 
     def frame(self):
         frames = self._spinner['frames']
@@ -100,6 +108,8 @@ class Halo(object):
             self._spinner_thread = threading.Thread(target=self.render)
             self._spinner_thread.start()
 
+        return self
+
     def stop(self):
         if self._enabled is None:
             return self
@@ -110,18 +120,40 @@ class Halo(object):
 
         self.clear()
         cursor.show()
+        return self
 
-    def success(self, text):
-        return self.stop_and_persist({'symbol': LogSymbols.SUCCESS, 'text': text})
+    def succeed(self, text=None):
+        return self.stop_and_persist({'symbol': LogSymbols.SUCCESS.value, 'text': text})
 
-    def fail(self, text):
-        return self.stop_and_persist({'symbol': LogSymbols.FAIL, 'text': text})
+    def fail(self, text=None):
+        return self.stop_and_persist({'symbol': LogSymbols.ERROR.value, 'text': text})
 
-    def warn(self, text):
-        return self.stop_and_persist({'symbol': LogSymbols.WARN, 'text': text})
+    def warn(self, text=None):
+        return self.stop_and_persist({'symbol': LogSymbols.WARNING.value, 'text': text})
 
-    def info(self, text):
-        return self.stop_and_persist({'symbol': LogSymbols.INFO, 'text': text})
+    def info(self, text=None):
+        return self.stop_and_persist({'symbol': LogSymbols.INFO.value, 'text': text})
 
-    def stop_and_persist(self, options):
+    def stop_and_persist(self, options=None):
+        if options is None:
+            options = {
+                'symbol': u'',
+                'text': self._text
+            }
+
+        if type(options) is not dict:
+            raise TypeError('Options passed must be a dictionary')
+
+        if 'symbol' not in options or 'text' not in options:
+            raise ValueError('Options must contain symbol and text keys')
+
+        symbol = options['symbol'].decode('utf-8') if options['symbol'] is not None else ''
+        text = options['text'].decode('utf-8') if options['text'] is not None else self._text
+
+        self.stop()
+
+        output = u'{0} {1}\n'.format(symbol, text)
+        sys.stdout.write(output)
+        sys.stdout.flush()
+
         return self
