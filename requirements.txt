@@ -1,0 +1,2 @@
+log-symbols==0.0.6
+spinners==0.0.14
