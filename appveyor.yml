@@ -1,0 +1,19 @@
+environment:
+
+  matrix:
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python36"
+      DISTUTILS_USE_SDK: "1"
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+  - "%PYTHON%\\python.exe -m pip install wheel"
+  - git submodule update --init --recursive
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+
+build: off
+
+test_script:
+  - pylint --errors-only --rcfile=.pylintrc --output-format=colorized *.py
+  - nosetests --cover-package=spinners --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture
