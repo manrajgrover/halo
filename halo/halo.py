@@ -20,21 +20,7 @@ class Halo(object):
             options = {}
             options['text'] = text
 
-        if is_supported():
-            default_spinner = Spinners['dots'].value
-
-            if 'spinner' in options:
-                spinner = options['spinner']
-                if type(spinner) == dict:
-                    self._spinner = spinner
-                elif spinner in Spinners.__members__:
-                    self._spinner = Spinners[spinner].value
-                else:
-                    self._spinner = default_spinner
-            else:
-                self._spinner = default_spinner
-        else:
-            self._spinner = Spinners['line'].value
+        self._spinner = self._get_spinner(options)
 
         if 'frames' not in self._spinner:
             raise ValueError('Spinner must define frames')
@@ -46,6 +32,16 @@ class Halo(object):
         self._spinner_thread = None
         self._stop_spinner = None
         self._enabled = options['enabled'] if 'enabled' in options else True # Need to check for stream
+
+    @property
+    def spinner(self):
+        return self._spinner
+        
+
+    @spinner.setter
+    def spinner(self, options):
+        self._spinner = self._get_spinner(options)
+        self._frame_index = 0
 
     @property
     def text(self):
@@ -62,6 +58,23 @@ class Halo(object):
     @color.setter
     def color(self, color):
         self._color = color
+
+    def _get_spinner(self, options):
+        if is_supported():
+            default_spinner = Spinners['dots'].value
+
+            if 'spinner' in options:
+                spinner = options['spinner']
+                if type(spinner) == dict:
+                    return spinner
+                elif spinner in Spinners.__members__:
+                    return Spinners[spinner].value
+                else:
+                    return default_spinner
+            else:
+                return default_spinner
+        else:
+            return Spinners['line'].value
 
     def clear(self):
         if self._enabled is None:
