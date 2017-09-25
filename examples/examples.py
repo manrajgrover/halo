@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Examples for halo.
 """
 from __future__ import unicode_literals, absolute_import, print_function
@@ -8,8 +9,15 @@ os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from halo.halo import Halo
 
-spinner = Halo('Loading')
+spinner = Halo({'text': 'Such Spin', 'spinner': 'dots'})
+
 
 spinner.start()
-time.sleep(10)
-spinner.stop()
+time.sleep(2)
+spinner.text = 'Much Colors'
+spinner.color = 'magenta'
+time.sleep(2)
+spinner.text = 'Very emojis'
+spinner.spinner = {'spinner': 'hearts'}
+time.sleep(2)
+spinner.stop_and_persist({'symbol': '🦄 '.encode('utf-8'), 'text': 'Wow!'})
