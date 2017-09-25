@@ -1,14 +1,15 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import, print_function
 
 import sys
 import threading
 import cursor
 import time
+import os
 
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
-from halo._utils import is_supported, colored_text
+from halo._utils import is_supported, colored_frame
 
 class Halo(object):
 
@@ -27,7 +28,7 @@ class Halo(object):
 
         self._interval = options['interval'] if 'interval' in options else self._spinner['interval']
         self._text = options['text'] if 'text' in options else None
-        self._color = options['color'] if 'color' in options else None
+        self._color = options['color'] if 'color' in options else 'cyan'
         self._frame_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
@@ -101,7 +102,7 @@ class Halo(object):
         frame = frames[self._frame_index]
 
         if self._color:
-            frame = colored_text(frame, self._color)
+            frame = colored_frame(frame, self._color)
 
         self._frame_index += 1
         self._frame_index = self._frame_index % len(frames)
