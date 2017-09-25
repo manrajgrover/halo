@@ -1,4 +1,8 @@
 import platform
+from colorama import init, Fore
+from termcolor import colored
+
+init(autoreset=True)
 
 def is_supported():
     """Check whether operating system supports main symbols or not.
@@ -16,5 +20,5 @@ def is_supported():
 
     return False
 
-def colored_text():
-    pass
+def colored_frame(frame, color):
+    return colored(frame, color, attrs=['bold'])
