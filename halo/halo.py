@@ -5,7 +5,6 @@ import sys
 import threading
 import cursor
 import time
-import os
 
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
