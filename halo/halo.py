@@ -25,14 +25,23 @@ class Halo(object):
         if 'frames' not in self._spinner:
             raise ValueError('Spinner must define frames')
 
-        self._interval = options['interval'] if 'interval' in options else self._spinner['interval']
-        self._text = options['text'] if 'text' in options else None
-        self._color = options['color'] if 'color' in options else 'cyan'
+        self._options = {
+            'interval': self._spinner['interval'],
+            'text': '',
+            'color': 'cyan',
+            'enabled': True
+        }
+
+        self._options.update(options)
+
+        self._interval = self._options['interval']
+        self._text = self._options['text']
+        self._color = self._options['color']
         self._frame_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
         self._spinner_id = None
-        self._enabled = options['enabled'] if 'enabled' in options else True # Need to check for stream
+        self._enabled = self._options['enabled'] # Need to check for stream
 
     @property
     def spinner(self):
