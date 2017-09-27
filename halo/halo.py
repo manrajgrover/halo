@@ -31,6 +31,7 @@ class Halo(object):
         self._frame_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
+        self._spinner_id = None
         self._enabled = options['enabled'] if 'enabled' in options else True # Need to check for stream
 
     @property
@@ -115,7 +116,7 @@ class Halo(object):
         if text is not None:
             self._text = text
 
-        if not self._enabled:
+        if not self._enabled or self._spinner_id is not None:
             return self
 
         if sys.stdout.isatty() is True:
@@ -124,6 +125,7 @@ class Halo(object):
             self._spinner_thread = threading.Thread(target=self.render)
             self._spinner_thread.setDaemon(True)
             self._render_frame()
+            self._spinner_id = self._spinner_thread.name
             self._spinner_thread.start()
 
         return self
@@ -137,6 +139,7 @@ class Halo(object):
             self._spinner_thread.join()
 
         self._frame_index = 0
+        self._spinner_id = None
         self.clear()
         cursor.show()
         return self
