@@ -14,7 +14,7 @@ class Halo(object):
 
     CLEAR_LINE = '\033[K'
 
-    def __init__(self, options):
+    def __init__(self, options={}):
         if type(options) == unicode or type(options) == str:
             text = options
             options = {}
@@ -136,25 +136,19 @@ class Halo(object):
         cursor.show()
         return self
 
-    def succeed(self, text=None):
+    def succeed(self, text=''):
         return self.stop_and_persist({'symbol': LogSymbols.SUCCESS.value, 'text': text})
 
-    def fail(self, text=None):
+    def fail(self, text=''):
         return self.stop_and_persist({'symbol': LogSymbols.ERROR.value, 'text': text})
 
-    def warn(self, text=None):
+    def warn(self, text=''):
         return self.stop_and_persist({'symbol': LogSymbols.WARNING.value, 'text': text})
 
-    def info(self, text=None):
+    def info(self, text=''):
         return self.stop_and_persist({'symbol': LogSymbols.INFO.value, 'text': text})
 
-    def stop_and_persist(self, options=None):
-        if options is None:
-            options = {
-                'symbol': u'',
-                'text': self._text
-            }
-
+    def stop_and_persist(self, options={}):
         if type(options) is not dict:
             raise TypeError('Options passed must be a dictionary')
 
@@ -162,7 +156,7 @@ class Halo(object):
             raise ValueError('Options must contain symbol and text keys')
 
         symbol = options['symbol'].decode('utf-8') if options['symbol'] is not None else ''
-        text = options['text'].decode('utf-8') if options['text'] is not None else self._text
+        text = options['text'].decode('utf-8') if options['text'] is not None else ''
 
         self.stop()
 
