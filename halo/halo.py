@@ -86,12 +86,15 @@ class Halo(object):
 
         return self
 
+    def _render_frame(self):
+        frame = self.frame()
+        output = '\r{0}'.format(frame)
+        self.clear()
+        sys.stdout.write(output)
+
     def render(self):
         while not self._stop_spinner.is_set():
-            frame = self.frame()
-            output = '\r{0}'.format(frame)
-            self.clear()
-            sys.stdout.write(output)
+            self._render_frame()
             time.sleep(0.001 * self._interval)
 
         return self
@@ -120,6 +123,7 @@ class Halo(object):
             self._stop_spinner = threading.Event()
             self._spinner_thread = threading.Thread(target=self.render)
             self._spinner_thread.setDaemon(True)
+            self._render_frame()
             self._spinner_thread.start()
 
         return self
