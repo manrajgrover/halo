@@ -136,6 +136,7 @@ class Halo(object):
             self._stop_spinner.set()
             self._spinner_thread.join()
 
+        self._frame_index = 0
         self.clear()
         cursor.show()
         return self
