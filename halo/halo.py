@@ -77,7 +77,7 @@ class Halo(object):
             return Spinners['line'].value
 
     def clear(self):
-        if self._enabled is None:
+        if not self._enabled:
             return self
 
         sys.stdout.write('\r')
@@ -112,7 +112,7 @@ class Halo(object):
         if text is not None:
             self._text = text
 
-        if self._enabled is None:
+        if not self._enabled:
             return self
 
         if sys.stdout.isatty() is True:
@@ -125,7 +125,7 @@ class Halo(object):
         return self
 
     def stop(self):
-        if self._enabled is None:
+        if not self._enabled:
             return self
 
         if self._spinner_thread:
