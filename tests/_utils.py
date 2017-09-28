@@ -1,4 +1,4 @@
-"""Summary
+"""Utilities for tests.
 """
 import os
 import errno
@@ -22,17 +22,17 @@ def strip_ansi(string):
     return re.sub(pattern, '', string, flags=re.I)
 
 def remove_file(filename):
-    """Summary
+    """Removes file silently.
     
     Parameters
     ----------
-    filename : TYPE
-        Description
+    filename : str
+        File name to be removed
     
     Raises
     ------
     Exception
-        Description
+        If given file is not deletable
     """
     try:
         os.remove(filename)
@@ -41,12 +41,36 @@ def remove_file(filename):
             raise Exception(e)
 
 def decode_utf_8_text(text):
+    """Decodes the text from utf-8 format.
+    
+    Parameters
+    ----------
+    text : str
+        Text to be decoded
+    
+    Returns
+    -------
+    str
+        Decoded text
+    """
     try:
         return codecs.decode(text, 'utf-8')
     except:
         return text
 
 def encode_utf_8_text(text):
+    """Encodes the text to utf-8 format
+    
+    Parameters
+    ----------
+    text : str
+        Text to be encoded
+    
+    Returns
+    -------
+    str
+        Encoded text
+    """
     try:
         return codecs.encode(text, 'utf-8')
     except:
