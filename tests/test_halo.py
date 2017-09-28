@@ -27,8 +27,10 @@ logging.basicConfig(
 
 if is_supported():
     frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
+    default_spinner = Spinners['dots'].value
 else:
     frames = [get_coded_text(frame) for frame in Spinners['line'].value['frames']]
+    default_spinner = Spinners['line'].value
 
 
 class TestHalo(unittest.TestCase):
@@ -193,13 +195,20 @@ class TestHalo(unittest.TestCase):
 
         self.assertEqual(spinner.text, 'bar')
         self.assertEqual(spinner.color, 'red')
-        self.assertEqual(spinner.spinner, Spinners['dots12'].value)
+
+        if is_supported():
+            self.assertEqual(spinner.spinner, Spinners['dots12'].value)
+        else:
+            self.assertEqual(spinner.spinner, default_spinner)
 
         spinner.spinner = {'spinner': 'dots11'}
-        self.assertEqual(spinner.spinner, Spinners['dots11'].value)
+        if is_supported():
+            self.assertEqual(spinner.spinner, Spinners['dots11'].value)
+        else:
+            self.assertEqual(spinner.spinner, default_spinner)
 
         spinner.spinner = {'spinner': 'foo_bar'}
-        self.assertEqual(spinner.spinner, Spinners['dots'].value)
+        self.assertEqual(spinner.spinner, default_spinner)
 
         # Color is None
         spinner.color = None
@@ -214,7 +223,7 @@ class TestHalo(unittest.TestCase):
         spinner = Halo('dot')
 
         self.assertEqual(spinner.text, 'dot')
-        self.assertEqual(spinner.spinner, Spinners['dots'].value)
+        self.assertEqual(spinner.spinner, default_spinner)
 
     def test_if_enabled(self):
         """Test if spinner is enabled
@@ -249,6 +258,7 @@ class TestHalo(unittest.TestCase):
     def tearDown(self):
         """Clean up things after every test.
         """
+        self._stream.close()
         remove_file('test.txt')
 
 
