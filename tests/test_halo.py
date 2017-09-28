@@ -12,6 +12,7 @@ from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
 from halo.halo import Halo
+from halo._utils import is_supported
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
@@ -23,6 +24,11 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s:%(levelname)s:%(message)s"
 )
+
+if is_supported():
+    frames = Spinners['dots'].value['frames']
+else:
+    frames = Spinners['line'].value['frames']
 
 
 class TestHalo(unittest.TestCase):
@@ -62,9 +68,9 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         output = self._get_test_output()
 
-        self.assertEqual(output[0], '⠋ foo')
-        self.assertEqual(output[1], '⠙ foo')
-        self.assertEqual(output[2], '⠹ foo')
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
@@ -80,9 +86,9 @@ class TestHalo(unittest.TestCase):
 
         output = self._get_test_output()
 
-        self.assertEqual(output[0], '⠋ bar')
-        self.assertEqual(output[1], '⠙ bar')
-        self.assertEqual(output[2], '⠹ bar')
+        self.assertEqual(output[0], '{0} bar'.format(frames[0]))
+        self.assertEqual(output[1], '{0} bar'.format(frames[1]))
+        self.assertEqual(output[2], '{0} bar'.format(frames[2]))
 
     def test_id_not_created_before_start(self):
         """Test Spinner ID not created before start.
