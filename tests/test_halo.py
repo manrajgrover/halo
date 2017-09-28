@@ -36,17 +36,17 @@ class TestHalo(unittest.TestCase):
     """
 
     def setUp(self):
-        """Summary
+        """Set up things before beginning of each test.
         """
         self._stream = io.open('test.txt', 'w+')
 
     def _get_test_output(self):
-        """Summary
+        """Clean the output from stream and return it in list form.
         
         Returns
         -------
-        TYPE
-            Description
+        list
+            Clean output from stream
         """
         self._stream.seek(0)
         data = self._stream.readlines()
@@ -179,13 +179,6 @@ class TestHalo(unittest.TestCase):
         self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
-    def test_spinner_with_no_frames(self):
-        """Test spinner with no frames.
-        """
-
-        with self.assertRaises(ValueError):
-            spinner = Halo({'spinner': {'not_frame': []}})
-
     def test_spinner_getters_setters(self):
         """Test spinner getters and setters.
         """
@@ -202,9 +195,59 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(spinner.color, 'red')
         self.assertEqual(spinner.spinner, Spinners['dots12'].value)
 
+        spinner.spinner = {'spinner': 'dots11'}
+        self.assertEqual(spinner.spinner, Spinners['dots11'].value)
+
+        spinner.spinner = {'spinner': 'foo_bar'}
+        self.assertEqual(spinner.spinner, Spinners['dots'].value)
+
+        # Color is None
+        spinner.color = None
+        spinner.start()
+        spinner.stop()
+        self.assertEqual(spinner.spinner, Spinners['dots'].value)
+        self.assertIsNone(spinner.color)
+
+    def test_unavailable_spinner_defaults(self):
+        """Test unavailable spinner defaults.
+        """
+        spinner = Halo('dot')
+
+        self.assertEqual(spinner.text, 'dot')
+        self.assertEqual(spinner.spinner, Spinners['dots'].value)
+
+    def test_if_enabled(self):
+        """Test if spinner is enabled
+        """
+        stdout_ = sys.stdout
+        sys.stdout = self._stream
+        spinner = Halo({'text': 'foo', 'enabled': False})
+        spinner.start()
+        time.sleep(1)
+        spinner.clear()
+        spinner.stop()
+        sys.stdout = stdout_
+
+        output = self._get_test_output()
+        self.assertEqual(len(output), 0)
+        self.assertEqual(output, [])
+
+    def test_stop_and_persist_no_dict_or_options(self):
+        """Test if options is not dict or required options in stop_and_persist.
+        """
+        with self.assertRaises(TypeError):
+            spinner = Halo()
+            spinner.start()
+            spinner.stop_and_persist('not dict')
+
+        with self.assertRaises(ValueError):
+            spinner = Halo()
+            spinner.start()
+            spinner.stop_and_persist({'not_req_option': 'text'})
+
 
     def tearDown(self):
-        """Summary
+        """Clean up things after every test.
         """
         remove_file('test.txt')
 
