@@ -1,3 +1,5 @@
 log-symbols==0.0.6
 spinners==0.0.14
 cursor==1.1.0
+termcolor==1.1.0
+colorama==0.3.9
