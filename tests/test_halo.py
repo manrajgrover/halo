@@ -78,6 +78,95 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '⠙ bar')
         self.assertEqual(output[2], '⠹ bar')
 
+    def test_id_not_created_before_start(self):
+        """Test Spinner ID not created before start.
+        """
+        spinner = Halo({'stream': self._stream})
+        self.assertEqual(spinner.spinner_id, None)
+
+    def test_ignore_multiple_start_calls(self):
+        """Test ignoring of multiple start calls.
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start()
+        spinner_id = spinner.spinner_id
+        spinner.start()
+        self.assertEqual(spinner.spinner_id, spinner_id)
+        spinner.stop()
+
+    def test_chaining_start(self):
+        """Test chaining start with constructor
+        """
+        spinner = Halo({'stream': self._stream}).start()
+        spinner_id = spinner.spinner_id
+        self.assertIsNotNone(spinner_id)
+        spinner.stop()
+
+    def test_succeed(self):
+        """Test succeed method
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start('foo')
+        spinner.succeed('foo')
+
+        output = self._get_test_output()
+        pattern = re.compile(ur'(✔|√) foo', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        spinner.stop()
+
+    def test_succeed_with_new_text(self):
+        """Test succeed method with new text
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start('foo')
+        spinner.succeed('bar')
+
+        output = self._get_test_output()
+        pattern = re.compile(ur'(✔|√) bar', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        spinner.stop()
+
+    def test_info(self):
+        """Test info method
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start('foo')
+        spinner.info()
+
+        output = self._get_test_output()
+        pattern = re.compile(ur'(ℹ|i) foo', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        spinner.stop()
+
+    def test_fail(self):
+        """Test fail method
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start('foo')
+        spinner.fail()
+
+        output = self._get_test_output()
+        pattern = re.compile(ur'(✖|×) foo', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        spinner.stop()
+
+    def test_warning(self):
+        """Test warn method
+        """
+        spinner = Halo({'stream': self._stream})
+        spinner.start('foo')
+        spinner.warn('Warning!')
+
+        output = self._get_test_output()
+        pattern = re.compile(ur'(⚠|‼) Warning!', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        spinner.stop()
+
 
     def tearDown(self):
         """Summary
