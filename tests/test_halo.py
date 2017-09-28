@@ -26,9 +26,9 @@ logging.basicConfig(
 )
 
 if is_supported():
-    frames = Spinners['dots'].value['frames']
+    frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
 else:
-    frames = Spinners['line'].value['frames']
+    frames = [get_coded_text(frame) for frame in Spinners['line'].value['frames']]
 
 
 class TestHalo(unittest.TestCase):
