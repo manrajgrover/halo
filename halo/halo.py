@@ -162,16 +162,20 @@ class Halo(object):
 
         return self
 
-    def succeed(self, text=''):
+    def succeed(self, text=None):
+        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.SUCCESS.value, 'text': text})
 
-    def fail(self, text=''):
+    def fail(self, text=None):
+        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.ERROR.value, 'text': text})
 
-    def warn(self, text=''):
+    def warn(self, text=None):
+        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.WARNING.value, 'text': text})
 
-    def info(self, text=''):
+    def info(self, text=None):
+        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.INFO.value, 'text': text})
 
     def stop_and_persist(self, options={}):
