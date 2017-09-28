@@ -6,8 +6,6 @@ cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
 environment:
-  global:
-    WITH_COMPILER: 'cmd /E:ON /V:ON /C .\ci\appveyor-with-compiler.cmd'
   matrix:
     - TOXENV: 'py27,lint'
       TOXPYTHON: C:\Python27\python.exe
@@ -45,4 +43,4 @@ test_script:
   - '%PYTHON_HOME%\\Scripts\\pip --version'
   - '%PYTHON_HOME%\\Scripts\\tox --version'
   - '%PYTHON_HOME%\\Scripts\\virtualenv --version'
-  - '%WITH_COMPILER% %PYTHON_HOME%\\Scripts\\tox -e %TOXENV%'
+  - '%PYTHON_HOME%\\Scripts\\tox -e %TOXENV%'
