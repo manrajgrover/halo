@@ -71,6 +71,10 @@ class Halo(object):
     def color(self, color):
         self._color = color
 
+    @property
+    def spinner_id(self):
+        return self._spinner_id
+
     def _get_spinner(self, options):
         if is_supported():
             default_spinner = Spinners['dots'].value
