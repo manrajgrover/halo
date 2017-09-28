@@ -3,6 +3,7 @@
 import os
 import errno
 import re
+import codecs
 
 def strip_ansi(string):
     """Strip ANSI encoding from given string.
@@ -38,3 +39,15 @@ def remove_file(filename):
     except OSError as e:
         if e.errno != errno.ENOENT:
             raise Exception(e)
+
+def decode_utf_8_text(text):
+    try:
+        return codecs.decode(text, 'utf-8')
+    except:
+        return text
+
+def encode_utf_8_text(text):
+    try:
+        return codecs.encode(text, 'utf-8')
+    except:
+        return text

@@ -1,4 +1,7 @@
 import platform
+import six
+import codecs
+
 from colorama import init, Fore
 from termcolor import colored
 
@@ -22,3 +25,15 @@ def is_supported():
 
 def colored_frame(frame, color):
     return colored(frame, color, attrs=['bold'])
+
+def is_text_type(text):
+    if isinstance(text, six.text_type) or isinstance(text, six.string_types):
+        return True
+
+    return False
+
+def decode_utf_8_text(text):
+    try:
+        return codecs.decode(text, 'utf-8')
+    except:
+        return text

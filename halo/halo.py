@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=unsubscriptable-object
 from __future__ import unicode_literals, absolute_import, print_function
 
 import sys
@@ -9,7 +10,7 @@ import logging
 
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
-from halo._utils import is_supported, colored_frame
+from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
 
 
 
@@ -24,7 +25,7 @@ class Halo(object):
     CLEAR_LINE = '\033[K'
 
     def __init__(self, options={}):
-        if type(options) == unicode or type(options) == str:
+        if is_text_type(options):
             text = options
             options = {}
             options['text'] = text
@@ -93,12 +94,12 @@ class Halo(object):
 
                 if type(spinner) == dict:
                     return spinner
-                elif type(spinner) == unicode or type(spinner) == str:
+                elif is_text_type(spinner):
                     if spinner in Spinners.__members__:
                         return Spinners[spinner].value
                     else:
                         return default_spinner
-            elif type(options) == unicode or type(options) == str:
+            elif is_text_type(options):
                 spinner = options
 
                 if spinner in Spinners.__members__:
@@ -203,8 +204,8 @@ class Halo(object):
         if 'symbol' not in options or 'text' not in options:
             raise ValueError('Options must contain symbol and text keys')
 
-        symbol = options['symbol'].decode('utf-8') if options['symbol'] is not None else ''
-        text = options['text'].decode('utf-8') if options['text'] is not None else ''
+        symbol = decode_utf_8_text(options['symbol']) if options['symbol'] is not None else ''
+        text = decode_utf_8_text(options['text']) if options['text'] is not None else ''
 
         self.stop()
 

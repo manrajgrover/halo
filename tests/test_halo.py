@@ -10,8 +10,13 @@ import logging
 
 from spinners.spinners import Spinners
 
-from _utils import strip_ansi, remove_file
+from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
 from halo.halo import Halo
+
+if sys.version_info.major == 2:
+    get_coded_text = encode_utf_8_text
+else:
+    get_coded_text = decode_utf_8_text
 
 
 logging.basicConfig(
@@ -44,7 +49,7 @@ class TestHalo(unittest.TestCase):
         for line in data:
             clean_line = strip_ansi(line.strip('\n'))
             if clean_line != '':
-                output.append(clean_line.encode('utf-8'))
+                output.append(get_coded_text(clean_line))
 
         return output
 
@@ -111,9 +116,9 @@ class TestHalo(unittest.TestCase):
         spinner.succeed('foo')
 
         output = self._get_test_output()
-        pattern = re.compile(ur'(✔|√) foo', re.UNICODE)
+        pattern = re.compile(r'(✔|√) foo', re.UNICODE)
 
-        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
     def test_succeed_with_new_text(self):
@@ -124,9 +129,9 @@ class TestHalo(unittest.TestCase):
         spinner.succeed('bar')
 
         output = self._get_test_output()
-        pattern = re.compile(ur'(✔|√) bar', re.UNICODE)
+        pattern = re.compile(r'(✔|√) bar', re.UNICODE)
 
-        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
     def test_info(self):
@@ -137,9 +142,9 @@ class TestHalo(unittest.TestCase):
         spinner.info()
 
         output = self._get_test_output()
-        pattern = re.compile(ur'(ℹ|i) foo', re.UNICODE)
+        pattern = re.compile(r'(ℹ|i) foo', re.UNICODE)
 
-        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
     def test_fail(self):
@@ -150,9 +155,9 @@ class TestHalo(unittest.TestCase):
         spinner.fail()
 
         output = self._get_test_output()
-        pattern = re.compile(ur'(✖|×) foo', re.UNICODE)
+        pattern = re.compile(r'(✖|×) foo', re.UNICODE)
 
-        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
     def test_warning(self):
@@ -163,9 +168,9 @@ class TestHalo(unittest.TestCase):
         spinner.warn('Warning!')
 
         output = self._get_test_output()
-        pattern = re.compile(ur'(⚠|‼) Warning!', re.UNICODE)
+        pattern = re.compile(r'(⚠|‼) Warning!', re.UNICODE)
 
-        self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
+        self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
 
     def test_spinner_with_no_frames(self):
