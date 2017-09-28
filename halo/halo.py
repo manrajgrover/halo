@@ -12,8 +12,6 @@ from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
 
-
-
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s:%(levelname)s:%(message)s"
@@ -32,9 +30,6 @@ class Halo(object):
 
         self._spinner = self._get_spinner(options)
 
-        if 'frames' not in self._spinner:
-            raise ValueError('Spinner must define frames')
-
         self._options = {
             'interval': self._spinner['interval'],
             'text': '',
@@ -49,7 +44,6 @@ class Halo(object):
         self._text = self._options['text']
         self._color = self._options['color']
         self._stream = self._options['stream']
-        logging.debug(self._stream)
         self._frame_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
@@ -62,6 +56,11 @@ class Halo(object):
 
     @spinner.setter
     def spinner(self, options):
+        if is_text_type(options):
+            spinner = options
+            options = {}
+            options['spinner'] = spinner
+
         self._spinner = self._get_spinner(options)
         self._frame_index = 0
 
@@ -86,30 +85,21 @@ class Halo(object):
         return self._spinner_id
 
     def _get_spinner(self, options):
-        if is_supported():
-            default_spinner = Spinners['dots'].value
 
+        default_spinner = Spinners['dots'].value
+
+        if is_supported():
             if type(options) == dict and 'spinner' in options:
                 spinner = options['spinner']
 
                 if type(spinner) == dict:
                     return spinner
-                elif is_text_type(spinner):
-                    if spinner in Spinners.__members__:
+                elif is_text_type(spinner) and spinner in Spinners.__members__:
                         return Spinners[spinner].value
-                    else:
-                        return default_spinner
-            elif is_text_type(options):
-                spinner = options
-
-                if spinner in Spinners.__members__:
-                    return Spinners[spinner].value
-                else:
-                    return default_spinner
-            else:
-                return default_spinner
         else:
             return Spinners['line'].value
+
+        return default_spinner
 
     def clear(self):
         if not self._enabled:
