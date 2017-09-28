@@ -16,4 +16,4 @@ build: off
 
 test_script:
   - pylint --errors-only --rcfile=.pylintrc --output-format=colorized *.py
-  - nosetests --cover-package=spinners --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture
+  - nosetests --cover-package=halo --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture

@@ -7,4 +7,4 @@ install:
   - pip install -r requirements-dev.txt
 script:
   - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pylint --errors-only --rcfile=.pylintrc --output-format=colorized *.py; fi
-  - nosetests --cover-package=spinners --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture
+  - nosetests --cover-package=halo --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture
