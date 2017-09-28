@@ -79,11 +79,20 @@ class Halo(object):
         if is_supported():
             default_spinner = Spinners['dots'].value
 
-            if 'spinner' in options:
+            if type(options) == dict and 'spinner' in options:
                 spinner = options['spinner']
+
                 if type(spinner) == dict:
                     return spinner
-                elif spinner in Spinners.__members__:
+                elif type(spinner) == unicode or type(spinner) == str:
+                    if spinner in Spinners.__members__:
+                        return Spinners[spinner].value
+                    else:
+                        return default_spinner
+            elif type(options) == unicode or type(options) == str:
+                spinner = options
+
+                if spinner in Spinners.__members__:
                     return Spinners[spinner].value
                 else:
                     return default_spinner
