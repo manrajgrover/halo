@@ -5,10 +5,19 @@ import sys
 import threading
 import cursor
 import time
+import logging
 
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 from halo._utils import is_supported, colored_frame
+
+
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s:%(levelname)s:%(message)s"
+)
+
 
 class Halo(object):
 
