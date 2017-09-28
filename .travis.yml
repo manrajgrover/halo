@@ -1,10 +1,14 @@
 language: python
-python:
-  - "2.7"
-  - "3.6"
+matrix:
+  include:
+  - python: '2.7'
+    env: TOXENV=py27
+  - python: '2.7'
+    env: TOXENV=lint
+  - python: '3.6'
+    env: TOXENV=py36
+  fast_finish: true
 install:
-  - pip install -r requirements.txt
-  - pip install -r requirements-dev.txt
+  - pip install tox
 script:
-  - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then pylint --errors-only --rcfile=.pylintrc --output-format=colorized *.py; fi
-  - nosetests --cover-package=halo --with-coverage --cover-erase  --cover-html --cover-branches --nologcapture
+  - tox -e $TOXENV
