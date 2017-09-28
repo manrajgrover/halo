@@ -5,9 +5,10 @@ import re
 import unittest
 import time
 import sys
-import requests
 import io
 import logging
+
+from spinners.spinners import Spinners
 
 from _utils import strip_ansi, remove_file
 from halo.halo import Halo
@@ -166,6 +167,29 @@ class TestHalo(unittest.TestCase):
 
         self.assertRegexpMatches(output[-1].decode('utf-8'), pattern)
         spinner.stop()
+
+    def test_spinner_with_no_frames(self):
+        """Test spinner with no frames.
+        """
+
+        with self.assertRaises(ValueError):
+            spinner = Halo({'spinner': {'not_frame': []}})
+
+    def test_spinner_getters_setters(self):
+        """Test spinner getters and setters.
+        """
+        spinner = Halo()
+        self.assertEqual(spinner.text, '')
+        self.assertEqual(spinner.color, 'cyan')
+        self.assertIsNone(spinner.spinner_id)
+
+        spinner.spinner = 'dots12'
+        spinner.text = 'bar'
+        spinner.color = 'red'
+
+        self.assertEqual(spinner.text, 'bar')
+        self.assertEqual(spinner.color, 'red')
+        self.assertEqual(spinner.spinner, Spinners['dots12'].value)
 
 
     def tearDown(self):
