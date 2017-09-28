@@ -29,7 +29,8 @@ class Halo(object):
             'interval': self._spinner['interval'],
             'text': '',
             'color': 'cyan',
-            'enabled': True
+            'enabled': True,
+            'stream': sys.stdout
         }
 
         self._options.update(options)
@@ -37,6 +38,8 @@ class Halo(object):
         self._interval = self._options['interval']
         self._text = self._options['text']
         self._color = self._options['color']
+        self._stream = self._options['stream']
+        logging.debug(self._stream)
         self._frame_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
@@ -46,7 +49,6 @@ class Halo(object):
     @property
     def spinner(self):
         return self._spinner
-        
 
     @spinner.setter
     def spinner(self, options):
@@ -90,9 +92,8 @@ class Halo(object):
         if not self._enabled:
             return self
 
-        sys.stdout.write('\r')
-        sys.stdout.write(self.CLEAR_LINE)
-        sys.stdout.flush()
+        self._stream.write('\r')
+        self._stream.write(self.CLEAR_LINE)
 
         return self
 
@@ -100,7 +101,7 @@ class Halo(object):
         frame = self.frame()
         output = '\r{0}'.format(frame)
         self.clear()
-        sys.stdout.write(output)
+        self._stream.write(output)
 
     def render(self):
         while not self._stop_spinner.is_set():
@@ -128,14 +129,15 @@ class Halo(object):
         if not self._enabled or self._spinner_id is not None:
             return self
 
-        if sys.stdout.isatty() is True:
+        if self._stream.isatty():
             cursor.hide()
-            self._stop_spinner = threading.Event()
-            self._spinner_thread = threading.Thread(target=self.render)
-            self._spinner_thread.setDaemon(True)
-            self._render_frame()
-            self._spinner_id = self._spinner_thread.name
-            self._spinner_thread.start()
+
+        self._stop_spinner = threading.Event()
+        self._spinner_thread = threading.Thread(target=self.render)
+        self._spinner_thread.setDaemon(True)
+        self._render_frame()
+        self._spinner_id = self._spinner_thread.name
+        self._spinner_thread.start()
 
         return self
 
@@ -150,7 +152,10 @@ class Halo(object):
         self._frame_index = 0
         self._spinner_id = None
         self.clear()
-        cursor.show()
+
+        if self._stream.isatty():
+            cursor.show()
+
         return self
 
     def succeed(self, text=''):
@@ -178,7 +183,6 @@ class Halo(object):
         self.stop()
 
         output = u'{0} {1}\n'.format(symbol, text)
-        sys.stdout.write(output)
-        sys.stdout.flush()
+        self._stream.write(output)
 
         return self
