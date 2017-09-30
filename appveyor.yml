@@ -8,30 +8,23 @@ cache:
 environment:
   fast_finish: true
   matrix:
-    - TOXENV: 'py27,lint'
+    - TOXENV: 'py27'
       TOXPYTHON: C:\Python27\python.exe
       PYTHON_HOME: C:\Python27
       PYTHON_VERSION: '2.7'
       PYTHON_ARCH: '32'
 
-    - TOXENV: 'py27,lint'
-      TOXPYTHON: C:\Python27-x64\python.exe
-      WINDOWS_SDK_VERSION: v7.0
-      PYTHON_HOME: C:\Python27-x64
-      PYTHON_VERSION: '2.7'
-      PYTHON_ARCH: '64'
-
-    - TOXENV: 'py36,lint'
+    - TOXENV: 'py36'
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '32'
 
-    - TOXENV: 'py36,lint'
-      TOXPYTHON: C:\Python36-x64\python.exe
-      PYTHON_HOME: C:\Python36-x64
-      PYTHON_VERSION: '3.6'
-      PYTHON_ARCH: '64'
+    - TOXENV: 'lint'
+      TOXPYTHON: C:\Python27\python.exe
+      PYTHON_HOME: C:\Python27
+      PYTHON_VERSION: '2.7'
+      PYTHON_ARCH: '32'
 
 matrix:
   fast_finish: true
