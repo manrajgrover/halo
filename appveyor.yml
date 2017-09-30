@@ -33,6 +33,8 @@ environment:
       PYTHON_VERSION: '3.6'
       PYTHON_ARCH: '64'
 
+matrix:
+  fast_finish: true
 
 install:
   - 'git submodule update --init --recursive'
