@@ -18,9 +18,9 @@ def is_supported():
         Whether operating system supports main symbols or not
     """
 
-    os_arch = platform.system() + str(platform.architecture()[0])
+    os_arch = platform.system()
 
-    if os_arch != 'Windows32bit':
+    if os_arch != 'Windows':
         return True
 
     return False
