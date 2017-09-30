@@ -214,7 +214,6 @@ class TestHalo(unittest.TestCase):
         spinner.color = None
         spinner.start()
         spinner.stop()
-        self.assertEqual(spinner.spinner, Spinners['dots'].value)
         self.assertIsNone(spinner.color)
 
     def test_unavailable_spinner_defaults(self):
