@@ -31,8 +31,8 @@ matrix:
 
 install:
   - 'git submodule update --init --recursive'
-  - 'pip install tox'
   - '%PYTHON_HOME%\Scripts\pip --version'
+  - '%PYTHON_HOME%\Scripts\pip install tox'
   - '%PYTHON_HOME%\Scripts\tox --version'
   - '%PYTHON_HOME%\Scripts\virtualenv --version'
 
