@@ -6,6 +6,7 @@ cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
 environment:
+  fast_finish: true
   matrix:
     - TOXENV: 'py27,lint'
       TOXPYTHON: C:\Python27\python.exe
