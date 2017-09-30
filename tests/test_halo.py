@@ -124,7 +124,7 @@ class TestHalo(unittest.TestCase):
         spinner.succeed('foo')
 
         output = self._get_test_output()
-        pattern = re.compile(r'(✔|√) foo', re.UNICODE)
+        pattern = re.compile(r'(✔|v) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
@@ -137,7 +137,7 @@ class TestHalo(unittest.TestCase):
         spinner.succeed('bar')
 
         output = self._get_test_output()
-        pattern = re.compile(r'(✔|√) bar', re.UNICODE)
+        pattern = re.compile(r'(✔|v) bar', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
@@ -150,7 +150,7 @@ class TestHalo(unittest.TestCase):
         spinner.info()
 
         output = self._get_test_output()
-        pattern = re.compile(r'(ℹ|i) foo', re.UNICODE)
+        pattern = re.compile(r'(ℹ|¡) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
@@ -176,7 +176,7 @@ class TestHalo(unittest.TestCase):
         spinner.warn('Warning!')
 
         output = self._get_test_output()
-        pattern = re.compile(r'(⚠|‼) Warning!', re.UNICODE)
+        pattern = re.compile(r'(⚠|!!) Warning!', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
         spinner.stop()
