@@ -32,7 +32,7 @@ matrix:
 install:
   - 'git submodule update --init --recursive'
   - '%PYTHON_HOME%\Scripts\pip --version'
-  - 'pip install tox'
+  - '%PYTHON_HOME%\Scripts\pip install tox'
   - ps: 'New-Alias which get-command'
   - ps: 'which tox'
   - '%PYTHON_HOME%\Scripts\tox --version'
