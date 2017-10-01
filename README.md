@@ -133,13 +133,13 @@ Stops the spinner and changes symbol and text. Returns the instance.
 ###### `symbol`
 *Type*: `str`
 
-Symbol to replace the spinner with.
+Symbol to replace the spinner with. Defaults to ' '.
 
 
 ###### `text`
 *Type*: `str`
 
-Text to be persisted.
+Text to be persisted. Defaults to instance text.
 
 ![Persist spin](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/persist_spin.gif)
 
