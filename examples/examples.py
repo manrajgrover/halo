@@ -7,7 +7,7 @@ import time
 
 os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from halo.halo import Halo
+from halo import Halo
 
 spinner = Halo({'text': 'Such Spin', 'spinner': 'dots'})
 

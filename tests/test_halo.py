@@ -11,7 +11,7 @@ import logging
 from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
-from halo.halo import Halo
+from halo import Halo
 from halo._utils import is_supported
 
 if sys.version_info.major == 2:

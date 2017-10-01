@@ -29,7 +29,7 @@ class Halo(object):
     CLEAR_LINE : str
         Code to clear the line
     """
-    
+
     CLEAR_LINE = '\033[K'
 
     def __init__(self, options={}):
