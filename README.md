@@ -1,7 +1,14 @@
-# halo
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/ManrajGrover/halo/master/art/halo.png" height="50px"/>
+  <br>
+  halo
+</h1>
+
 [![Build Status](https://travis-ci.org/ManrajGrover/halo.svg?branch=master)](https://travis-ci.org/ManrajGrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/ManrajGrover/halo)
  [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/ManrajGrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
 > Beautiful terminal spinners in Python
+
+![halo](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/doge_spin.gif)
 
 ## Install
 
@@ -12,7 +19,7 @@ $ pip install halo
 ## Usage
 
 ```py
-from halo.halo import Halo
+from halo import Halo
 
 spinner = Halo({'text': 'Loading', 'spinner': 'dots'})
 spinner.start()
@@ -23,20 +30,142 @@ spinner.start()
 spinner.stop()
 ```
 
+## API
+
+### `Halo([options|text])`
+
+If a string is given, it will be treated as text for spinner.
+
+#### `options`
+A dictionary defining various available settings.
+
+##### `text`
+*Type*: `str`
+
+Text shown along with spinner.
+
+##### `spinner`
+*Type*: `str|dict`
+
+If string, it should be one of the spinners listed in the given [json](https://github.com/sindresorhus/cli-spinners/blob/dac4fc6571059bb9e9bc204711e9dfe8f72e5c6f/spinners.json) file. If a dict is passed, it should define `interval` and `frames`. Something like:
+
+```py
+{
+    'interval': 100,
+    'frames': ['-', '+', '*', '+', '-']
+}
+```
+
+Defaults to `dots` spinner. For Windows users, it defaults to `line` spinner.
+
+##### `color`
+*Type*: `str`
+*Values*: `grey`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
+
+Color of the spinner. Defaults to `cyan`.
+
+##### `interval`
+*Type*: `float`
+
+Interval between each frame. Defaults to spinner interval (recommended).
+
+##### `stream`
+*Type*: `file`
+
+Stream to write the output. Defaults to `sys.stdout`.
+
+##### `enabled`
+*Type*: `bool`
+
+Enable or disable the spinner. Defaults to `True`.
+
+### Methods
+
+Following are the methods available:
+
+#### `spinner.start([text])`
+
+Starts the spinner. If `text` is passed, it is set as spinner text. Returns the instance.
+
+#### `spinner.stop()`
+
+Stops and clears the spinner. Returns the instance.
+
+#### `spinner.clear()`
+
+Clears the spinner. Returns the instance.
+
+#### `spinner.render()`
+
+Manually renders a new frame. Returns the instance.
+
+#### `spinner.frame()`
+
+Returns next frame to be rendered.
+
+#### `spinner.succeed([text])`
+##### `text`: *Type*: `str`
+
+Stops the spinner and changes symbol to `✔`. If text is provided, it is persisted else current text is persisted. Returns the instance.
+
+#### `spinner.fail([text])`
+##### `text`: *Type*: `str`
+
+Stops the spinner and changes symbol to `✖`. If text is provided, it is persisted else current text is persisted. Returns the instance.
+
+#### `spinner.warn([text])`
+##### `text`: *Type*: `str`
+
+Stops the spinner and changes symbol to `⚠`. If text is provided, it is persisted else current text is persisted. Returns the instance.
+
+#### `spinner.info([text])`
+##### `text`: *Type*: `str`
+
+Stops the spinner and changes symbol to `ℹ`. If text is provided, it is persisted else current text is persisted. Returns the instance.
+
+#### `spinner.stop_and_persist([options])`
+##### `options`: *Type*: `dict`
+
+Stops the spinner and changes symbol and text. Returns the instance.
+
+##### `options`
+
+###### `symbol`
+*Type*: `str`
+
+Symbol to replace the spinner with.
+
+
+###### `text`
+*Type*: `str`
+
+Text to be persisted.
+
+![Persist spin](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/persist_spin.gif)
+
+#### `spinner.text`
+Change the text of spinner.
+
+#### `spinner.color`
+Change the color of spinner
+
+#### `spinner.spinner`
+Change the spinner itself.
+
 ## To Do
 
 - [ ] [Support Windows](https://github.com/ManrajGrover/halo/issues/5)
 
 ## Like it?
 
-:star2: this repo to show support. 
+:star2: this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
+Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2FManrajGrover%2Fhalo&via=manrajsgrover&text=Checkout%20%23halo%20-%20a%20beautiful%20%23terminal%20%23spinners%20library%20for%20%23python&hashtags=github%2C%20pypi).
 
 ## Related
 
 * [py-spinners](https://github.com/ManrajGrover/py-spinners)
 * [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols)
 * [ora](https://github.com/sindresorhus/ora)
-
 
 ## License
 [MIT](https://github.com/ManrajGrover/halo/blob/master/LICENSE) © Manraj Singh
