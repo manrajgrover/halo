@@ -7,6 +7,7 @@ import time
 import sys
 import io
 import logging
+import os
 
 from spinners.spinners import Spinners
 
@@ -36,11 +37,13 @@ else:
 class TestHalo(unittest.TestCase):
     """Test Halo enum for attribute values.
     """
+    TEST_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
     def setUp(self):
         """Set up things before beginning of each test.
         """
-        self._stream = io.open('test.txt', 'w+')
+        self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
+        self._stream = io.open(self._stream_file, 'w+')
 
     def _get_test_output(self):
         """Clean the output from stream and return it in list form.
@@ -248,17 +251,12 @@ class TestHalo(unittest.TestCase):
             spinner.start()
             spinner.stop_and_persist('not dict')
 
-        with self.assertRaises(ValueError):
-            spinner = Halo()
-            spinner.start()
-            spinner.stop_and_persist({'not_req_option': 'text'})
-
 
     def tearDown(self):
         """Clean up things after every test.
         """
         self._stream.close()
-        remove_file('test.txt')
+        remove_file(self._stream_file)
 
 
 

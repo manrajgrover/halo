@@ -299,7 +299,6 @@ class Halo(object):
         -------
         self
         """
-        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.SUCCESS.value, 'text': text})
 
     def fail(self, text=None):
@@ -314,7 +313,6 @@ class Halo(object):
         -------
         self
         """
-        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.ERROR.value, 'text': text})
 
     def warn(self, text=None):
@@ -329,7 +327,6 @@ class Halo(object):
         -------
         self
         """
-        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.WARNING.value, 'text': text})
 
     def info(self, text=None):
@@ -344,7 +341,6 @@ class Halo(object):
         -------
         self
         """
-        text = self._text if text is None else text
         return self.stop_and_persist({'symbol': LogSymbols.INFO.value, 'text': text})
 
     def stop_and_persist(self, options={}):
@@ -363,17 +359,19 @@ class Halo(object):
         ------
         TypeError
             If options is not dictionary
-        ValueError
-            If options does not contain symbol or text to be shown
         """
         if type(options) is not dict:
             raise TypeError('Options passed must be a dictionary')
 
-        if 'symbol' not in options or 'text' not in options:
-            raise ValueError('Options must contain symbol and text keys')
+        if 'symbol' in options and options['symbol'] is not None:
+            symbol = decode_utf_8_text(options['symbol'])
+        else:
+            symbol = ' '
 
-        symbol = decode_utf_8_text(options['symbol']) if options['symbol'] is not None else ''
-        text = decode_utf_8_text(options['text']) if options['text'] is not None else ''
+        if 'text' in options and options['text'] is not None:
+            text = decode_utf_8_text(options['text'])
+        else:
+            text = self._text
 
         self.stop()
 
