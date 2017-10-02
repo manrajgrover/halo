@@ -30,6 +30,15 @@ spinner.start()
 spinner.stop()
 ```
 
+Alternatively, you can use halo with Python's `with` statement:
+
+```py
+from halo import Halo
+
+with Halo({'text': 'Loading', 'spinner': 'dots'}):
+    # Run time consuming work here
+```
+
 ## API
 
 ### `Halo([text|spinner|color|interval|stream|enabled])`
