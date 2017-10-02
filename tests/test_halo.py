@@ -47,7 +47,7 @@ class TestHalo(unittest.TestCase):
 
     def _get_test_output(self):
         """Clean the output from stream and return it in list form.
-        
+
         Returns
         -------
         list
@@ -76,6 +76,18 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_context_manager(self):
+        """Test the basic of basic spinners used through the with statement.
+        """
+        with Halo({'text': 'foo', 'spinner': 'dots', 'stream': self._stream}):
+            time.sleep(1)
+        output = self._get_test_output()
+
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
