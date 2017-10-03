@@ -13,7 +13,7 @@ success_message = 'Loading success'
 failed_message = 'Loading failed'
 unicorn_message = 'Loading unicorn'
 
-spinner = Halo({'text': success_message, 'spinner': 'dots'})
+spinner = Halo(text=success_message, spinner='dots')
 
 try:
     spinner.start()
