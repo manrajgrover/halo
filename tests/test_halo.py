@@ -211,15 +211,6 @@ class TestHalo(unittest.TestCase):
         else:
             self.assertEqual(spinner.spinner, default_spinner)
 
-        spinner.spinner = {
-            "interval": 100,
-            "frames": ["◉", "◎"]
-        }
-        if is_supported():
-            self.assertEqual(spinner.spinner, Spinners['toggle9'].value)
-        else:
-            self.assertEqual(spinner.spinner, default_spinner)
-
         spinner.spinner = 'foo_bar'
         self.assertEqual(spinner.spinner, default_spinner)
 
