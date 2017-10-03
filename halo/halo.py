@@ -58,7 +58,7 @@ class Halo(object):
         self._options.update(options)
 
         self._interval = self._options['interval']
-        self._text = self._options['text']
+        self._text = self._options['text'].strip()
         self._color = self._options['color']
         self._stream = self._options['stream']
         self._frame_index = 0
