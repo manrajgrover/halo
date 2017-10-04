@@ -9,13 +9,13 @@ os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from halo import Halo
 
-spinner = Halo({
-    'text': 'Custom Spins',
-    'spinner': {
+spinner = Halo(
+    text='Custom Spins',
+    spinner={
         'interval': 100,
         'frames': ['-', '+', '*', '+', '-']
     }
-})
+)
 
 try:
     spinner.start()
