@@ -81,7 +81,7 @@ class TestHalo(unittest.TestCase):
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """
-        with Halo({'text': 'foo', 'spinner': 'dots', 'stream': self._stream}):
+        with Halo(text='foo', spinner='dots', stream=self._stream):
             time.sleep(1)
         output = self._get_test_output()
 
