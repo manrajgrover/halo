@@ -6,18 +6,13 @@ from __future__ import unicode_literals, absolute_import, print_function
 
 import sys
 import threading
-import cursor
 import time
-import logging
 
+import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s:%(levelname)s:%(message)s"
-)
+from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
 
 
 class Halo(object):
