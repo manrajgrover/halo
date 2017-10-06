@@ -64,6 +64,24 @@ class Halo(object):
         self._spinner_id = None
         self._enabled = enabled # Need to check for stream
 
+    def __enter__(self):
+        """Starts the spinner on a separate thread. For use in context managers.
+
+        Returns
+        -------
+        self
+        """
+        return self.start()
+
+    def __exit__(self, type, value, traceback):
+        """Stops the spinner. For use in context managers.
+
+        Returns
+        -------
+        None
+        """
+        self.stop()
+
     @property
     def spinner(self):
         """Getter for spinner property.
