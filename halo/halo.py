@@ -4,7 +4,6 @@
 """
 from __future__ import unicode_literals, absolute_import, print_function
 
-import logging
 import sys
 import threading
 import time
@@ -14,9 +13,6 @@ from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
 from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
-
-
-logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 class Halo(object):
