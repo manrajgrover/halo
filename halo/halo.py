@@ -7,6 +7,7 @@ from __future__ import unicode_literals, absolute_import, print_function
 import sys
 import threading
 import time
+import functools
 
 import cursor
 from spinners.spinners import Spinners
@@ -81,6 +82,15 @@ class Halo(object):
         None
         """
         self.stop()
+
+    def __call__(self, f):
+        """Allow the Halo object to be used as a regular function decorator."""
+        @functools.wraps(f)
+        def wrapped(*args, **kwargs):
+            with self:
+                return f(*args, **kwargs)
+
+        return wrapped
 
     @property
     def spinner(self):
