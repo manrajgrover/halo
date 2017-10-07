@@ -39,7 +39,7 @@ with Halo(text='Loading', spinner='dots'):
     # Run time consuming work here
 ```
 
-Finally, you can use halo with as a decorator:
+Finally, you can use halo as a decorator:
 
 ```py
 from halo import Halo
