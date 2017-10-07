@@ -89,6 +89,17 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
+    def test_decorator_spinner(self):
+        """Test basic usage of spinners with the decorator syntax."""
+        @Halo(text="foo", spinner="dots", stream=self._stream)
+        def decorated_function():
+            time.sleep(1)
+
+        decorated_function()
+        output = self._get_test_output()
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.

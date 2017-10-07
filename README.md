@@ -39,6 +39,19 @@ with Halo(text='Loading', spinner='dots'):
     # Run time consuming work here
 ```
 
+Finally, you can use halo as a decorator:
+
+```py
+from halo import Halo
+
+@Halo(text='Loading', spinner='dots')
+def long_running_function():
+    # Run time consuming work here
+    pass
+
+long_running_function()
+```
+
 ## API
 
 ### `Halo([text|spinner|color|interval|stream|enabled])`
