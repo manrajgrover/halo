@@ -50,7 +50,7 @@ class Halo(object):
         if interval == -1:
             self._interval = self._spinner['interval']
 
-        self._text = text
+        self._text = text.strip()
         self._color = color
 
         if not stream:
