@@ -21,7 +21,7 @@ $ pip install halo
 ```py
 from halo import Halo
 
-spinner = Halo({'text': 'Loading', 'spinner': 'dots'})
+spinner = Halo(text='Loading', spinner='dots')
 spinner.start()
 
 # Run time consuming work here
@@ -30,14 +30,31 @@ spinner.start()
 spinner.stop()
 ```
 
+Alternatively, you can use halo with Python's `with` statement:
+
+```py
+from halo import Halo
+
+with Halo(text='Loading', spinner='dots'):
+    # Run time consuming work here
+```
+
+Finally, you can use halo as a decorator:
+
+```py
+from halo import Halo
+
+@Halo(text='Loading', spinner='dots')
+def long_running_function():
+    # Run time consuming work here
+    pass
+
+long_running_function()
+```
+
 ## API
 
-### `Halo([options|text])`
-
-If a string is given, it will be treated as text for spinner.
-
-#### `options`
-A dictionary defining various available settings.
+### `Halo([text|spinner|color|interval|stream|enabled])`
 
 ##### `text`
 *Type*: `str`

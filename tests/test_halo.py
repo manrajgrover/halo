@@ -47,7 +47,7 @@ class TestHalo(unittest.TestCase):
 
     def _get_test_output(self):
         """Clean the output from stream and return it in list form.
-        
+
         Returns
         -------
         list
@@ -67,12 +67,36 @@ class TestHalo(unittest.TestCase):
     def test_basic_spinner(self):
         """Test the basic of basic spinners.
         """
-        spinner = Halo({'text': 'foo', 'spinner': 'dots', 'stream': self._stream})
+        spinner = Halo(text='foo', spinner='dots', stream=self._stream)
+
         spinner.start()
         time.sleep(1)
         spinner.stop()
         output = self._get_test_output()
 
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_context_manager(self):
+        """Test the basic of basic spinners used through the with statement.
+        """
+        with Halo(text='foo', spinner='dots', stream=self._stream):
+            time.sleep(1)
+        output = self._get_test_output()
+
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_decorator_spinner(self):
+        """Test basic usage of spinners with the decorator syntax."""
+        @Halo(text="foo", spinner="dots", stream=self._stream)
+        def decorated_function():
+            time.sleep(1)
+
+        decorated_function()
+        output = self._get_test_output()
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
@@ -98,13 +122,13 @@ class TestHalo(unittest.TestCase):
     def test_id_not_created_before_start(self):
         """Test Spinner ID not created before start.
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         self.assertEqual(spinner.spinner_id, None)
 
     def test_ignore_multiple_start_calls(self):
         """Test ignoring of multiple start calls.
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start()
         spinner_id = spinner.spinner_id
         spinner.start()
@@ -114,7 +138,7 @@ class TestHalo(unittest.TestCase):
     def test_chaining_start(self):
         """Test chaining start with constructor
         """
-        spinner = Halo({'stream': self._stream}).start()
+        spinner = Halo(stream=self._stream).start()
         spinner_id = spinner.spinner_id
         self.assertIsNotNone(spinner_id)
         spinner.stop()
@@ -122,7 +146,7 @@ class TestHalo(unittest.TestCase):
     def test_succeed(self):
         """Test succeed method
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start('foo')
         spinner.succeed('foo')
 
@@ -135,7 +159,7 @@ class TestHalo(unittest.TestCase):
     def test_succeed_with_new_text(self):
         """Test succeed method with new text
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start('foo')
         spinner.succeed('bar')
 
@@ -148,7 +172,7 @@ class TestHalo(unittest.TestCase):
     def test_info(self):
         """Test info method
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start('foo')
         spinner.info()
 
@@ -161,7 +185,7 @@ class TestHalo(unittest.TestCase):
     def test_fail(self):
         """Test fail method
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start('foo')
         spinner.fail()
 
@@ -174,7 +198,7 @@ class TestHalo(unittest.TestCase):
     def test_warning(self):
         """Test warn method
         """
-        spinner = Halo({'stream': self._stream})
+        spinner = Halo(stream=self._stream)
         spinner.start('foo')
         spinner.warn('Warning!')
 
@@ -204,13 +228,13 @@ class TestHalo(unittest.TestCase):
         else:
             self.assertEqual(spinner.spinner, default_spinner)
 
-        spinner.spinner = {'spinner': 'dots11'}
+        spinner.spinner = 'dots11'
         if is_supported():
             self.assertEqual(spinner.spinner, Spinners['dots11'].value)
         else:
             self.assertEqual(spinner.spinner, default_spinner)
 
-        spinner.spinner = {'spinner': 'foo_bar'}
+        spinner.spinner = 'foo_bar'
         self.assertEqual(spinner.spinner, default_spinner)
 
         # Color is None
@@ -232,7 +256,7 @@ class TestHalo(unittest.TestCase):
         """
         stdout_ = sys.stdout
         sys.stdout = self._stream
-        spinner = Halo({'text': 'foo', 'enabled': False})
+        spinner = Halo(text="foo", enabled=False)
         spinner.start()
         time.sleep(1)
         spinner.clear()
