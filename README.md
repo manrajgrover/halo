@@ -6,7 +6,7 @@
 
 [![Build Status](https://travis-ci.org/ManrajGrover/halo.svg?branch=master)](https://travis-ci.org/ManrajGrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/ManrajGrover/halo)
  [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/ManrajGrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
-> Beautiful terminal spinners in Python
+> Beautiful terminal spinners for Python, inspired by [ora](https://github.com/sindresorhus/ora)
 
 ![halo](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/doge_spin.gif)
 
