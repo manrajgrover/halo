@@ -19,7 +19,6 @@ from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_
 class Halo(object):
 
     """Halo library.
-
     Attributes
     ----------
     CLEAR_LINE : str
@@ -30,7 +29,6 @@ class Halo(object):
 
     def __init__(self, text='', color='cyan', spinner=None, interval=-1, enabled=True, stream=None):
         """Constructs the Halo object.
-
         Parameters
         ----------
         text : str, optional
@@ -52,7 +50,7 @@ class Halo(object):
         if interval == -1:
             self._interval = self._spinner['interval']
 
-        self._text = text
+        self._text = text.strip()
         self._color = color
 
         if not stream:
@@ -67,7 +65,6 @@ class Halo(object):
 
     def __enter__(self):
         """Starts the spinner on a separate thread. For use in context managers.
-
         Returns
         -------
         self
@@ -76,7 +73,6 @@ class Halo(object):
 
     def __exit__(self, type, value, traceback):
         """Stops the spinner. For use in context managers.
-
         Returns
         -------
         None
@@ -95,7 +91,6 @@ class Halo(object):
     @property
     def spinner(self):
         """Getter for spinner property.
-
         Returns
         -------
         dict
@@ -106,7 +101,6 @@ class Halo(object):
     @spinner.setter
     def spinner(self, spinner=None):
         """Setter for spinner property.
-
         Parameters
         ----------
         spinner : dict, str
@@ -119,7 +113,6 @@ class Halo(object):
     @property
     def text(self):
         """Getter for text property.
-
         Returns
         -------
         str
@@ -130,18 +123,16 @@ class Halo(object):
     @text.setter
     def text(self, text):
         """Setter for text property.
-
         Parameters
         ----------
         text : str
             Defines the text value for spinner
         """
-        self._text = text
+        self._text = text.strip()
 
     @property
     def color(self):
         """Getter for color property.
-
         Returns
         -------
         str
@@ -152,7 +143,6 @@ class Halo(object):
     @color.setter
     def color(self, color):
         """Setter for color property.
-
         Parameters
         ----------
         color : str
@@ -163,7 +153,6 @@ class Halo(object):
     @property
     def spinner_id(self):
         """Getter for spinner id
-
         Returns
         -------
         str
@@ -174,12 +163,10 @@ class Halo(object):
     def _get_spinner(self, spinner):
         """Extracts spinner value from options and returns value
         containing spinner frames and interval, defaults to 'dots' spinner.
-
         Parameters
         ----------
         spinner : dict, str
             Contains spinner value or type of spinner to be used
-
         Returns
         -------
         dict
@@ -201,7 +188,6 @@ class Halo(object):
     def clear(self):
         """Clears the line and returns cursor to the start.
         of line
-
         Returns
         -------
         self
@@ -224,7 +210,6 @@ class Halo(object):
 
     def render(self):
         """Runs the render until thread flag is set.
-
         Returns
         -------
         self
@@ -237,7 +222,6 @@ class Halo(object):
 
     def frame(self):
         """Builds and returns the frame to be rendered
-
         Returns
         -------
         self
@@ -255,18 +239,16 @@ class Halo(object):
 
     def start(self, text=None):
         """Starts the spinner on a separate thread.
-
         Parameters
         ----------
         text : None, optional
             Text to be used alongside spinner
-
         Returns
         -------
         self
         """
         if text is not None:
-            self._text = text
+            self._text = text.strip()
 
         if not self._enabled or self._spinner_id is not None:
             return self
@@ -285,7 +267,6 @@ class Halo(object):
 
     def stop(self):
         """Stops the spinner and clears the line.
-
         Returns
         -------
         self
@@ -308,12 +289,10 @@ class Halo(object):
 
     def succeed(self, text=None):
         """Shows and persists success symbol and text and exits.
-
         Parameters
         ----------
         text : None, optional
             Text to be shown alongside success symbol.
-
         Returns
         -------
         self
@@ -322,12 +301,10 @@ class Halo(object):
 
     def fail(self, text=None):
         """Shows and persists fail symbol and text and exits.
-
         Parameters
         ----------
         text : None, optional
             Text to be shown alongside fail symbol.
-
         Returns
         -------
         self
@@ -336,12 +313,10 @@ class Halo(object):
 
     def warn(self, text=None):
         """Shows and persists warn symbol and text and exits.
-
         Parameters
         ----------
         text : None, optional
             Text to be shown alongside warn symbol.
-
         Returns
         -------
         self
@@ -350,12 +325,10 @@ class Halo(object):
 
     def info(self, text=None):
         """Shows and persists info symbol and text and exits.
-
         Parameters
         ----------
         text : None, optional
             Text to be shown alongside info symbol.
-
         Returns
         -------
         self
@@ -364,16 +337,13 @@ class Halo(object):
 
     def stop_and_persist(self, options={}):
         """Stops the spinner and persists the final frame to be shown.
-
         Parameters
         ----------
         options : dict, optional
             Contains frame and interval for final frame
-
         Returns
         -------
         self
-
         Raises
         ------
         TypeError
@@ -391,6 +361,8 @@ class Halo(object):
             text = decode_utf_8_text(options['text'])
         else:
             text = self._text
+
+        text = text.strip()
 
         self.stop()
 
