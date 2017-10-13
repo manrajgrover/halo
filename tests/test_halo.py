@@ -78,6 +78,24 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
+    def test_text_stripping(self):
+        """Test the text being stripped before output.
+        """
+        spinner = Halo(text='foo\n', spinner='dots', stream=self._stream)
+
+        spinner.start()
+        time.sleep(1)
+        spinner.succeed('foo\n')
+        output = self._get_test_output()
+
+        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+        pattern = re.compile(r'(✔|v) foo', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1], pattern)
+
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """
