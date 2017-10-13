@@ -128,7 +128,7 @@ class Halo(object):
         text : str
             Defines the text value for spinner
         """
-        self._text = text
+        self._text = text.strip()
 
     @property
     def color(self):
@@ -248,7 +248,7 @@ class Halo(object):
         self
         """
         if text is not None:
-            self._text = text
+            self._text = text.strip()
 
         if not self._enabled or self._spinner_id is not None:
             return self
@@ -361,6 +361,8 @@ class Halo(object):
             text = decode_utf_8_text(options['text'])
         else:
             text = self._text
+
+        text = text.strip()
 
         self.stop()
 
