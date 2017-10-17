@@ -13,11 +13,10 @@ import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text
+from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_size
 
 
 class Halo(object):
-
     """Halo library.
     Attributes
     ----------
@@ -27,7 +26,7 @@ class Halo(object):
 
     CLEAR_LINE = '\033[K'
 
-    def __init__(self, text='', color='cyan', spinner=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -47,10 +46,11 @@ class Halo(object):
 
         self._spinner = self._get_spinner(spinner)
 
+        self._text = self._get_text(text, animation)
+
         if interval == -1:
             self._interval = self._spinner['interval']
 
-        self._text = text.strip()
         self._color = color
 
         if not stream:
@@ -58,10 +58,11 @@ class Halo(object):
 
         self._stream = stream
         self._frame_index = 0
+        self._text_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
         self._spinner_id = None
-        self._enabled = enabled # Need to check for stream
+        self._enabled = enabled  # Need to check for stream
 
     def __enter__(self):
         """Starts the spinner on a separate thread. For use in context managers.
@@ -109,6 +110,7 @@ class Halo(object):
 
         self._spinner = self._get_spinner(spinner)
         self._frame_index = 0
+        self._text_index = 0
 
     @property
     def text(self):
@@ -185,6 +187,41 @@ class Halo(object):
 
         return default_spinner
 
+    def _get_text(self, text, animation):
+        """Creates frames based on the selected animation
+        Returns
+        -------
+        self
+        """
+
+        terminal_size = get_terminal_size()
+
+        text_length = len(text)
+        frames = []
+        if animation:
+            if animation == 'bounce':
+                """
+                Make the text bounce back and forth
+                """
+                for x in range(0, text_length - terminal_size.columns):
+                    frames.append(text[x:terminal_size.columns + x])
+                frames.extend(list(reversed(frames)))
+            elif 'marquee':
+                """
+                Make the text scroll like a marquee
+                """
+                text = text + ' ' + text[:terminal_size.columns]
+                for x in range(0, text_length + 1):
+                    frames.append(text[x:terminal_size.columns + x])
+        else:
+            frames = [text]
+
+        text = {
+            'frames': frames,
+            'interval': 80
+        }
+        return text
+
     def clear(self):
         """Clears the line and returns cursor to the start.
         of line
@@ -235,7 +272,19 @@ class Halo(object):
         self._frame_index += 1
         self._frame_index = self._frame_index % len(frames)
 
-        return frame + ' ' + self._text
+        return frame + ' ' + self.text_frame()
+
+    def text_frame(self):
+        frames = self._text['frames']
+        frame = frames[self._text_index]
+
+        # if self._color:
+        #     frame = colored_frame(frame, self._color)
+
+        self._text_index += 1
+        self._text_index = self._text_index % len(frames)
+
+        return frame
 
     def start(self, text=None):
         """Starts the spinner on a separate thread.
