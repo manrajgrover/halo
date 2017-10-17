@@ -4,6 +4,7 @@
 import platform
 import six
 import codecs
+import shutil
 
 from colorama import init, Fore
 from termcolor import colored
@@ -78,3 +79,7 @@ def decode_utf_8_text(text):
         return codecs.decode(text, 'utf-8')
     except:
         return text
+
+
+def get_terminal_size():
+    return shutil.get_terminal_size()
