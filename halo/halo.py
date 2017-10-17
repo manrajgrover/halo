@@ -196,23 +196,26 @@ class Halo(object):
 
         terminal_size = get_terminal_size()
 
+        terminal_size = terminal_size.columns - 2 # Get the spinner size instead of assuming 2
+
         text_length = len(text)
         frames = []
-        if animation:
+
+        if terminal_size < text_length and animation:
             if animation == 'bounce':
                 """
                 Make the text bounce back and forth
                 """
-                for x in range(0, text_length - terminal_size.columns):
-                    frames.append(text[x:terminal_size.columns + x])
+                for x in range(0, text_length - terminal_size):
+                    frames.append(text[x:terminal_size + x])
                 frames.extend(list(reversed(frames)))
             elif 'marquee':
                 """
                 Make the text scroll like a marquee
                 """
-                text = text + ' ' + text[:terminal_size.columns]
+                text = text + ' ' + text[:terminal_size]
                 for x in range(0, text_length + 1):
-                    frames.append(text[x:terminal_size.columns + x])
+                    frames.append(text[x:terminal_size + x])
         else:
             frames = [text]
 
