@@ -194,6 +194,7 @@ class Halo(object):
         self
         """
         terminal_size = get_terminal_size()
+        text = text.strip()
 
         # Check which frame of the animation is the widest
         max_spinner_length = max([len(i) for i in self._spinner['frames']])
@@ -202,6 +203,7 @@ class Halo(object):
         # (-1 to leave room for the extra space between spinner and text)
         terminal_width = terminal_size.columns - max_spinner_length - 1
         text_length = len(text)
+
         frames = []
 
         if terminal_width < text_length and animation:
