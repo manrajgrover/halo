@@ -97,7 +97,7 @@ class TestHalo(unittest.TestCase):
         self.assertRegexpMatches(output[-1], pattern)
 
     def test_text_ellipsing(self):
-        """Test the text is ellipsed if too long
+        """Test the text gets ellipsed if it's too long
         """
         spinner = Halo(text='This is a text that it is too long. In fact, it exceeds the eighty column standard '
                             'terminal width, which forces the text frame renderer to add an ellipse at the end of the '
