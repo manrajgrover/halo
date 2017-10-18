@@ -119,6 +119,29 @@ class TestHalo(unittest.TestCase):
 
         self.assertRegexpMatches(output[-1], pattern)
 
+    def test_text_animation(self):
+        """Test the text gets animated when it is too long
+        """
+        spinner = Halo(text='This is a text that it is too long. In fact, it exceeds the eighty column standard '
+                            'terminal width, which forces the text frame renderer to add an ellipse at the end of the '
+                            'text', spinner='dots', stream=self._stream, animation='marquee')
+
+        spinner.start()
+        time.sleep(1)
+        spinner.succeed('End!')
+        output = self._get_test_output()
+
+        self.assertEqual(output[0], '{0} This is a text that it is too long. '
+                                    'In fact, it exceeds the eighty column stan'.format(frames[0]))
+        self.assertEqual(output[1], '{0} his is a text that it is too long. I'
+                                    'n fact, it exceeds the eighty column stand'.format(frames[1]))
+        self.assertEqual(output[2], '{0} is is a text that it is too long. In'
+                                    ' fact, it exceeds the eighty column standa'.format(frames[2]))
+
+        pattern = re.compile(r'(✔|v) End!', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1], pattern)
+
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """
