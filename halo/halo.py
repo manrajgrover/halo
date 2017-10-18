@@ -284,11 +284,16 @@ class Halo(object):
         return frame + ' ' + self.text_frame()
 
     def text_frame(self):
+        """Builds and returns the text frame to be rendered
+        Returns
+        -------
+        self
+        """
+        if len(self._text['frames']) == 1:
+            return self._text['frames'][0]
+
         frames = self._text['frames']
         frame = frames[self._text_index]
-
-        # if self._color:
-        #     frame = colored_frame(frame, self._color)
 
         self._text_index += 1
         self._text_index = self._text_index % len(frames)
