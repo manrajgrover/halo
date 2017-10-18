@@ -312,6 +312,9 @@ class Halo(object):
         -------
         self
         """
+        if text is not None:
+            self._text = self._get_text(text, animation=None)
+
         if not self._enabled or self._spinner_id is not None:
             return self
 
