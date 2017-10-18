@@ -224,7 +224,6 @@ class Halo(object):
 
         text = {
             'frames': frames,
-            'interval': 80
         }
 
         return text
