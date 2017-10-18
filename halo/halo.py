@@ -120,7 +120,7 @@ class Halo(object):
         str
             text value
         """
-        return self._text['frames'][0]
+        return self._text['original']
 
     @text.setter
     def text(self, text):
@@ -194,7 +194,7 @@ class Halo(object):
         self
         """
         terminal_size = get_terminal_size()
-        text = text.strip()
+        stripped_text = text.strip()
 
         # Check which frame of the animation is the widest
         max_spinner_length = max([len(i) for i in self._spinner['frames']])
@@ -202,7 +202,7 @@ class Halo(object):
         # Subtract to the current terminal size the max spinner length
         # (-1 to leave room for the extra space between spinner and text)
         terminal_width = terminal_size.columns - max_spinner_length - 1
-        text_length = len(text)
+        text_length = len(stripped_text)
 
         frames = []
 
@@ -212,26 +212,25 @@ class Halo(object):
                 Make the text bounce back and forth
                 """
                 for x in range(0, text_length - terminal_width):
-                    frames.append(text[x:terminal_width + x])
+                    frames.append(stripped_text[x:terminal_width + x])
                 frames.extend(list(reversed(frames)))
             elif 'marquee':
                 """
                 Make the text scroll like a marquee
                 """
-                text = text + ' ' + text[:terminal_width]
+                stripped_text = stripped_text + ' ' + stripped_text[:terminal_width]
                 for x in range(0, text_length + 1):
-                    frames.append(text[x:terminal_width + x])
+                    frames.append(stripped_text[x:terminal_width + x])
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
-            frames = [text[:terminal_width - 6] + ' (...)']
+            frames = [stripped_text[:terminal_width - 6] + ' (...)']
         else:
-            frames = [text]
+            frames = [stripped_text]
 
-        text = {
-            'frames': frames,
+        return {
+            'original': text,
+            'frames': frames
         }
-
-        return text
 
     def clear(self):
         """Clears the line and returns cursor to the start.
@@ -292,7 +291,7 @@ class Halo(object):
         self
         """
         if len(self._text['frames']) == 1:
-            return self._text['frames'][0]
+            return self._text['original']
 
         frames = self._text['frames']
         frame = frames[self._text_index]
@@ -425,7 +424,7 @@ class Halo(object):
         if 'text' in options and options['text'] is not None:
             text = decode_utf_8_text(options['text'])
         else:
-            text = self._text['frames'][0]
+            text = self._text['original']
 
         text = text.strip()
 
