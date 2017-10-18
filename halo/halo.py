@@ -219,6 +219,9 @@ class Halo(object):
                 text = text + ' ' + text[:terminal_width]
                 for x in range(0, text_length + 1):
                     frames.append(text[x:terminal_width + x])
+        elif terminal_width < text_length and not animation:
+            # Add ellipsis if text is larger than terminal width and no animation was specified
+            frames = [text[:terminal_width - 6] + ' (...)']
         else:
             frames = [text]
 
