@@ -96,6 +96,29 @@ class TestHalo(unittest.TestCase):
 
         self.assertRegexpMatches(output[-1], pattern)
 
+    def test_text_ellipsing(self):
+        """Test the text is ellipsed if too long
+        """
+        spinner = Halo(text='This is a text that it is too long. In fact, it exceeds the eighty column standard '
+                            'terminal width, which forces the text frame renderer to add an ellipse at the end of the '
+                            'text', spinner='dots', stream=self._stream)
+
+        spinner.start()
+        time.sleep(1)
+        spinner.succeed('End!')
+        output = self._get_test_output()
+
+        self.assertEqual(output[0], '{0} This is a text that it is too long. '
+                                    'In fact, it exceeds the eighty colum (...)'.format(frames[0]))
+        self.assertEqual(output[1], '{0} This is a text that it is too long. '
+                                    'In fact, it exceeds the eighty colum (...)'.format(frames[1]))
+        self.assertEqual(output[2], '{0} This is a text that it is too long. '
+                                    'In fact, it exceeds the eighty colum (...)'.format(frames[2]))
+
+        pattern = re.compile(r'(✔|v) End!', re.UNICODE)
+
+        self.assertRegexpMatches(output[-1], pattern)
+
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """
