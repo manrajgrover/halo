@@ -291,7 +291,8 @@ class Halo(object):
         self
         """
         if len(self._text['frames']) == 1:
-            return self._text['original']
+            # Return first frame (can't return original text because at this point it might be ellipsed)
+            return self._text['frames'][0]
 
         frames = self._text['frames']
         frame = frames[self._text_index]
