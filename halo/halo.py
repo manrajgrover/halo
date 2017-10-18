@@ -120,7 +120,7 @@ class Halo(object):
         str
             text value
         """
-        return self._text
+        return self._text['frames'][0]
 
     @text.setter
     def text(self, text):
@@ -130,7 +130,7 @@ class Halo(object):
         text : str
             Defines the text value for spinner
         """
-        self._text = text.strip()
+        self._text = self._get_text(text, animation=None)
 
     @property
     def color(self):
