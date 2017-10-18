@@ -312,9 +312,6 @@ class Halo(object):
         -------
         self
         """
-        if text is not None:
-            self._text = text.strip()
-
         if not self._enabled or self._spinner_id is not None:
             return self
 
@@ -425,7 +422,7 @@ class Halo(object):
         if 'text' in options and options['text'] is not None:
             text = decode_utf_8_text(options['text'])
         else:
-            text = self._text
+            text = self._text['frames'][0]
 
         text = text.strip()
 
