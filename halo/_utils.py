@@ -82,4 +82,4 @@ def decode_utf_8_text(text):
 
 
 def get_terminal_size():
-    return shutil.get_terminal_size()
+    return shutil.get_terminal_size(fallback=(80, 24))
