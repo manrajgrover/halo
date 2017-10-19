@@ -4,7 +4,7 @@
 import platform
 import six
 import codecs
-import shutil
+from backports.shutil_get_terminal_size import get_terminal_size as terminal_size
 
 from colorama import init, Fore
 from termcolor import colored
@@ -82,9 +82,4 @@ def decode_utf_8_text(text):
 
 
 def get_terminal_size():
-    terminal_size = shutil.get_terminal_size(fallback=(80, 24))
-
-    if terminal_size.columns <= 0:
-        terminal_size.columns = 80
-
-    return terminal_size
+    return terminal_size(fallback=(80, 24))
