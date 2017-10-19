@@ -75,6 +75,12 @@ If string, it should be one of the spinners listed in the given [json](https://g
 
 Defaults to `dots` spinner. For Windows users, it defaults to `line` spinner.
 
+##### `animation`
+*Type*: `str`
+*Values*: `bounce`, `marquee`
+
+Animation to apply to the text if it's too large and doesn't fit in the terminal. If no animation is defined, the text will be ellipsed.
+
 ##### `color`
 *Type*: `str`
 *Values*: `grey`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
