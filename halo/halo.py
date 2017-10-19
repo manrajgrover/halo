@@ -13,7 +13,7 @@ import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_size
+from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns
 
 
 class Halo(object):
@@ -193,7 +193,6 @@ class Halo(object):
         -------
         self
         """
-        terminal_size = get_terminal_size()
         stripped_text = text.strip()
 
         # Check which frame of the animation is the widest
@@ -201,7 +200,7 @@ class Halo(object):
 
         # Subtract to the current terminal size the max spinner length
         # (-1 to leave room for the extra space between spinner and text)
-        terminal_width = terminal_size.columns - max_spinner_length - 1
+        terminal_width = get_terminal_columns() - max_spinner_length - 1
         text_length = len(stripped_text)
 
         frames = []

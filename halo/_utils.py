@@ -4,7 +4,7 @@
 import platform
 import six
 import codecs
-from backports.shutil_get_terminal_size import get_terminal_size as terminal_size
+from backports.shutil_get_terminal_size import get_terminal_size
 
 from colorama import init, Fore
 from termcolor import colored
@@ -81,5 +81,19 @@ def decode_utf_8_text(text):
         return text
 
 
-def get_terminal_size():
-    return terminal_size(fallback=(80, 24))
+def get_terminal_columns():
+    """Determine the amount of available columns in the terminal
+
+    Returns
+    -------
+    int
+        Terminal width
+    """
+    terminal_size = get_terminal_size()
+
+    # If column size is 0 either we are not connected
+    # to a terminal or something else went wrong. Fallback to 80.
+    if terminal_size.columns == 0:
+        return 80
+    else:
+        return terminal_size.columns
