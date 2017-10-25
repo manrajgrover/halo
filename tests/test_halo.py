@@ -13,13 +13,12 @@ from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
-from halo._utils import is_supported
+from halo._utils import is_supported, get_terminal_columns
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
 else:
     get_coded_text = decode_utf_8_text
-
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -99,21 +98,22 @@ class TestHalo(unittest.TestCase):
     def test_text_ellipsing(self):
         """Test the text gets ellipsed if it's too long
         """
-        spinner = Halo(text='This is a text that it is too long. In fact, it exceeds the eighty column standard '
-                            'terminal width, which forces the text frame renderer to add an ellipse at the end of the '
-                            'text', spinner='dots', stream=self._stream)
+        text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
+               'terminal width, which forces the text frame renderer to add an ellipse at the end of the ' \
+               'text'
+        spinner = Halo(text=text, spinner='dots', stream=self._stream)
 
         spinner.start()
         time.sleep(1)
         spinner.succeed('End!')
         output = self._get_test_output()
 
-        self.assertEqual(output[0], '{0} This is a text that it is too long. '
-                                    'In fact, it exceeds the eighty colum (...)'.format(frames[0]))
-        self.assertEqual(output[1], '{0} This is a text that it is too long. '
-                                    'In fact, it exceeds the eighty colum (...)'.format(frames[1]))
-        self.assertEqual(output[2], '{0} This is a text that it is too long. '
-                                    'In fact, it exceeds the eighty colum (...)'.format(frames[2]))
+        terminal_width = get_terminal_columns()
+
+        # -6 of the ' (...)' ellipsis, -2 of the spinner and space
+        self.assertEqual(output[0], '{0} {1} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[1], '{0} {1} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[2], '{0} {1} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -122,21 +122,21 @@ class TestHalo(unittest.TestCase):
     def test_text_animation(self):
         """Test the text gets animated when it is too long
         """
-        spinner = Halo(text='This is a text that it is too long. In fact, it exceeds the eighty column standard '
-                            'terminal width, which forces the text frame renderer to add an ellipse at the end of the '
-                            'text', spinner='dots', stream=self._stream, animation='marquee')
+        text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
+               'terminal width, which forces the text frame renderer to add an ellipse at the end of the ' \
+               'text'
+        spinner = Halo(text=text, spinner='dots', stream=self._stream, animation='marquee')
 
         spinner.start()
         time.sleep(1)
         spinner.succeed('End!')
         output = self._get_test_output()
 
-        self.assertEqual(output[0], '{0} This is a text that it is too long. '
-                                    'In fact, it exceeds the eighty column stan'.format(frames[0]))
-        self.assertEqual(output[1], '{0} his is a text that it is too long. I'
-                                    'n fact, it exceeds the eighty column stand'.format(frames[1]))
-        self.assertEqual(output[2], '{0} is is a text that it is too long. In'
-                                    ' fact, it exceeds the eighty column standa'.format(frames[2]))
+        terminal_width = get_terminal_columns()
+
+        self.assertEqual(output[0], '{0} {1}'.format(frames[0], text[:terminal_width - 2]))
+        self.assertEqual(output[1], '{0} {1}'.format(frames[1], text[1:terminal_width - 1]))
+        self.assertEqual(output[2], '{0} {1}'.format(frames[2], text[2:terminal_width]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -155,6 +155,7 @@ class TestHalo(unittest.TestCase):
 
     def test_decorator_spinner(self):
         """Test basic usage of spinners with the decorator syntax."""
+
         @Halo(text="foo", spinner="dots", stream=self._stream)
         def decorated_function():
             time.sleep(1)
@@ -339,13 +340,11 @@ class TestHalo(unittest.TestCase):
             spinner.start()
             spinner.stop_and_persist('not dict')
 
-
     def tearDown(self):
         """Clean up things after every test.
         """
         self._stream.close()
         remove_file(self._stream_file)
-
 
 
 if __name__ == '__main__':
