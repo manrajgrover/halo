@@ -100,7 +100,9 @@ class TestHalo(unittest.TestCase):
         """
         text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
                'terminal width, which forces the text frame renderer to add an ellipse at the end of the ' \
-               'text'
+               'text. Repeating it. This is a text that it is too long. In fact, it exceeds the ' \
+               'eighty column standard terminal width, which forces the text frame renderer to ' \
+               'add an ellipse at the end of the text'
         spinner = Halo(text=text, spinner='dots', stream=self._stream)
 
         spinner.start()
@@ -124,7 +126,9 @@ class TestHalo(unittest.TestCase):
         """
         text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
                'terminal width, which forces the text frame renderer to add an ellipse at the end of the ' \
-               'text'
+               'text. Repeating it. This is a text that it is too long. In fact, it exceeds the ' \
+               'eighty column standard terminal width, which forces the text frame renderer to ' \
+               'add an ellipse at the end of the text'
         spinner = Halo(text=text, spinner='dots', stream=self._stream, animation='marquee')
 
         spinner.start()
