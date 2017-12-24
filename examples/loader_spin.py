@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Examples for halo.
+"""Example for spinner that looks like loader
 """
 from __future__ import unicode_literals, absolute_import, print_function
 import os

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Examples for halo.
+"""Example for context manager
 """
 import os
 import time
