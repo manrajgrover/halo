@@ -66,7 +66,8 @@ class Halo(object):
         self._enabled = enabled  # Need to check for stream
 
         def handle_keyboard_interrupt(signal, frame):
-            self.fail("END")
+            """Handle KeyboardInterrupt without try-except statement"""
+            self.fail(self.text)
             raise KeyboardInterrupt
 
         signal.signal(signal.SIGINT, handle_keyboard_interrupt)
