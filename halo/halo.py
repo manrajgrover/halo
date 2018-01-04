@@ -326,7 +326,7 @@ class Halo(object):
             return self
 
         if self._stream.isatty():
-            cursor.hide()
+            cursor.hide(stream=self._stream)
 
         self._stop_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
@@ -355,7 +355,7 @@ class Halo(object):
         self.clear()
 
         if self._stream.isatty():
-            cursor.show()
+            cursor.show(stream=self._stream)
 
         return self
 
