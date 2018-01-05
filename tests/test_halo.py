@@ -341,25 +341,6 @@ class TestHalo(unittest.TestCase):
             spinner.start()
             spinner.stop_and_persist('not dict')
 
-    def test_spinner_keyboard_interrupt(self):
-        """Test Halo with keyboard interrupt.
-        """
-        spinner = Halo(text='foo', spinner='dots', stream=self._stream)
-
-        with self.assertRaises(KeyboardInterrupt):
-            spinner.start()
-            time.sleep(1)
-            pid = os.getpid()
-            os.kill(pid, signal.SIGINT)
-
-        output = self._get_test_output()
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
-
-        pattern = re.compile(r'(✖|×) foo', re.UNICODE)
-        self.assertRegexpMatches(output[-1], pattern)
-
     def tearDown(self):
         """Clean up things after every test.
         """
