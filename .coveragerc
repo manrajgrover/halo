@@ -1,2 +1,5 @@
+[run]
+omit =
+    halo/halo_notebook.py
 [report]
 show_missing = True
