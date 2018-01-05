@@ -5,6 +5,7 @@
 from __future__ import unicode_literals, absolute_import, print_function
 
 import sys
+import signal
 import threading
 import time
 import functools
@@ -63,6 +64,13 @@ class Halo(object):
         self._stop_spinner = None
         self._spinner_id = None
         self._enabled = enabled  # Need to check for stream
+
+        def handle_keyboard_interrupt(signal, frame):
+            """Handle KeyboardInterrupt without try-except statement"""
+            self.fail(self.text)
+            raise KeyboardInterrupt
+
+        signal.signal(signal.SIGINT, handle_keyboard_interrupt)
 
     def __enter__(self):
         """Starts the spinner on a separate thread. For use in context managers.
