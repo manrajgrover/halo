@@ -5,6 +5,7 @@ import re
 import unittest
 import time
 import sys
+import signal
 import io
 import logging
 import os
