@@ -67,7 +67,7 @@ class Halo(object):
 
         def handle_keyboard_interrupt(signal, frame):
             """Handle KeyboardInterrupt without try-except statement"""
-            self.fail(self.text)
+            self.stop()
             raise KeyboardInterrupt
 
         signal.signal(signal.SIGINT, handle_keyboard_interrupt)
