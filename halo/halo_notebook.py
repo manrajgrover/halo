@@ -50,6 +50,7 @@ class HaloNotebook(Halo):
         if self._stream.isatty():
             cursor.hide()
         
+        self.output = self._make_output_widget()
         display(self.output)
         self._stop_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
@@ -82,5 +83,3 @@ class HaloNotebook(Halo):
 
         with self.output:
             self.output.outputs = self._output(output)
-            
-        self.output = self._make_output_widget()
