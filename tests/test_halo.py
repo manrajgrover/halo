@@ -341,6 +341,27 @@ class TestHalo(unittest.TestCase):
             spinner.start()
             spinner.stop_and_persist('not dict')
 
+    def test_spinner_interval_default(self):
+        """Test proper assignment of the default interval value.
+        """
+        spinner = Halo()
+        self.assertEqual(spinner._interval, default_spinner['interval'])
+
+    def test_spinner_interval_argument(self):
+        """Test proper assignment of the interval value from the constructor argument.
+        """
+        spinner = Halo(interval=123)
+        self.assertEqual(spinner._interval, 123)
+
+    def test_spinner_interval_dict(self):
+        """Test proper assignment of the interval value from a dictionary.
+        """
+        spinner = Halo(spinner={'interval': 321, 'frames': ['+', '-']})
+        if is_supported():
+            self.assertEqual(spinner._interval, 321)
+        else:
+            self.assertEqual(spinner._interval, default_spinner['interval'])
+
     def tearDown(self):
         """Clean up things after every test.
         """

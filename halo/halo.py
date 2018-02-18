@@ -38,7 +38,7 @@ class Halo(object):
         spinner : str|dict, optional
             Spinner dict|str.
         interval : integer, optional
-            Interval between each frame of the spinner.
+            Interval between each frame of the spinner in milliseconds.
         enabled : boolean, optional
             Spinner enabled or not.
         stream : io, optional
@@ -49,7 +49,9 @@ class Halo(object):
 
         self._text = self._get_text(text, animation)
 
-        if interval == -1:
+        if int(interval) > 0:
+            self._interval = int(interval)
+        else:
             self._interval = self._spinner['interval']
 
         self._color = color
