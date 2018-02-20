@@ -326,7 +326,7 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.clear()
-        spinner.stop()
+        spinner.fail()
         sys.stdout = stdout_
 
         output = self._get_test_output()
