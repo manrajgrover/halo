@@ -423,6 +423,9 @@ class Halo(object):
         TypeError
             If options is not dictionary
         """
+        if not self._enabled:
+            return self
+
         if type(options) is not dict:
             raise TypeError('Options passed must be a dictionary')
 
