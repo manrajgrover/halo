@@ -166,6 +166,30 @@ class Halo(object):
         self._color = color
 
     @property
+    def right(self):
+        """Getter for right property.
+        Returns
+        -------
+        boolean
+            right flag
+        """
+
+        return self._right
+
+    @right.setter
+    def right(self, right):
+        """Setter for right property.
+
+        Parameters
+        ----------
+        right : boolean
+            Sets the flag indicating that the spinner should appear to the
+            right of the text
+        """
+
+        self._right = right
+
+    @property
     def spinner_id(self):
         """Getter for spinner id
         Returns
