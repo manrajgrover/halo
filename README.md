@@ -54,7 +54,7 @@ long_running_function()
 
 ## API
 
-### `Halo([text|spinner|color|interval|stream|enabled])`
+### `Halo([text|spinner|right|animation|color|interval|stream|enabled])`
 
 ##### `text`
 *Type*: `str`
@@ -74,6 +74,11 @@ If string, it should be one of the spinners listed in the given [json](https://g
 ```
 
 Defaults to `dots` spinner. For Windows users, it defaults to `line` spinner.
+
+##### `right`
+*Type*: `bool`
+
+If set to `True`, the spinner will be displayed on the right side of the text instead of the left.
 
 ##### `animation`
 *Type*: `str`
