@@ -27,7 +27,7 @@ class Halo(object):
 
     CLEAR_LINE = '\033[K'
 
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, right=False, animation=None, interval=-1, enabled=True, stream=None):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -37,6 +37,8 @@ class Halo(object):
             Color of the text to display.
         spinner : str|dict, optional
             Spinner dict|str.
+        right : boolean, optional
+            Spinner displayed on right side of text or not.
         interval : integer, optional
             Interval between each frame of the spinner in milliseconds.
         enabled : boolean, optional
@@ -59,6 +61,7 @@ class Halo(object):
         if not stream:
             stream = sys.stdout
 
+        self._right = right
         self._stream = stream
         self._frame_index = 0
         self._text_index = 0
@@ -291,7 +294,12 @@ class Halo(object):
         self._frame_index += 1
         self._frame_index = self._frame_index % len(frames)
 
-        return frame + ' ' + self.text_frame()
+        text_frame = self.text_frame()
+        return u'{0} {1}'.format(*[
+            (text_frame, frame)
+            if self._right else
+            (frame, text_frame)
+        ][0])
 
     def text_frame(self):
         """Builds and returns the text frame to be rendered
@@ -443,7 +451,11 @@ class Halo(object):
 
         self.stop()
 
-        output = u'{0} {1}\n'.format(symbol, text)
+        output = u'{0} {1}\n'.format(*[
+            (text, symbol)
+            if self._right else
+            (symbol, text)
+        ][0])
         self._stream.write(output)
 
         return self
