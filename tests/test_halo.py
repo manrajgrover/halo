@@ -357,10 +357,7 @@ class TestHalo(unittest.TestCase):
         """Test proper assignment of the interval value from a dictionary.
         """
         spinner = Halo(spinner={'interval': 321, 'frames': ['+', '-']})
-        if is_supported():
-            self.assertEqual(spinner._interval, 321)
-        else:
-            self.assertEqual(spinner._interval, default_spinner['interval'])
+        self.assertEqual(spinner._interval, 321)
 
     def tearDown(self):
         """Clean up things after every test.

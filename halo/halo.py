@@ -186,16 +186,16 @@ class Halo(object):
         """
         default_spinner = Spinners['dots'].value
 
+        if spinner and type(spinner) == dict:
+            return spinner
+
         if is_supported():
-            if spinner:
-                if type(spinner) == dict:
-                    return spinner
-                elif is_text_type(spinner) and spinner in Spinners.__members__:
-                    return Spinners[spinner].value
+            if all([is_text_type(spinner), spinner in Spinners.__members__]):
+                return Spinners[spinner].value
+            else:
+                return default_spinner
         else:
             return Spinners['line'].value
-
-        return default_spinner
 
     def _get_text(self, text, animation):
         """Creates frames based on the selected animation
