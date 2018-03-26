@@ -4,9 +4,10 @@
 from __future__ import unicode_literals
 import os
 import time
+import sys
 import random
 
-os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from halo import Halo
 
