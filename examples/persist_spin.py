@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Example for persisting spinner
 """
-from __future__ import unicode_literals, absolute_import
+from __future__ import unicode_literals
 import os
 import time
 

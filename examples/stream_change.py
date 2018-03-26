@@ -3,9 +3,10 @@
 """
 from __future__ import unicode_literals, absolute_import
 import os
+import sys
 import time
 
-os.sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from halo import Halo
 
@@ -13,6 +14,6 @@ import sys
 
 spinner = Halo(stream=sys.stderr)
 
-spinner.start()
+spinner.start('Loading')
 time.sleep(1)
 spinner.stop()
