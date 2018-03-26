@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Example for text wrapping animation
 """
-from __future__ import unicode_literals, absolute_import, print_function
+from __future__ import unicode_literals, absolute_import
 import os
 import time
 
