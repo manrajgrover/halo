@@ -9,11 +9,11 @@ from IPython.display import display
 
 
 class HaloNotebook(Halo):
-    CLEAR_LINE = '\033[K'
-
     def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
 
-        super(HaloNotebook, self).__init__(text, color, spinner, animation, interval, enabled, stream)
+        super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner, animation=animation,
+                                           interval=interval, enabled=enabled,
+                                           stream=stream)
         self.output = self._make_output_widget()
 
     def _make_output_widget(self):
@@ -22,7 +22,7 @@ class HaloNotebook(Halo):
     # TODO: using property and setter
     def _output(self, text=''):
         return ({'name': 'stdout', 'output_type': 'stream', 'text': text},)
-    
+
     def clear(self):
         if not self._enabled:
             return self
@@ -39,7 +39,7 @@ class HaloNotebook(Halo):
         output = '\r{0}'.format(frame)
         with self.output:
             self.output.outputs += self._output(output)
-    
+
     def start(self, text=None):
         if text is not None:
             self._text = self._get_text(text, animation=None)
@@ -49,7 +49,7 @@ class HaloNotebook(Halo):
 
         if self._stream.isatty():
             cursor.hide()
-        
+
         self.output = self._make_output_widget()
         display(self.output)
         self._stop_spinner = threading.Event()
@@ -60,7 +60,7 @@ class HaloNotebook(Halo):
         self._spinner_thread.start()
 
         return self
-    
+
     def stop_and_persist(self, options={}):
         if type(options) is not dict:
             raise TypeError('Options passed must be a dictionary')
