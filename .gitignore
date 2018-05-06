@@ -102,3 +102,6 @@ ENV/
 
 # Coverage
 cover/
+
+# tests
+tests/*.txt
