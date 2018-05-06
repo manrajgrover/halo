@@ -333,14 +333,6 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(len(output), 0)
         self.assertEqual(output, [])
 
-    def test_stop_and_persist_no_dict_or_options(self):
-        """Test if options is not dict or required options in stop_and_persist.
-        """
-        with self.assertRaises(TypeError):
-            spinner = Halo()
-            spinner.start()
-            spinner.stop_and_persist('not dict')
-
     def test_spinner_interval_default(self):
         """Test proper assignment of the default interval value.
         """

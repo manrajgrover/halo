@@ -61,17 +61,26 @@ class HaloNotebook(Halo):
 
         return self
 
-    def stop_and_persist(self, options={}):
-        if type(options) is not dict:
-            raise TypeError('Options passed must be a dictionary')
+    def stop_and_persist(self, symbol=' ', text=None):
+        """Stops the spinner and persists the final frame to be shown.
+        Parameters
+        ----------
+        symbol : str, optional
+            Symbol to be shown in final frame
+        text: str, optional
+            Text to be shown in final frame
 
-        if 'symbol' in options and options['symbol'] is not None:
-            symbol = decode_utf_8_text(options['symbol'])
-        else:
-            symbol = ' '
+        Returns
+        -------
+        self
+        """
+        if not self._enabled:
+            return self
 
-        if 'text' in options and options['text'] is not None:
-            text = decode_utf_8_text(options['text'])
+        symbol = decode_utf_8_text(symbol)
+
+        if text is not None:
+            text = decode_utf_8_text(text)
         else:
             text = self._text['original']
 

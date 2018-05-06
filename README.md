@@ -146,20 +146,15 @@ Stops the spinner and changes symbol to `⚠`. If text is provided, it is persis
 
 Stops the spinner and changes symbol to `ℹ`. If text is provided, it is persisted else current text is persisted. Returns the instance.
 
-#### `spinner.stop_and_persist([options])`
-##### `options`: *Type*: `dict`
-
+#### `spinner.stop_and_persist([symbol|text])`
 Stops the spinner and changes symbol and text. Returns the instance.
 
-##### `options`
-
-###### `symbol`
+##### `symbol`
 *Type*: `str`
 
 Symbol to replace the spinner with. Defaults to ' '.
 
-
-###### `text`
+##### `text`
 *Type*: `str`
 
 Text to be persisted. Defaults to instance text.

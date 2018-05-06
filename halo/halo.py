@@ -88,7 +88,7 @@ class Halo(object):
         -------
         None
         """
-        self.stop()
+        return self.stop()
 
     def __call__(self, f):
         """Allow the Halo object to be used as a regular function decorator."""
@@ -371,7 +371,7 @@ class Halo(object):
         -------
         self
         """
-        return self.stop_and_persist({'symbol': LogSymbols.SUCCESS.value, 'text': text})
+        return self.stop_and_persist(symbol=LogSymbols.SUCCESS.value, text=text)
 
     def fail(self, text=None):
         """Shows and persists fail symbol and text and exits.
@@ -383,7 +383,7 @@ class Halo(object):
         -------
         self
         """
-        return self.stop_and_persist({'symbol': LogSymbols.ERROR.value, 'text': text})
+        return self.stop_and_persist(symbol=LogSymbols.ERROR.value, text=text)
 
     def warn(self, text=None):
         """Shows and persists warn symbol and text and exits.
@@ -395,7 +395,7 @@ class Halo(object):
         -------
         self
         """
-        return self.stop_and_persist({'symbol': LogSymbols.WARNING.value, 'text': text})
+        return self.stop_and_persist(symbol=LogSymbols.WARNING.value, text=text)
 
     def info(self, text=None):
         """Shows and persists info symbol and text and exits.
@@ -407,35 +407,28 @@ class Halo(object):
         -------
         self
         """
-        return self.stop_and_persist({'symbol': LogSymbols.INFO.value, 'text': text})
+        return self.stop_and_persist(symbol=LogSymbols.INFO.value, text=text)
 
-    def stop_and_persist(self, options={}):
+    def stop_and_persist(self, symbol=' ', text=None):
         """Stops the spinner and persists the final frame to be shown.
         Parameters
         ----------
-        options : dict, optional
-            Contains frame and interval for final frame
+        symbol : str, optional
+            Symbol to be shown in final frame
+        text: str, optional
+            Text to be shown in final frame
+
         Returns
         -------
         self
-        Raises
-        ------
-        TypeError
-            If options is not dictionary
         """
         if not self._enabled:
             return self
 
-        if type(options) is not dict:
-            raise TypeError('Options passed must be a dictionary')
+        symbol = decode_utf_8_text(symbol)
 
-        if 'symbol' in options and options['symbol'] is not None:
-            symbol = decode_utf_8_text(options['symbol'])
-        else:
-            symbol = ' '
-
-        if 'text' in options and options['text'] is not None:
-            text = decode_utf_8_text(options['text'])
+        if text is not None:
+            text = decode_utf_8_text(text)
         else:
             text = self._text['original']
 
