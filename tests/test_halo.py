@@ -309,6 +309,26 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         self.assertIsNone(spinner.color)
 
+    def test_right(self):
+        """Tests that the spinner is displayed on the right if told so.
+        """
+
+        spinner = Halo(text='foo', right=True, stream=self._stream)
+        spinner.start('foo')
+        output = self._get_test_output()
+
+        (text, _) = output[-1].split(' ')
+        self.assertEqual(text, 'foo')
+
+        spinner.succeed()
+        output = self._get_test_output()
+        (text, symbol) = output[-1].split(' ')
+        pattern = re.compile(r'(✔|v)', re.UNICODE)
+
+        self.assertEqual(text, 'foo')
+        self.assertRegexpMatches(symbol, pattern)
+        spinner.stop()
+
     def test_unavailable_spinner_defaults(self):
         """Test unavailable spinner defaults.
         """
