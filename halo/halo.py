@@ -36,7 +36,11 @@ class Halo(object):
         color : str, optional
             Color of the text to display.
         spinner : str|dict, optional
-            Spinner dict|str.
+            String or dictionary representing spinner. String can be one of 60+ spinners
+            supported.
+        animation: str, optional
+            Animation to apply if text is too large. Can be one of `bounce`, `marquee`.
+            Defaults to ellipses.
         interval : integer, optional
             Interval between each frame of the spinner in milliseconds.
         enabled : boolean, optional
