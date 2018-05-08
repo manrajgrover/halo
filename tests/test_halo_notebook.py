@@ -361,8 +361,9 @@ class TestHaloNotebook(unittest.TestCase):
         """
         spinner = HaloNotebook(text="foo", placement="right")
         spinner.start()
-        output = self._get_test_output(spinner)
+        time.sleep(1)
 
+        output = self._get_test_output(spinner)
         (text, _) = output[-1].split(" ")
         self.assertEqual(text, "foo")
 

@@ -378,8 +378,9 @@ class TestHalo(unittest.TestCase):
         """
         spinner = Halo(text='foo', placement='right', stream=self._stream)
         spinner.start()
-        output = self._get_test_output()
+        time.sleep(1)
 
+        output = self._get_test_output()
         (text, _) = output[-1].split(' ')
         self.assertEqual(text, 'foo')
 
