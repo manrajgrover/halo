@@ -9,9 +9,9 @@ from IPython.display import display
 
 
 class HaloNotebook(Halo):
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, placement='left', animation=None, interval=-1, enabled=True, stream=None):
 
-        super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner, animation=animation,
+        super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner, placement=placement, animation=animation,
                                            interval=interval, enabled=enabled,
                                            stream=stream)
         self.output = self._make_output_widget()
@@ -88,7 +88,11 @@ class HaloNotebook(Halo):
 
         self.stop()
 
-        output = '\r{0} {1}\n'.format(symbol, text)
+        output = '\r{0} {1}\n'.format(*[
+            (text, symbol)
+            if self._placement == 'right' else
+            (symbol, text)
+        ][0])
 
         with self.output:
             self.output.outputs = self._output(output)
