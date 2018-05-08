@@ -54,7 +54,7 @@ long_running_function()
 
 ## API
 
-### `Halo([text|spinner|color|interval|stream|enabled])`
+### `Halo([text|spinner|animation|placement|color|interval|stream|enabled])`
 
 ##### `text`
 *Type*: `str`
@@ -80,6 +80,12 @@ Defaults to `dots` spinner. For Windows users, it defaults to `line` spinner.
 *Values*: `bounce`, `marquee`
 
 Animation to apply to the text if it's too large and doesn't fit in the terminal. If no animation is defined, the text will be ellipsed.
+
+##### `placement`
+*Type*: `str`
+*Values*: `left`, `right`
+
+Which side of the text the spinner should be displayed. Defaults to `left`
 
 ##### `color`
 *Type*: `str`

@@ -26,8 +26,9 @@ class Halo(object):
     """
 
     CLEAR_LINE = '\033[K'
+    SPINNER_PLACEMENTS = ('left', 'right',)
 
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, animation=None, placement='left', interval=-1, enabled=True, stream=None):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -41,6 +42,9 @@ class Halo(object):
         animation: str, optional
             Animation to apply if text is too large. Can be one of `bounce`, `marquee`.
             Defaults to ellipses.
+        placement: str, optional
+            Side of the text to place the spinner on. Can be `left` or `right`.
+            Defaults to `left`.
         interval : integer, optional
             Interval between each frame of the spinner in milliseconds.
         enabled : boolean, optional
@@ -63,6 +67,7 @@ class Halo(object):
         if not stream:
             stream = sys.stdout
 
+        self.placement = placement
         self._stream = stream
         self._frame_index = 0
         self._text_index = 0
@@ -165,6 +170,28 @@ class Halo(object):
             Defines the color value for spinner
         """
         self._color = color
+
+    @property
+    def placement(self):
+        """Getter for placement property.
+        Returns
+        -------
+        str
+            spinner placement
+        """
+        return self._placement
+
+    @placement.setter
+    def placement(self, placement):
+        """Setter for placement property.
+        Parameters
+        ----------
+        placement: str
+            Defines the placement of the spinner
+        """
+        if placement not in self.SPINNER_PLACEMENTS:
+            raise ValueError("unknown spinner placement '{0}', available are {1}".format(placement, self.SPINNER_PLACEMENTS))
+        self._placement = placement
 
     @property
     def spinner_id(self):
@@ -295,7 +322,12 @@ class Halo(object):
         self._frame_index += 1
         self._frame_index = self._frame_index % len(frames)
 
-        return frame + ' ' + self.text_frame()
+        text_frame = self.text_frame()
+        return u'{0} {1}'.format(*[
+            (text_frame, frame)
+            if self._placement == 'right' else
+            (frame, text_frame)
+        ][0])
 
     def text_frame(self):
         """Builds and returns the text frame to be rendered
@@ -440,7 +472,11 @@ class Halo(object):
 
         self.stop()
 
-        output = u'{0} {1}\n'.format(symbol, text)
+        output = u'{0} {1}\n'.format(*[
+            (text, symbol)
+            if self._placement == 'right' else
+            (symbol, text)
+        ][0])
         self._stream.write(output)
 
         return self

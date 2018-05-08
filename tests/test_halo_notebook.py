@@ -334,6 +334,48 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(len(output), 0)
         self.assertEqual(output, [])
 
+    def test_invalid_placement(self):
+        """Test invalid placement of spinner.
+        """
+
+        with self.assertRaises(ValueError):
+            HaloNotebook(placement='')
+            HaloNotebook(placement='foo')
+            HaloNotebook(placement=None)
+
+        spinner = HaloNotebook(placement='left')
+        with self.assertRaises(ValueError):
+            spinner.placement = ''
+            spinner.placement = 'foo'
+            spinner.placement = None
+
+    def test_default_placement(self):
+        """Test default placement of spinner.
+        """
+
+        spinner = HaloNotebook()
+        self.assertEqual(spinner.placement, 'left')
+
+    def test_right_placement(self):
+        """Test right placement of spinner.
+        """
+        spinner = HaloNotebook(text="foo", placement="right")
+        spinner.start()
+        time.sleep(1)
+
+        output = self._get_test_output(spinner)
+        (text, _) = output[-1].split(" ")
+        self.assertEqual(text, "foo")
+
+        spinner.succeed()
+        output = self._get_test_output(spinner)
+        (text, symbol) = output[-1].split(" ")
+        pattern = re.compile(r"(✔|v)", re.UNICODE)
+
+        self.assertEqual(text, "foo")
+        self.assertRegexpMatches(symbol, pattern)
+        spinner.stop()
+
     def tearDown(self):
         """Clean up things after every test.
         """
