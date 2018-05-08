@@ -369,7 +369,6 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.succeed()
         output = self._get_test_output(spinner)
-        print(output)
         (text, symbol) = output[-1].split(" ")
         pattern = re.compile(r"(✔|v)", re.UNICODE)
 
