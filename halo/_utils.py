@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """Utilities for Halo library.
 """
+import codecs
 import platform
 import six
-import codecs
 from backports.shutil_get_terminal_size import get_terminal_size
 
-from colorama import init, Fore
+from colorama import init
 from termcolor import colored
 
 init(autoreset=True)
+
 
 def is_supported():
     """Check whether operating system supports main symbols or not.
@@ -26,6 +27,7 @@ def is_supported():
         return True
 
     return False
+
 
 def colored_frame(frame, color):
     """Color the frame with given color and returns.
@@ -44,6 +46,7 @@ def colored_frame(frame, color):
     """
     return colored(frame, color, attrs=['bold'])
 
+
 def is_text_type(text):
     """Check if given parameter is a string or not
     
@@ -61,6 +64,7 @@ def is_text_type(text):
         return True
 
     return False
+
 
 def decode_utf_8_text(text):
     """Decode the text from utf-8 format

@@ -1,17 +1,23 @@
 from __future__ import unicode_literals, absolute_import, print_function
 
 import threading
-import cursor
-from halo import Halo
-from halo._utils import decode_utf_8_text
+
 from ipywidgets.widgets import Output
 from IPython.display import display
 
+import cursor
+
+from halo import Halo
+from halo._utils import decode_utf_8_text
+
 
 class HaloNotebook(Halo):
-    def __init__(self, text='', color='cyan', spinner=None, placement='left', animation=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, placement='left',
+                 animation=None, interval=-1, enabled=True, stream=None):
 
-        super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner, placement=placement, animation=animation,
+        super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner,
+                                           placement=placement,
+                                           animation=animation,
                                            interval=interval, enabled=enabled,
                                            stream=stream)
         self.output = self._make_output_widget()

@@ -1,9 +1,10 @@
 """Utilities for tests.
 """
-import os
-import errno
-import re
 import codecs
+import codecs
+import os
+import re
+
 
 def strip_ansi(string):
     """Strip ANSI encoding from given string.
@@ -20,6 +21,7 @@ def strip_ansi(string):
     """
     pattern = r'(\x1b\[|\x9b)[^@-_]*[@-_]|\x1b[@-_]'
     return re.sub(pattern, '', string, flags=re.I)
+
 
 def remove_file(filename):
     """Removes file silently.
@@ -40,6 +42,7 @@ def remove_file(filename):
         if e.errno != errno.ENOENT:
             raise Exception(e)
 
+
 def decode_utf_8_text(text):
     """Decodes the text from utf-8 format.
     
@@ -57,6 +60,7 @@ def decode_utf_8_text(text):
         return codecs.decode(text, 'utf-8')
     except:
         return text
+
 
 def encode_utf_8_text(text):
     """Encodes the text to utf-8 format

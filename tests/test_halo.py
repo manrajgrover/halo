@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 """This module tests Halo spinners.
 """
-import re
-import unittest
-import time
-import sys
-import signal
 import io
 import logging
 import os
+import re
+import sys
+import time
+import unittest
 
 from spinners.spinners import Spinners
 

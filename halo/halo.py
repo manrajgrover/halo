@@ -28,7 +28,8 @@ class Halo(object):
     CLEAR_LINE = '\033[K'
     SPINNER_PLACEMENTS = ('left', 'right',)
 
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, placement='left', interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', color='cyan', spinner=None, animation=None, placement='left', interval=-1, enabled=True,
+                 stream=None):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -101,6 +102,7 @@ class Halo(object):
 
     def __call__(self, f):
         """Allow the Halo object to be used as a regular function decorator."""
+
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
             with self:
@@ -190,7 +192,8 @@ class Halo(object):
             Defines the placement of the spinner
         """
         if placement not in self.SPINNER_PLACEMENTS:
-            raise ValueError("unknown spinner placement '{0}', available are {1}".format(placement, self.SPINNER_PLACEMENTS))
+            raise ValueError(
+                "Unknown spinner placement '{0}', available are {1}".format(placement, self.SPINNER_PLACEMENTS))
         self._placement = placement
 
     @property

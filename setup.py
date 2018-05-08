@@ -1,9 +1,10 @@
-from setuptools import setup, find_packages # pylint: disable=no-name-in-module,import-error
-import os
+from setuptools import setup, find_packages  # pylint: disable=no-name-in-module,import-error
+
 
 def dependencies(file):
     with open(file) as f:
         return f.read().splitlines()
+
 
 setup(
     name='halo',
