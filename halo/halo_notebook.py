@@ -48,7 +48,7 @@ class HaloNotebook(Halo):
 
     def start(self, text=None):
         if text is not None:
-            self._text = self._get_text(text, animation=None)
+            self.text = text
 
         if not self._enabled or self._spinner_id is not None:
             return self

@@ -53,12 +53,11 @@ class Halo(object):
         stream : io, optional
             Output.
         """
-
-        self._spinner = self._get_spinner(spinner)
-
-        self._text = self._get_text(text, animation)
-
         self._color = color
+        self._animation = animation
+
+        self.spinner = spinner
+        self.text = text
 
         self._interval = int(interval) if int(interval) > 0 else self._spinner['interval']
         self._stream = stream
@@ -145,7 +144,7 @@ class Halo(object):
         text : str
             Defines the text value for spinner
         """
-        self._text = self._get_text(text, animation=None)
+        self._text = self._get_text(text)
 
     @property
     def color(self):
@@ -196,9 +195,30 @@ class Halo(object):
         Returns
         -------
         str
-            spinner id value
+            Spinner id value
         """
         return self._spinner_id
+
+    @property
+    def animation(self):
+        """Getter for animation property.
+        Returns
+        -------
+        str
+            Spinner animation
+        """
+        return self._animation
+
+    @animation.setter
+    def animation(self, animation):
+        """Setter for animation property.
+        Parameters
+        ----------
+        animation: str
+            Defines the animation of the spinner
+        """
+        self._animation = animation
+        self._text = self._get_text(self._text['original'])
 
     def _get_spinner(self, spinner):
         """Extracts spinner value from options and returns value
@@ -225,12 +245,13 @@ class Halo(object):
         else:
             return Spinners['line'].value
 
-    def _get_text(self, text, animation):
+    def _get_text(self, text):
         """Creates frames based on the selected animation
         Returns
         -------
         self
         """
+        animation = self._animation
         stripped_text = text.strip()
 
         # Check which frame of the animation is the widest
@@ -355,7 +376,7 @@ class Halo(object):
         self
         """
         if text is not None:
-            self._text = self._get_text(text, animation=None)
+            self.text = text
 
         if not self._enabled or self._spinner_id is not None:
             return self
