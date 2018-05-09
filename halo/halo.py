@@ -28,8 +28,8 @@ class Halo(object):
     CLEAR_LINE = '\033[K'
     SPINNER_PLACEMENTS = ('left', 'right',)
 
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, placement='left', interval=-1, enabled=True,
-                 stream=None):
+    def __init__(self, text='', color='cyan', spinner=None,
+                 animation=None, placement='left', interval=-1, enabled=True, stream=sys.stdout):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -61,10 +61,9 @@ class Halo(object):
         self._color = color
 
         self._interval = int(interval) if int(interval) > 0 else self._spinner['interval']
-        self._stream = stream if stream is not None else sys.stdout
+        self._stream = stream
 
         self.placement = placement
-        self._stream = stream
         self._frame_index = 0
         self._text_index = 0
         self._spinner_thread = None

@@ -319,14 +319,11 @@ class TestHalo(unittest.TestCase):
     def test_if_enabled(self):
         """Test if spinner is enabled
         """
-        stdout_ = sys.stdout
-        sys.stdout = self._stream
-        spinner = Halo(text="foo", enabled=False)
+        spinner = Halo(text="foo", enabled=False, stream=self._stream)
         spinner.start()
         time.sleep(1)
         spinner.clear()
         spinner.fail()
-        sys.stdout = stdout_
 
         output = self._get_test_output()
         self.assertEqual(len(output), 0)
