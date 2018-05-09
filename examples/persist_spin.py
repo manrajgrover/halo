@@ -25,6 +25,6 @@ try:
     spinner.fail()
     spinner.start(unicorn_message)
     time.sleep(1)
-    spinner.stop_and_persist({'symbol': '🦄 '.encode('utf-8'), 'text': unicorn_message})
+    spinner.stop_and_persist(symbol='🦄 '.encode('utf-8'), text=unicorn_message)
 except (KeyboardInterrupt, SystemExit):
     spinner.stop()
