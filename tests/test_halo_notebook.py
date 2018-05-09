@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """This module tests HaloNotebook spinners.
 """
-import logging
 import os
 import re
 import sys
@@ -19,10 +18,6 @@ if sys.version_info.major == 2:
 else:
     get_coded_text = decode_utf_8_text
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s:%(levelname)s:%(message)s"
-)
 
 if is_supported():
     frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]

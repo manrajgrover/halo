@@ -2,7 +2,6 @@
 """This module tests Halo spinners.
 """
 import io
-import logging
 import os
 import re
 import sys
@@ -19,11 +18,6 @@ if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
 else:
     get_coded_text = decode_utf_8_text
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s:%(levelname)s:%(message)s"
-)
 
 if is_supported():
     frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
@@ -169,14 +163,11 @@ class TestHalo(unittest.TestCase):
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
         """
-        stdout_ = sys.stdout
-        sys.stdout = self._stream
-        spinner = Halo('bar')
+        spinner = Halo('bar', stream=self._stream)
 
         spinner.start()
         time.sleep(1)
         spinner.stop()
-        sys.stdout = stdout_
 
         output = self._get_test_output()
 
