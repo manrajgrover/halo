@@ -58,15 +58,10 @@ class Halo(object):
 
         self._text = self._get_text(text, animation)
 
-        if int(interval) > 0:
-            self._interval = int(interval)
-        else:
-            self._interval = self._spinner['interval']
-
         self._color = color
 
-        if not stream:
-            stream = sys.stdout
+        self._interval = int(interval) if int(interval) > 0 else self._spinner['interval']
+        self._stream = stream if stream is not None else sys.stdout
 
         self.placement = placement
         self._stream = stream

@@ -14,7 +14,6 @@ from halo._utils import decode_utf_8_text
 class HaloNotebook(Halo):
     def __init__(self, text='', color='cyan', spinner=None, placement='left',
                  animation=None, interval=-1, enabled=True, stream=None):
-
         super(HaloNotebook, self).__init__(text=text, color=color, spinner=spinner,
                                            placement=placement,
                                            animation=animation,
