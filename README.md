@@ -187,8 +187,8 @@ Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgit
 
 ## Related
 
-* [py-spinners](https://github.com/ManrajGrover/py-spinners) - Spinners Library
-* [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols) - Log Symbols in Pytho
+* [py-spinners](https://github.com/ManrajGrover/py-spinners) - Spinners in Python
+* [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols) - Log Symbols in Python
 * [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinners in JavaScript (inspiration behind this project) 
 
 ## License
