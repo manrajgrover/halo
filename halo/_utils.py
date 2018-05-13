@@ -28,6 +28,29 @@ def is_supported():
 
     return False
 
+def get_environment():
+    """Get the environment in which halo is running
+
+    Returns
+    -------
+    str
+        Environment name
+    """
+    try:
+        from IPython import get_ipython
+
+        shell = get_ipython().__class__.__name__
+
+        if shell == 'ZMQInteractiveShell': # Jupyter notebook or qtconsole
+            return 'jupyter'
+        elif shell == 'TerminalInteractiveShell': # Terminal running IPython
+            return 'ipython'
+        else:
+            return 'terminal' # Other type (?)
+
+    except NameError:
+        return 'terminal'
+
 
 def colored_frame(frame, color):
     """Color the frame with given color and returns.
