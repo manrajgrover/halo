@@ -6,7 +6,7 @@
 
 [![Build Status](https://travis-ci.org/ManrajGrover/halo.svg?branch=master)](https://travis-ci.org/ManrajGrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/ManrajGrover/halo)
  [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/ManrajGrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
-> Beautiful terminal spinners for Python, inspired by [ora](https://github.com/sindresorhus/ora)
+> Beautiful spinners for terminal, IPython and Jupyter
 
 ![halo](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/doge_spin.gif)
 
@@ -187,9 +187,9 @@ Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgit
 
 ## Related
 
-* [py-spinners](https://github.com/ManrajGrover/py-spinners)
-* [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols)
-* [ora](https://github.com/sindresorhus/ora)
+* [py-spinners](https://github.com/ManrajGrover/py-spinners) - Spinners Library
+* [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols) - Log Symbols in Pytho
+* [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinners in JavaScript (inspiration behind this project) 
 
 ## License
 [MIT](https://github.com/ManrajGrover/halo/blob/master/LICENSE) © Manraj Singh
