@@ -3,9 +3,6 @@ from __future__ import unicode_literals, absolute_import, print_function
 import sys
 import threading
 
-from ipywidgets.widgets import Output
-from IPython.display import display
-
 import cursor
 
 from halo import Halo
@@ -23,6 +20,7 @@ class HaloNotebook(Halo):
         self.output = self._make_output_widget()
 
     def _make_output_widget(self):
+        from ipywidgets.widgets import Output
         return Output()
 
     # TODO: using property and setter
@@ -57,6 +55,8 @@ class HaloNotebook(Halo):
             cursor.hide()
 
         self.output = self._make_output_widget()
+        from IPython.display import display
+
         display(self.output)
         self._stop_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
