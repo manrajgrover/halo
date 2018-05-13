@@ -2,19 +2,20 @@
 # pylint: disable=unsubscriptable-object
 """Beautiful terminal spinners in Python.
 """
-from __future__ import unicode_literals, absolute_import, print_function
+from __future__ import unicode_literals, absolute_import
 
 import sys
-import signal
 import threading
 import time
 import functools
+import atexit
 
 import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns
+from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
+    get_environment
 
 
 class Halo(object):
@@ -70,12 +71,19 @@ class Halo(object):
         self._spinner_id = None
         self._enabled = enabled  # Need to check for stream
 
-        def handle_keyboard_interrupt(signal, frame):
-            """Handle KeyboardInterrupt without try-except statement"""
-            self.stop()
-            raise KeyboardInterrupt
+        environment = get_environment()
 
-        signal.signal(signal.SIGINT, handle_keyboard_interrupt)
+        def clean_up():
+            """Handle cell execution"""
+            self.stop()
+
+        if environment in ('ipython', 'jupyter'):
+            from IPython import get_ipython
+
+            ip = get_ipython()
+            ip.events.register('post_run_cell', clean_up)
+        elif environment == 'terminal':
+            atexit.register(clean_up)
 
     def __enter__(self):
         """Starts the spinner on a separate thread. For use in context managers.
