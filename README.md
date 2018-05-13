@@ -158,7 +158,7 @@ Stops the spinner and changes symbol and text. Returns the instance.
 ##### `symbol`
 *Type*: `str`
 
-Symbol to replace the spinner with. Defaults to ' '.
+Symbol to replace the spinner with. Defaults to `' '`.
 
 ##### `text`
 *Type*: `str`
