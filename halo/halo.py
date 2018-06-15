@@ -1,7 +1,7 @@
+#!usr/bin/env python
 # -*- coding: utf-8 -*-
 # pylint: disable=unsubscriptable-object
-"""Beautiful terminal spinners in Python.
-"""
+"""Beautiful terminal spinners in Python."""
 from __future__ import unicode_literals, absolute_import
 
 import sys
@@ -14,8 +14,12 @@ import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
-    get_environment
+from halo._utils import (is_supported,
+                         colored_frame,
+                         is_text_type, 
+                         decode_utf_8_text, 
+                         get_terminal_columns,
+                         get_environment)
 
 
 class Halo(object):
