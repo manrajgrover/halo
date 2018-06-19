@@ -1,6 +1,6 @@
 """Utilities for tests.
 """
-import codecs
+import errno
 import codecs
 import os
 import re
