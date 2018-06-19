@@ -383,7 +383,6 @@ class TestHalo(unittest.TestCase):
     def tearDown(self):
         """Clean up things after every test.
         """
-        self._stream.close()
         remove_file(self._stream_file)
 
 
