@@ -10,7 +10,7 @@ import unittest
 
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
+from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
 from halo._utils import is_supported, get_terminal_columns
 
@@ -381,9 +381,7 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
 
     def tearDown(self):
-        """Clean up things after every test.
-        """
-        remove_file(self._stream_file)
+        pass
 
 
 if __name__ == '__main__':

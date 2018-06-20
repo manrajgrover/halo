@@ -23,26 +23,6 @@ def strip_ansi(string):
     return re.sub(pattern, '', string, flags=re.I)
 
 
-def remove_file(filename):
-    """Removes file silently.
-    
-    Parameters
-    ----------
-    filename : str
-        File name to be removed
-    
-    Raises
-    ------
-    Exception
-        If given file is not deletable
-    """
-    try:
-        os.remove(filename)
-    except OSError as e:
-        if e.errno != errno.ENOENT:
-            raise Exception(e)
-
-
 def decode_utf_8_text(text):
     """Decodes the text from utf-8 format.
     
