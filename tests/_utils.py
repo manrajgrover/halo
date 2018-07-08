@@ -1,6 +1,6 @@
 """Utilities for tests.
 """
-import codecs
+import errno
 import codecs
 import os
 import re
@@ -21,26 +21,6 @@ def strip_ansi(string):
     """
     pattern = r'(\x1b\[|\x9b)[^@-_]*[@-_]|\x1b[@-_]'
     return re.sub(pattern, '', string, flags=re.I)
-
-
-def remove_file(filename):
-    """Removes file silently.
-    
-    Parameters
-    ----------
-    filename : str
-        File name to be removed
-    
-    Raises
-    ------
-    Exception
-        If given file is not deletable
-    """
-    try:
-        os.remove(filename)
-    except OSError as e:
-        if e.errno != errno.ENOENT:
-            raise Exception(e)
 
 
 def decode_utf_8_text(text):
