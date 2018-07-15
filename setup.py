@@ -32,5 +32,11 @@ setup(
     ],
     install_requires=dependencies('requirements.txt'),
     tests_require=dependencies('requirements-dev.txt'),
-    include_package_data=True
+    include_package_data=True,
+    extras_require={
+        'ipython': [
+            'IPython==5.7.0',
+            'ipywidgets==7.1.0',
+        ]
+    }
 )
