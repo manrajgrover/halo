@@ -15,7 +15,7 @@ setup(
     long_description='Beautiful terminal spinners in Python. Find the documentation here: https://github.com/ManrajGrover/halo',
     author='Manraj Singh',
     author_email='manrajsinghgrover@gmail.com',
-    url='https://github.com/ManrajGrover/halo',
+    url='https://github.com/manrajgrover/halo',
     keywords=[
         "console",
         "loading",

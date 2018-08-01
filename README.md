@@ -1,14 +1,14 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/ManrajGrover/halo/master/art/halo.png" height="50px"/>
+  <img src="https://raw.githubusercontent.com/manrajgrover/halo/master/art/halo.png" height="50px"/>
   <br>
   halo
 </h1>
 
-[![Build Status](https://travis-ci.org/ManrajGrover/halo.svg?branch=master)](https://travis-ci.org/ManrajGrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/ManrajGrover/halo)
- [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/ManrajGrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
+[![Build Status](https://travis-ci.org/manrajgrover/halo.svg?branch=master)](https://travis-ci.org/manrajgrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/manrajgrover/halo)
+ [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/manrajgrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
 > Beautiful spinners for terminal, IPython and Jupyter
 
-![halo](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/doge_spin.gif)
+![halo](https://raw.githubusercontent.com/manrajgrover/halo/master/art/doge_spin.gif)
 
 ## Install
 
@@ -165,7 +165,7 @@ Symbol to replace the spinner with. Defaults to `' '`.
 
 Text to be persisted. Defaults to instance text.
 
-![Persist spin](https://raw.githubusercontent.com/ManrajGrover/halo/master/art/persist_spin.gif)
+![Persist spin](https://raw.githubusercontent.com/manrajgrover/halo/master/art/persist_spin.gif)
 
 #### `spinner.text`
 Change the text of spinner.
@@ -178,18 +178,18 @@ Change the spinner itself.
 
 ## To Do
 
-- [ ] [Support Windows](https://github.com/ManrajGrover/halo/issues/5)
+- [ ] [Support Windows](https://github.com/manrajgrover/halo/issues/5)
 
 ## Like it?
 
 :star2: this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
-Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2FManrajGrover%2Fhalo&via=manrajsgrover&text=Checkout%20%23halo%20-%20a%20beautiful%20%23terminal%20%23spinners%20library%20for%20%23python&hashtags=github%2C%20pypi).
+Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fmanrajgrover%2Fhalo&via=manrajsgrover&text=Checkout%20%23halo%20-%20a%20beautiful%20%23terminal%20%23spinners%20library%20for%20%23python&hashtags=github%2C%20pypi).
 
 ## Related
 
-* [py-spinners](https://github.com/ManrajGrover/py-spinners) - Spinners in Python
-* [py-log-symbols](https://github.com/ManrajGrover/py-log-symbols) - Log Symbols in Python
+* [py-spinners](https://github.com/manrajgrover/py-spinners) - Spinners in Python
+* [py-log-symbols](https://github.com/manrajgrover/py-log-symbols) - Log Symbols in Python
 * [ora](https://github.com/sindresorhus/ora) - Elegant terminal spinners in JavaScript (inspiration behind this project) 
 
 ## License
-[MIT](https://github.com/ManrajGrover/halo/blob/master/LICENSE) © Manraj Singh
+[MIT](https://github.com/manrajgrover/halo/blob/master/LICENSE) © Manraj Singh
