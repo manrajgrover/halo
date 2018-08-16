@@ -4,7 +4,11 @@
 import codecs
 import platform
 import six
-from backports.shutil_get_terminal_size import get_terminal_size
+from sys import version_info
+if version_info >= (3, 3):
+    from shutil import get_terminal_size
+else:
+    from backports.shutil_get_terminal_size import get_terminal_size
 
 from colorama import init
 from termcolor import colored
