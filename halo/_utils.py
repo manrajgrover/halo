@@ -5,10 +5,10 @@ import codecs
 import platform
 import six
 from sys import version_info
-if version_info.major >= 3 and version_info.minor >= 3:
-    from shutil import get_terminal_size
-else:
+if version_info.major == 2 or (version_info.major == 3 and version_info.minor < 3):
     from backports.shutil_get_terminal_size import get_terminal_size
+else:
+    from shutil import get_terminal_size
 
 from colorama import init
 from termcolor import colored
