@@ -9,7 +9,7 @@ def dependencies(file):
 setup(
     name='halo',
     packages=find_packages(exclude=('tests', 'examples')),
-    version='0.0.16',
+    version='0.0.17',
     license='MIT',
     description='Beautiful terminal spinners in Python',
     long_description='Beautiful terminal spinners in Python. Find the documentation here: https://github.com/ManrajGrover/halo',
