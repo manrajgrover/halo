@@ -3,7 +3,7 @@
 We need to clone the project and prepare the dev environment:
 
 ```bash
-$ git clone https://github.com/manrajgrover/halo.git
+$ git clone https://github.com/manrajgrover/halo.git // or using ssh: git@github.com:manrajgrover/halo.git
 $ cd halo
 $ pip install -e .
 ```
@@ -25,13 +25,13 @@ $ tox
 
 To run tests for specific environment, run:
 
-1. For Python 2:
+1. For Python 2.7:
 
 ```bash
 $ tox -e py27
 ```
 
-2. For Python 3:
+2. For Python 3.6:
 
 ```bash
 $ tox -e py36
