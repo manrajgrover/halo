@@ -176,6 +176,10 @@ Change the color of spinner
 #### `spinner.spinner`
 Change the spinner itself.
 
+## How to contribute?
+
+Please see [Contributing guidelines](https://github.com/manrajgrover/halo/blob/master/.github/CONTRIBUTING.md) for more information.
+
 ## To Do
 
 - [ ] [Support Windows](https://github.com/manrajgrover/halo/issues/5)
