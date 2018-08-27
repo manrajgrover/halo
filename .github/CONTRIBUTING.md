@@ -1,5 +1,9 @@
 # How to contribute?
 
+## Development Guidelines
+
+Please read [development guidelines](https://github.com/manrajgrover/halo/blob/master/DEVELOPMENT.md) inorder to setup dev environment and run tests.
+
 ## Steps to contribute
 
 * Look for a issue or open a new one in [project issues](https://github.com/manrajgrover/halo/issues)
