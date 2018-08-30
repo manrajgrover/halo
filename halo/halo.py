@@ -27,14 +27,16 @@ class Halo(object):
 
     CLEAR_LINE = '\033[K'
 
-    def __init__(self, text='', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
+    def __init__(self, text='', text_color='white', color='cyan', spinner=None, animation=None, interval=-1, enabled=True, stream=None):
         """Constructs the Halo object.
         Parameters
         ----------
         text : str, optional
             Text to display.
+        text_color : str, optional
+            Color of the text.
         color : str, optional
-            Color of the text to display.
+            Color of the text to display. (the actual spinner)
         spinner : str|dict, optional
             Spinner dict|str.
         interval : integer, optional
@@ -48,6 +50,7 @@ class Halo(object):
         self._spinner = self._get_spinner(spinner)
 
         self._text = self._get_text(text, animation)
+        self._text_color = text_color
 
         if int(interval) > 0:
             self._interval = int(interval)
@@ -141,6 +144,26 @@ class Halo(object):
             Defines the text value for spinner
         """
         self._text = self._get_text(text, animation=None)
+
+    @property
+    def text_color(self):
+        """Getter for text color property.
+        Returns
+        -------
+        str
+            text color value
+        """
+        return self._text_color
+
+    @text_color.setter
+    def text_color(self, text_color):
+        """Setter for text color property.
+        Parameters
+        ----------
+        text_color : str
+            Defines the text color value for spinner
+        """
+        self._text_color = text_color
 
     @property
     def color(self):
@@ -300,6 +323,9 @@ class Halo(object):
         self
         """
         if len(self._text['frames']) == 1:
+            if self._text_color:
+                return colored_frame(self._text['frames'][0], self._text_color)
+
             # Return first frame (can't return original text because at this point it might be ellipsed)
             return self._text['frames'][0]
 
@@ -308,6 +334,9 @@ class Halo(object):
 
         self._text_index += 1
         self._text_index = self._text_index % len(frames)
+
+        if self._text_color:
+            return colored_frame(frame, self._text_color)
 
         return frame
 

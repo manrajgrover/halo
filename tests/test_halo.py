@@ -10,6 +10,8 @@ import io
 import logging
 import os
 
+sys.path.insert(0, '/home/vitos/nebula/projects/forks/halo')
+
 from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, remove_file, encode_utf_8_text, decode_utf_8_text
@@ -279,14 +281,17 @@ class TestHalo(unittest.TestCase):
         """
         spinner = Halo()
         self.assertEqual(spinner.text, '')
+        self.assertEqual(spinner.text_color, 'white')
         self.assertEqual(spinner.color, 'cyan')
         self.assertIsNone(spinner.spinner_id)
 
         spinner.spinner = 'dots12'
         spinner.text = 'bar'
+        spinner.text_color = 'red'
         spinner.color = 'red'
 
         self.assertEqual(spinner.text, 'bar')
+        self.assertEqual(spinner.text_color, 'red')
         self.assertEqual(spinner.color, 'red')
 
         if is_supported():
@@ -304,9 +309,12 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(spinner.spinner, default_spinner)
 
         # Color is None
+        spinner.text_color = None
         spinner.color = None
         spinner.start()
         spinner.stop()
+
+        self.assertIsNone(spinner.text_color)
         self.assertIsNone(spinner.color)
 
     def test_unavailable_spinner_defaults(self):
