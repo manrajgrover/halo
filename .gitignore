@@ -105,3 +105,6 @@ cover/
 
 # tests
 tests/*.txt
+
+# Idea
+.idea
