@@ -1,6 +1,6 @@
 language: python
 git:
-  depth: 1
+  depth: 5
 matrix:
   include:
   - python: '2.7'
