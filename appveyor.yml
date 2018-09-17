@@ -5,6 +5,8 @@ init:
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
+clone_depth: 5
+
 environment:
   fast_finish: true
   matrix:
