@@ -1,6 +1,5 @@
 init:
   - ps: echo $env:TOXENV
-  - ps: ls C:\Python*
 
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
@@ -32,7 +31,6 @@ matrix:
   fast_finish: true
 
 install:
-  - 'git submodule update --init --recursive'
   - '%PYTHON_HOME%\Scripts\pip --version'
   - '%PYTHON_HOME%\Scripts\pip install tox'
   - '%PYTHON_HOME%\Scripts\tox --version'
