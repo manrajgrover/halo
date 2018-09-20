@@ -10,9 +10,11 @@ import unittest
 
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
+from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
 from halo._utils import is_supported, get_terminal_columns
+
+from termcolor import COLORS
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
@@ -48,12 +50,24 @@ class TestHalo(unittest.TestCase):
         """
         self._stream.seek(0)
         data = self._stream.readlines()
-        output = []
+        output = {}
+        output_text = []
+        output_colors = []
 
         for line in data:
             clean_line = strip_ansi(line.strip('\n'))
             if clean_line != '':
-                output.append(get_coded_text(clean_line))
+                output_text.append(get_coded_text(clean_line))
+
+            colors_found = find_colors(line.strip('\n'))
+            if colors_found:
+                tmp = []
+                for color in colors_found:
+                    tmp.append(re.sub(r'[^0-9]', '', color, flags=re.I))
+                output_colors.append(tmp)
+
+        output['text'] = output_text
+        output['colors'] = output_colors
 
         return output
 
@@ -65,11 +79,251 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.stop()
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_text_spinner_color_grey(self):
+        """Test basic spinner with grey color (both spinner and text)
+        """
+
+        color = 'grey'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_red(self):
+        """Test basic spinner with red color (both spinner and text)
+        """
+
+        color = 'red'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_green(self):
+        """Test basic spinner with green color (both spinner and text)
+        """
+
+        color = 'green'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_yellow(self):
+        """Test basic spinner with yellow color (both spinner and text)
+        """
+
+        color = 'yellow'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_blue(self):
+        """Test basic spinner with blue color (both spinner and text)
+        """
+
+        color = 'blue'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_magenta(self):
+        """Test basic spinner with magenta color (both spinner and text)
+        """
+
+        color = 'magenta'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_cyan(self):
+        """Test basic spinner with cyan color (both spinner and text)
+        """
+
+        color = 'cyan'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
+
+    def test_text_spinner_color_white(self):
+        """Test basic spinner with white color (both spinner and text)
+        """
+
+        color = 'white'
+        color_int = COLORS[color]
+
+        spinner = Halo(
+            text='foo',
+            text_color=color,
+            color=color,
+            spinner='dots',
+            stream=self._stream
+        )
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        output = self._get_test_output()['colors']
+
+        # check if spinner colors match
+        self.assertEqual(color_int, int(output[0][0]))
+        self.assertEqual(color_int, int(output[1][0]))
+        self.assertEqual(color_int, int(output[2][0]))
+
+        # check if text colors match
+        self.assertEqual(color_int, int(output[0][1]))
+        self.assertEqual(color_int, int(output[1][1]))
+        self.assertEqual(color_int, int(output[2][1]))
 
     def test_text_stripping(self):
         """Test the text being stripped before output.
@@ -79,7 +333,7 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.succeed('foo\n')
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
@@ -100,7 +354,7 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.succeed('End!')
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         terminal_width = get_terminal_columns()
 
@@ -124,7 +378,7 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.succeed('End!')
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         terminal_width = get_terminal_columns()
 
@@ -141,7 +395,7 @@ class TestHalo(unittest.TestCase):
         """
         with Halo(text='foo', spinner='dots', stream=self._stream):
             time.sleep(1)
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
@@ -155,7 +409,8 @@ class TestHalo(unittest.TestCase):
             time.sleep(1)
 
         decorated_function()
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
+
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
@@ -168,8 +423,7 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
         spinner.stop()
-
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         self.assertEqual(output[0], '{0} bar'.format(frames[0]))
         self.assertEqual(output[1], '{0} bar'.format(frames[1]))
@@ -206,7 +460,7 @@ class TestHalo(unittest.TestCase):
         spinner.start('foo')
         spinner.succeed('foo')
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         pattern = re.compile(r'(✔|v) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -219,7 +473,7 @@ class TestHalo(unittest.TestCase):
         spinner.start('foo')
         spinner.succeed('bar')
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         pattern = re.compile(r'(✔|v) bar', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -232,7 +486,7 @@ class TestHalo(unittest.TestCase):
         spinner.start('foo')
         spinner.info()
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         pattern = re.compile(r'(ℹ|¡) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -245,7 +499,7 @@ class TestHalo(unittest.TestCase):
         spinner.start('foo')
         spinner.fail()
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         pattern = re.compile(r'(✖|×) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -258,7 +512,7 @@ class TestHalo(unittest.TestCase):
         spinner.start('foo')
         spinner.warn('Warning!')
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         pattern = re.compile(r'(⚠|!!) Warning!', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -322,7 +576,7 @@ class TestHalo(unittest.TestCase):
         spinner.clear()
         spinner.fail()
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         self.assertEqual(len(output), 0)
         self.assertEqual(output, [])
 
@@ -373,12 +627,12 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         time.sleep(1)
 
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         (text, _) = output[-1].split(' ')
         self.assertEqual(text, 'foo')
 
         spinner.succeed()
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
         (text, symbol) = output[-1].split(' ')
         pattern = re.compile(r"(✔|v)", re.UNICODE)
 

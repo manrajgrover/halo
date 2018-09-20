@@ -23,6 +23,22 @@ def strip_ansi(string):
     return re.sub(pattern, '', string, flags=re.I)
 
 
+def find_colors(string):
+    """Find colors from given string
+
+    Parameters
+    ----------
+    string : str
+        String from which colors need to be find
+
+    Returns
+    -------
+    str
+        List of found colors
+    """
+    return re.findall(r'\[\d\dm', string, flags=re.I)
+
+
 def decode_utf_8_text(text):
     """Decodes the text from utf-8 format.
     
