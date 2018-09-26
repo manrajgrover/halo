@@ -65,7 +65,7 @@ Text shown along with spinner.
 *Type*: `str`
 *Values*: `grey`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
 
-Color of the spinner text. Defaults to `white`.
+Color of the spinner text. Defaults to `None`.
 
 ##### `spinner`
 *Type*: `str|dict`

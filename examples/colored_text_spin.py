@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Example for doge spinner ;)
+"""Example for colored text spinner ;)
 """
 from __future__ import unicode_literals, absolute_import, print_function
 import os

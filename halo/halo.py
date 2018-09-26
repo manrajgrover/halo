@@ -29,7 +29,7 @@ class Halo(object):
     CLEAR_LINE = '\033[K'
     SPINNER_PLACEMENTS = ('left', 'right',)
 
-    def __init__(self, text='', color='cyan', text_color='white', spinner=None,
+    def __init__(self, text='', color='cyan', text_color=None, spinner=None,
                  animation=None, placement='left', interval=-1, enabled=True, stream=sys.stdout):
         """Constructs the Halo object.
         Parameters

@@ -85,245 +85,35 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
-    def test_text_spinner_color_grey(self):
+    def test_text_spinner_color(self):
         """Test basic spinner with grey color (both spinner and text)
         """
+        for color, color_int in COLORS.items():
+            self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
+            self._stream = io.open(self._stream_file, 'w+')
 
-        color = 'grey'
-        color_int = COLORS[color]
+            spinner = Halo(
+                text='foo',
+                text_color=color,
+                color=color,
+                spinner='dots',
+                stream=self._stream
+            )
 
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
+            spinner.start()
+            time.sleep(1)
+            spinner.stop()
+            output = self._get_test_output()['colors']
 
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
+            # check if spinner colors match
+            self.assertEqual(color_int, int(output[0][0]))
+            self.assertEqual(color_int, int(output[1][0]))
+            self.assertEqual(color_int, int(output[2][0]))
 
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_red(self):
-        """Test basic spinner with red color (both spinner and text)
-        """
-
-        color = 'red'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_green(self):
-        """Test basic spinner with green color (both spinner and text)
-        """
-
-        color = 'green'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_yellow(self):
-        """Test basic spinner with yellow color (both spinner and text)
-        """
-
-        color = 'yellow'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_blue(self):
-        """Test basic spinner with blue color (both spinner and text)
-        """
-
-        color = 'blue'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_magenta(self):
-        """Test basic spinner with magenta color (both spinner and text)
-        """
-
-        color = 'magenta'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_cyan(self):
-        """Test basic spinner with cyan color (both spinner and text)
-        """
-
-        color = 'cyan'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
-
-    def test_text_spinner_color_white(self):
-        """Test basic spinner with white color (both spinner and text)
-        """
-
-        color = 'white'
-        color_int = COLORS[color]
-
-        spinner = Halo(
-            text='foo',
-            text_color=color,
-            color=color,
-            spinner='dots',
-            stream=self._stream
-        )
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
-        output = self._get_test_output()['colors']
-
-        # check if spinner colors match
-        self.assertEqual(color_int, int(output[0][0]))
-        self.assertEqual(color_int, int(output[1][0]))
-        self.assertEqual(color_int, int(output[2][0]))
-
-        # check if text colors match
-        self.assertEqual(color_int, int(output[0][1]))
-        self.assertEqual(color_int, int(output[1][1]))
-        self.assertEqual(color_int, int(output[2][1]))
+            # check if text colors match
+            self.assertEqual(color_int, int(output[0][1]))
+            self.assertEqual(color_int, int(output[1][1]))
+            self.assertEqual(color_int, int(output[2][1]))
 
     def test_text_stripping(self):
         """Test the text being stripped before output.
