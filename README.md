@@ -16,6 +16,9 @@
 $ pip install halo
 ```
 
+### Arch Linux
+The package is available in the [AUR](https://aur.archlinux.org/packages/python-halo/).
+
 ## Usage
 
 ```py
