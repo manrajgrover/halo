@@ -277,7 +277,7 @@ class Halo(object):
                 """
                 Make the text bounce back and forth
                 """
-                for x in range(0, text_length - terminal_width):
+                for x in range(0, text_length - terminal_width + 1):
                     frames.append(stripped_text[x:terminal_width + x])
                 frames.extend(list(reversed(frames)))
             elif 'marquee':
