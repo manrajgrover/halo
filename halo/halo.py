@@ -14,7 +14,8 @@ import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo._utils import is_supported, colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
+from halo import _utils
+from halo._utils import colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
     get_environment
 
 
@@ -82,7 +83,7 @@ class Halo(object):
 
             ip = get_ipython()
             ip.events.register('post_run_cell', clean_up)
-        elif environment == 'terminal':
+        else:  # default terminal
             atexit.register(clean_up)
 
     def __enter__(self):
@@ -245,7 +246,7 @@ class Halo(object):
         if spinner and type(spinner) == dict:
             return spinner
 
-        if is_supported():
+        if _utils.is_supported():
             if all([is_text_type(spinner), spinner in Spinners.__members__]):
                 return Spinners[spinner].value
             else:

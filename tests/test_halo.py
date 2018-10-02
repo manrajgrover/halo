@@ -5,21 +5,28 @@ import io
 import os
 import re
 import sys
+import platform
 import time
 import unittest
+try:
+    from unittest.mock import Mock
+except: # Py 2.7
+    from mock import Mock
+
 
 from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
-from halo._utils import is_supported, get_terminal_columns
+from halo._utils import get_terminal_columns
+from halo import _utils
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
 else:
     get_coded_text = decode_utf_8_text
 
-if is_supported():
+if _utils.is_supported():
     frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
     default_spinner = Spinners['dots'].value
 else:
@@ -37,6 +44,7 @@ class TestHalo(unittest.TestCase):
         """
         self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
         self._stream = io.open(self._stream_file, 'w+')
+        self._platform = platform.system
 
     def _get_test_output(self):
         """Clean the output from stream and return it in list form.
@@ -70,6 +78,29 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_spinner_getter(self):
+        instance = Halo()
+        if _utils.is_supported():
+            default_spinner_value = "dots"
+        else:
+            default_spinner_value = "line"
+
+        instance.spinner = default_spinner_value
+        self.assertEqual(default_spinner, instance.spinner)
+
+        instance.spinner = "This_spinner_do_not_exist"
+        self.assertEqual(default_spinner, instance.spinner)
+
+        instance.spinner = -123
+        self.assertEqual(default_spinner, instance.spinner)
+
+    def test_windows_users_get_their_default_spinner(self):
+        # Mocks the platform.system call in halo/_utils.py#is_supported() to force windows
+        platform.system = Mock(return_value="Windows")
+        instance = Halo(spinner=-123)
+
+        self.assertEqual(Spinners['line'].value, instance.spinner)
 
     def test_text_stripping(self):
         """Test the text being stripped before output.
@@ -279,13 +310,13 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(spinner.text, 'bar')
         self.assertEqual(spinner.color, 'red')
 
-        if is_supported():
+        if _utils.is_supported():
             self.assertEqual(spinner.spinner, Spinners['dots12'].value)
         else:
             self.assertEqual(spinner.spinner, default_spinner)
 
         spinner.spinner = 'dots11'
-        if is_supported():
+        if _utils.is_supported():
             self.assertEqual(spinner.spinner, Spinners['dots11'].value)
         else:
             self.assertEqual(spinner.spinner, default_spinner)
@@ -383,6 +414,7 @@ class TestHalo(unittest.TestCase):
     def test_bounce_animation(self):
         def filler_text(n_chars):
             return "_" * n_chars
+
         text = "{}abc".format(filler_text(80))
         expected_frames_without_appended_spinner = [
             "{}".format(filler_text(78)),
@@ -409,12 +441,21 @@ class TestHalo(unittest.TestCase):
         time.sleep(1.2)
         spinner.stop()
         output = self._get_test_output()
+
         zippped_expected_and_actual_frame = zip(expected_frames, output)
         for multiple_frames in zippped_expected_and_actual_frame:
             expected_frame, actual_frame = multiple_frames
             self.assertEquals(expected_frame, actual_frame)
 
+    def test_animation_setter(self):
+        spinner = Halo("Asdf")
+        spinner.animation = "bounce"
+        self.assertEquals("bounce", spinner.animation)
+        spinner.animation = "marquee"
+        self.assertEquals("marquee", spinner.animation)
+
     def tearDown(self):
+        platform.system = self._platform
         pass
 
 
