@@ -8,7 +8,7 @@
  [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/manrajgrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
 > Beautiful spinners for terminal, IPython and Jupyter
 
-![halo](https://raw.githubusercontent.com/manrajgrover/halo/master/art/doge_spin.gif)
+![halo](https://github.com/0scarB/halo/blob/demo_gifs_to_svgs/art/doge_spin.svg)
 
 ## Install
 
@@ -165,7 +165,7 @@ Symbol to replace the spinner with. Defaults to `' '`.
 
 Text to be persisted. Defaults to instance text.
 
-![Persist spin](https://raw.githubusercontent.com/manrajgrover/halo/master/art/persist_spin.gif)
+![Persist spin](https://github.com/0scarB/halo/blob/demo_gifs_to_svgs/art/persist_spin.svg)
 
 #### `spinner.text`
 Change the text of spinner.
