@@ -5,28 +5,21 @@ import io
 import os
 import re
 import sys
-import platform
 import time
 import unittest
-try:
-    from unittest.mock import Mock
-except: # Py 2.7
-    from mock import Mock
-
 
 from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
-from halo._utils import get_terminal_columns
-from halo import _utils
+from halo._utils import is_supported, get_terminal_columns
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
 else:
     get_coded_text = decode_utf_8_text
 
-if _utils.is_supported():
+if is_supported():
     frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
     default_spinner = Spinners['dots'].value
 else:
@@ -44,7 +37,6 @@ class TestHalo(unittest.TestCase):
         """
         self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
         self._stream = io.open(self._stream_file, 'w+')
-        self._platform = platform.system
 
     def _get_test_output(self):
         """Clean the output from stream and return it in list form.
@@ -81,7 +73,7 @@ class TestHalo(unittest.TestCase):
 
     def test_spinner_getter(self):
         instance = Halo()
-        if _utils.is_supported():
+        if is_supported():
             default_spinner_value = "dots"
         else:
             default_spinner_value = "line"
@@ -94,13 +86,6 @@ class TestHalo(unittest.TestCase):
 
         instance.spinner = -123
         self.assertEqual(default_spinner, instance.spinner)
-
-    def test_windows_users_get_their_default_spinner(self):
-        # Mocks the platform.system call in halo/_utils.py#is_supported() to force windows
-        platform.system = Mock(return_value="Windows")
-        instance = Halo(spinner=-123)
-
-        self.assertEqual(Spinners['line'].value, instance.spinner)
 
     def test_text_stripping(self):
         """Test the text being stripped before output.
@@ -310,13 +295,13 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(spinner.text, 'bar')
         self.assertEqual(spinner.color, 'red')
 
-        if _utils.is_supported():
+        if is_supported():
             self.assertEqual(spinner.spinner, Spinners['dots12'].value)
         else:
             self.assertEqual(spinner.spinner, default_spinner)
 
         spinner.spinner = 'dots11'
-        if _utils.is_supported():
+        if is_supported():
             self.assertEqual(spinner.spinner, Spinners['dots11'].value)
         else:
             self.assertEqual(spinner.spinner, default_spinner)
@@ -455,7 +440,6 @@ class TestHalo(unittest.TestCase):
         self.assertEquals("marquee", spinner.animation)
 
     def tearDown(self):
-        platform.system = self._platform
         pass
 
 

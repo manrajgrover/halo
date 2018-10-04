@@ -14,9 +14,8 @@ import cursor
 from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
 
-from halo import _utils
 from halo._utils import colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
-    get_environment
+    get_environment, is_supported
 
 
 class Halo(object):
@@ -246,7 +245,7 @@ class Halo(object):
         if spinner and type(spinner) == dict:
             return spinner
 
-        if _utils.is_supported():
+        if is_supported():
             if all([is_text_type(spinner), spinner in Spinners.__members__]):
                 return Spinners[spinner].value
             else:
