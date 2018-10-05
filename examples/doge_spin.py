@@ -21,6 +21,6 @@ try:
     spinner.text = 'Very emojis'
     spinner.spinner = 'hearts'
     time.sleep(2)
-    spinner.stop_and_persist(symbol='🦄 '.encode('utf-8'), text='Wow!')
+    spinner.stop_and_persist(symbol='🦄'.encode('utf-8'), text='Wow!')
 except (KeyboardInterrupt, SystemExit):
     spinner.stop()
