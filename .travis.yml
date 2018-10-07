@@ -20,7 +20,7 @@ matrix:
     env: TOXENV=py37
   fast_finish: true
 install:
-  - pip install tox
+  - pip install tox coveralls
 script:
   - tox -e $TOXENV
 after_success:
