@@ -186,10 +186,6 @@ Change the spinner itself.
 
 Please see [Contributing guidelines](https://github.com/manrajgrover/halo/blob/master/.github/CONTRIBUTING.md) for more information.
 
-## To Do
-
-- [ ] [Support Windows](https://github.com/manrajgrover/halo/issues/5)
-
 ## Like it?
 
 :star2: this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).

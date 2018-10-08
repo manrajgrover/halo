@@ -430,6 +430,40 @@ class TestHalo(unittest.TestCase):
         self.assertRegexpMatches(symbol, pattern)
         spinner.stop()
 
+    def test_bounce_animation(self):
+        def filler_text(n_chars):
+            return "_" * n_chars
+        text = "{}abc".format(filler_text(80))
+        expected_frames_without_appended_spinner = [
+            "{}".format(filler_text(78)),
+            "{}".format(filler_text(78)),
+            "{}".format(filler_text(78)),
+            "{}a".format(filler_text(77)),
+            "{}ab".format(filler_text(76)),
+            "{}abc".format(filler_text(75)),
+            "{}abc".format(filler_text(75)),
+            "{}ab".format(filler_text(76)),
+            "{}a".format(filler_text(77)),
+            "{}".format(filler_text(78)),
+            "{}".format(filler_text(78)),
+            "{}".format(filler_text(78)),
+        ]
+        # Prepend the actual spinner
+        expected_frames = [
+            "{0} {1}".format(frames[idx % frames.__len__()], frame)
+            for idx, frame in enumerate(expected_frames_without_appended_spinner)
+        ]
+        spinner = Halo(text, animation="bounce", stream=self._stream)
+        spinner.start()
+        # Sleep a full bounce cycle
+        time.sleep(1.2)
+        spinner.stop()
+        output = self._get_test_output()
+        zippped_expected_and_actual_frame = zip(expected_frames, output)
+        for multiple_frames in zippped_expected_and_actual_frame:
+            expected_frame, actual_frame = multiple_frames
+            self.assertEquals(expected_frame, actual_frame)
+
     def tearDown(self):
         pass
 
