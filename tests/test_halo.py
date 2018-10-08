@@ -86,7 +86,7 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
     def test_text_spinner_color(self):
-        """Test basic spinner with grey color (both spinner and text)
+        """Test basic spinner with available colors color (both spinner and text)
         """
         for color, color_int in COLORS.items():
             self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
