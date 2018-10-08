@@ -9,9 +9,11 @@ import time
 
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
+from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text, find_colors
 from halo import HaloNotebook
 from halo._utils import is_supported, get_terminal_columns
+
+from termcolor import COLORS
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
@@ -45,12 +47,31 @@ class TestHaloNotebook(unittest.TestCase):
         list
             Clean output from Output widget
         """
-        output = []
+        output = {}
+        output_text = []
+        output_colors = []
 
         for line in spinner.output.outputs:
             clean_line = strip_ansi(line['text'].strip('\r'))
             if clean_line != '':
-                output.append(get_coded_text(clean_line))
+                output_text.append(get_coded_text(clean_line))
+
+            colors_found = find_colors(line['text'].strip('\r'))
+            if colors_found:
+                tmp = []
+                for color in colors_found:
+                    tmp.append(re.sub(r'[^0-9]', '', color, flags=re.I))
+                output_colors.append(tmp)
+
+        output['text'] = output_text
+        output['colors'] = output_colors
+
+        # output = []
+        #
+        # for line in spinner.output.outputs:
+        #     clean_line = strip_ansi(line['text'].strip('\r'))
+        #     if clean_line != '':
+        #         output.append(get_coded_text(clean_line))
 
         return output
 
@@ -61,13 +82,34 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         spinner.stop()
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
+
+    def test_text_spinner_color(self):
+        """Test basic spinner with available colors color (both spinner and text)
+        """
+        for color, color_int in COLORS.items():
+            spinner = HaloNotebook(text='foo', text_color=color, color=color, spinner='dots')
+
+            spinner.start()
+            time.sleep(1)
+            output = self._get_test_output(spinner)['colors']
+            spinner.stop()
+
+            # check if spinner colors match
+            self.assertEqual(color_int, int(output[0][0]))
+            self.assertEqual(color_int, int(output[1][0]))
+            self.assertEqual(color_int, int(output[2][0]))
+
+            # check if text colors match
+            self.assertEqual(color_int, int(output[0][1]))
+            self.assertEqual(color_int, int(output[1][1]))
+            self.assertEqual(color_int, int(output[2][1]))
 
     def test_text_stripping(self):
         """Test the text being stripped before output.
@@ -76,14 +118,14 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
         spinner.succeed('foo\n')
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         pattern = re.compile(r'(✔|v) foo', re.UNICODE)
 
@@ -99,7 +141,7 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         terminal_width = get_terminal_columns()
 
@@ -109,7 +151,7 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(output[2], '{0} {1} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
 
         spinner.succeed('End!')
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -125,7 +167,7 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         terminal_width = get_terminal_columns()
 
@@ -134,7 +176,7 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(output[2], '{0} {1}'.format(frames[2], text[2:terminal_width]))
 
         spinner.succeed('End!')
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -145,7 +187,7 @@ class TestHaloNotebook(unittest.TestCase):
         """
         with HaloNotebook(text='foo', spinner='dots') as spinner:
             time.sleep(1)
-            output = self._get_test_output(spinner)
+            output = self._get_test_output(spinner)['text']
 
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
@@ -160,7 +202,7 @@ class TestHaloNotebook(unittest.TestCase):
             time.sleep(1)
 
             spinner = decorated_function.__closure__[1].cell_contents
-            output = self._get_test_output(spinner)
+            output = self._get_test_output(spinner)['text']
             return output
 
         output = decorated_function()
@@ -176,7 +218,7 @@ class TestHaloNotebook(unittest.TestCase):
 
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         spinner.stop()
 
         self.assertEqual(output[0], '{0} bar'.format(frames[0]))
@@ -215,7 +257,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start('foo')
         spinner.succeed('foo')
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         pattern = re.compile(r'(✔|v) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -228,7 +270,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start('foo')
         spinner.succeed('bar')
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         pattern = re.compile(r'(✔|v) bar', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -241,7 +283,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start('foo')
         spinner.info()
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         pattern = re.compile(r'(ℹ|¡) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -254,7 +296,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start('foo')
         spinner.fail()
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         pattern = re.compile(r'(✖|×) foo', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -267,7 +309,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start('foo')
         spinner.warn('Warning!')
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         pattern = re.compile(r'(⚠|!!) Warning!', re.UNICODE)
 
         self.assertRegexpMatches(output[-1], pattern)
@@ -322,7 +364,7 @@ class TestHaloNotebook(unittest.TestCase):
         spinner = HaloNotebook(text="foo", enabled=False)
         spinner.start()
         time.sleep(1)
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         spinner.clear()
         spinner.stop()
 
@@ -358,12 +400,12 @@ class TestHaloNotebook(unittest.TestCase):
         spinner.start()
         time.sleep(1)
 
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         (text, _) = output[-1].split(" ")
         self.assertEqual(text, "foo")
 
         spinner.succeed()
-        output = self._get_test_output(spinner)
+        output = self._get_test_output(spinner)['text']
         (text, symbol) = output[-1].split(" ")
         pattern = re.compile(r"(✔|v)", re.UNICODE)
 
