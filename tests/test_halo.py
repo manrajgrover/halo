@@ -115,6 +115,22 @@ class TestHalo(unittest.TestCase):
             self.assertEqual(color_int, int(output[1][1]))
             self.assertEqual(color_int, int(output[2][1]))
 
+    def test_spinner_getter(self):
+        instance = Halo()
+        if is_supported():
+            default_spinner_value = "dots"
+        else:
+            default_spinner_value = "line"
+
+        instance.spinner = default_spinner_value
+        self.assertEqual(default_spinner, instance.spinner)
+
+        instance.spinner = "This_spinner_do_not_exist"
+        self.assertEqual(default_spinner, instance.spinner)
+
+        instance.spinner = -123
+        self.assertEqual(default_spinner, instance.spinner)
+
     def test_text_stripping(self):
         """Test the text being stripped before output.
         """
@@ -433,6 +449,7 @@ class TestHalo(unittest.TestCase):
     def test_bounce_animation(self):
         def filler_text(n_chars):
             return "_" * n_chars
+
         text = "{}abc".format(filler_text(80))
         expected_frames_without_appended_spinner = [
             "{}".format(filler_text(78)),
@@ -459,10 +476,18 @@ class TestHalo(unittest.TestCase):
         time.sleep(1.2)
         spinner.stop()
         output = self._get_test_output()
+
         zippped_expected_and_actual_frame = zip(expected_frames, output)
         for multiple_frames in zippped_expected_and_actual_frame:
             expected_frame, actual_frame = multiple_frames
             self.assertEquals(expected_frame, actual_frame)
+
+    def test_animation_setter(self):
+        spinner = Halo("Asdf")
+        spinner.animation = "bounce"
+        self.assertEquals("bounce", spinner.animation)
+        spinner.animation = "marquee"
+        self.assertEquals("marquee", spinner.animation)
 
     def tearDown(self):
         pass
