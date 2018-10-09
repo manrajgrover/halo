@@ -329,7 +329,7 @@ class TestHalo(unittest.TestCase):
         """
         spinner = Halo()
         self.assertEqual(spinner.text, '')
-        self.assertEqual(spinner.text_color, 'white')
+        self.assertIsNone(spinner.text_color, None)
         self.assertEqual(spinner.color, 'cyan')
         self.assertIsNone(spinner.spinner_id)
 
@@ -475,7 +475,7 @@ class TestHalo(unittest.TestCase):
         # Sleep a full bounce cycle
         time.sleep(1.2)
         spinner.stop()
-        output = self._get_test_output()
+        output = self._get_test_output()['text']
 
         zippped_expected_and_actual_frame = zip(expected_frames, output)
         for multiple_frames in zippped_expected_and_actual_frame:
