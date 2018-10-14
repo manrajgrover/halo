@@ -8,6 +8,7 @@ import sys
 import time
 import unittest
 
+from colorama import Fore
 from spinners.spinners import Spinners
 
 from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
@@ -38,7 +39,7 @@ class TestHalo(unittest.TestCase):
         self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
         self._stream = io.open(self._stream_file, 'w+')
 
-    def _get_test_output(self):
+    def _get_test_output(self, no_ansi=True):
         """Clean the output from stream and return it in list form.
 
         Returns
@@ -51,7 +52,7 @@ class TestHalo(unittest.TestCase):
         output = []
 
         for line in data:
-            clean_line = strip_ansi(line.strip('\n'))
+            clean_line = strip_ansi(line.strip('\n')) if no_ansi else line.strip('\n')
             if clean_line != '':
                 output.append(get_coded_text(clean_line))
 
@@ -438,6 +439,25 @@ class TestHalo(unittest.TestCase):
         self.assertEquals("bounce", spinner.animation)
         spinner.animation = "marquee"
         self.assertEquals("marquee", spinner.animation)
+
+    def test_spinner_color(self):
+        """Test ANSI escape characters are present
+        """
+        colors = {
+            'cyan': Fore.CYAN,
+            'magenta': Fore.MAGENTA,
+            'yellow': Fore.YELLOW,
+            'blue': Fore.BLUE
+        }
+
+        for k, v in colors.items():
+            self._stream = io.open(self._stream_file, 'w+')  # reset stream
+            spinner = Halo(color=k, stream=self._stream)
+            spinner.start()
+            spinner.stop()
+
+            output = self._get_test_output(no_ansi=False)
+            assert v in output[1]
 
     def tearDown(self):
         pass
