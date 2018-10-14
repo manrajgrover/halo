@@ -10,9 +10,9 @@ import unittest
 
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
-from halo._utils import is_supported, get_terminal_columns
+from halo._utils import get_terminal_columns, is_supported
+from tests._utils import decode_utf_8_text, encode_utf_8_text, strip_ansi
 
 if sys.version_info.major == 2:
     get_coded_text = encode_utf_8_text
