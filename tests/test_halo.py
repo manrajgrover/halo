@@ -400,20 +400,22 @@ class TestHalo(unittest.TestCase):
         def filler_text(n_chars):
             return "_" * n_chars
 
-        text = "{}abc".format(filler_text(80))
+        terminal_width = get_terminal_columns()
+
+        text = "{}abc".format(filler_text(terminal_width))
         expected_frames_without_appended_spinner = [
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}a".format(filler_text(77)),
-            "{}ab".format(filler_text(76)),
-            "{}abc".format(filler_text(75)),
-            "{}abc".format(filler_text(75)),
-            "{}ab".format(filler_text(76)),
-            "{}a".format(filler_text(77)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}a".format(filler_text(terminal_width - 3)),
+            "{}ab".format(filler_text(terminal_width - 4)),
+            "{}abc".format(filler_text(terminal_width - 5)),
+            "{}abc".format(filler_text(terminal_width - 5)),
+            "{}ab".format(filler_text(terminal_width - 4)),
+            "{}a".format(filler_text(terminal_width - 3)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
         ]
         # Prepend the actual spinner
         expected_frames = [
@@ -427,8 +429,8 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         output = self._get_test_output()
 
-        zippped_expected_and_actual_frame = zip(expected_frames, output)
-        for multiple_frames in zippped_expected_and_actual_frame:
+        zipped_expected_and_actual_frame = zip(expected_frames, output)
+        for multiple_frames in zipped_expected_and_actual_frame:
             expected_frame, actual_frame = multiple_frames
             self.assertEquals(expected_frame, actual_frame)
 
