@@ -2,20 +2,20 @@
 # pylint: disable=unsubscriptable-object
 """Beautiful terminal spinners in Python.
 """
-from __future__ import unicode_literals, absolute_import
+from __future__ import absolute_import, unicode_literals
 
+import atexit
+import functools
 import sys
 import threading
 import time
-import functools
-import atexit
 
 import cursor
-from spinners.spinners import Spinners
 from log_symbols.symbols import LogSymbols
+from spinners.spinners import Spinners
 
-from halo._utils import colored_frame, is_text_type, decode_utf_8_text, get_terminal_columns, \
-    get_environment, is_supported
+from halo._utils import (colored_frame, decode_utf_8_text, get_environment,
+                         get_terminal_columns, is_supported, is_text_type)
 
 
 class Halo(object):
