@@ -454,7 +454,7 @@ class TestHalo(unittest.TestCase):
 
         for color_name, color_ascii in colors.items():
             self._stream = io.open(self._stream_file, 'w+')  # reset stream
-            spinner = Halo(color=k, stream=self._stream)
+            spinner = Halo(color=color_name, stream=self._stream)
             spinner.start()
             spinner.stop()
 
