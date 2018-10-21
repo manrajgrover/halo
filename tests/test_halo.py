@@ -459,7 +459,7 @@ class TestHalo(unittest.TestCase):
             spinner.stop()
 
             output = self._get_test_output(no_ansi=False)
-            assert v in output[1]
+            self.assertEquals(color_ascii, output[1])
 
     def tearDown(self):
         pass
