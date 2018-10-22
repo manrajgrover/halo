@@ -105,3 +105,6 @@ cover/
 
 # tests
 tests/*.txt
+
+# OS-specific files
+.DS_Store
