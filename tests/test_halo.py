@@ -445,6 +445,7 @@ class TestHalo(unittest.TestCase):
     def test_spinner_color(self):
         """Test ANSI escape characters are present
         """
+        
         colors = {
             'cyan': Fore.CYAN,
             'magenta': Fore.MAGENTA,
