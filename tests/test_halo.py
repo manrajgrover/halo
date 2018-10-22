@@ -450,14 +450,14 @@ class TestHalo(unittest.TestCase):
             'blue': Fore.BLUE
         }
 
-        for k, v in colors.items():
+        for color_name, color_ascii in colors.items():
             self._stream = io.open(self._stream_file, 'w+')  # reset stream
-            spinner = Halo(color=k, stream=self._stream)
+            spinner = Halo(color=color_name, stream=self._stream)
             spinner.start()
             spinner.stop()
 
             output = self._get_test_output(no_ansi=False)
-            assert v in output[1]
+            self.assertEquals(color_ascii in output[1], True)
 
     def tearDown(self):
         pass
