@@ -2,3 +2,7 @@ coverage==4.4.1
 nose==1.3.7
 pylint==1.7.2
 tox==2.8.2
+twine==1.12.1
+setuptools==40.4.3
+wheel==0.32.2
+readme-renderer==23.0
