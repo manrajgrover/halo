@@ -27,6 +27,10 @@ else:
     default_spinner = Spinners['line'].value
 
 
+class SpecificException(Exception):
+    """A unique exc class we know only our tests would raise"""
+
+
 class TestHalo(unittest.TestCase):
     """Test Halo enum for attribute values.
     """
@@ -163,6 +167,13 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
+    def test_context_manager_exceptions(self):
+        """Test Halo context manager allows exceptions to bubble up
+        """
+        with self.assertRaises(SpecificException):
+            with Halo(text='foo', spinner='dots', stream=self._stream):
+                raise SpecificException
+
     def test_decorator_spinner(self):
         """Test basic usage of spinners with the decorator syntax."""
 
@@ -175,6 +186,16 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_decorator_exceptions(self):
+        """Test Halo decorator allows exceptions to bubble up"""
+
+        @Halo(text="foo", spinner="dots", stream=self._stream)
+        def decorated_function():
+            raise SpecificException
+
+        with self.assertRaises(SpecificException):
+            decorated_function()
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
