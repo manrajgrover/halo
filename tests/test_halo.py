@@ -404,7 +404,7 @@ class TestHalo(unittest.TestCase):
     def test_if_enabled(self):
         """Test if spinner is enabled
         """
-        spinner = Halo(text="foo", enabled=False, stream=self._stream)
+        spinner = Halo(text='foo', enabled=False, stream=self._stream)
         spinner.start()
         time.sleep(1)
         spinner.clear()
@@ -413,6 +413,53 @@ class TestHalo(unittest.TestCase):
         output = self._get_test_output()['text']
         self.assertEqual(len(output), 0)
         self.assertEqual(output, [])
+
+    def test_if_enabled_with_closed_stream(self):
+        """Test no I/O is performed on closed streams
+        """
+        stream = io.StringIO()
+        stream.close()
+
+        # sanity checks
+        self.assertTrue(stream.closed)
+        self.assertRaises(ValueError, stream.isatty)
+        self.assertRaises(ValueError, stream.write, u'')
+
+        spinner = Halo(text='foo', stream=stream)
+        self.assertFalse(spinner.enabled)
+
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+
+    def test_closing_stream_before_stopping(self):
+        """Test no I/O is performed on streams closed before stop is called
+        """
+        stream = io.StringIO()
+        spinner = Halo(text='foo', stream=stream)
+        spinner.start()
+        time.sleep(0.5)
+
+        # no exception raised after closing the stream means test was successful
+        stream.close()
+
+        time.sleep(0.5)
+        spinner.stop()
+
+    def test_setting_enabled_property(self):
+        """Test if spinner stops writing when enabled property set to False
+        """
+        spinner = Halo(text='foo', stream=self._stream)
+        spinner.start()
+        time.sleep(0.5)
+
+        spinner.enabled = False
+        bytes_written = self._stream.tell()
+        time.sleep(0.5)
+        spinner.stop()
+
+        total_bytes_written = self._stream.tell()
+        self.assertEqual(total_bytes_written, bytes_written)
 
     def test_spinner_interval_default(self):
         """Test proper assignment of the default interval value.

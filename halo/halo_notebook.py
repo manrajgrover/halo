@@ -31,7 +31,7 @@ class HaloNotebook(Halo):
         return ({'name': 'stdout', 'output_type': 'stream', 'text': text},)
 
     def clear(self):
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         with self.output:
@@ -51,7 +51,7 @@ class HaloNotebook(Halo):
         if text is not None:
             self.text = text
 
-        if not self._enabled or self._spinner_id is not None:
+        if not self.enabled or self._spinner_id is not None:
             return self
 
         if self._stream.isatty():
@@ -83,7 +83,7 @@ class HaloNotebook(Halo):
         -------
         self
         """
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         symbol = decode_utf_8_text(symbol)

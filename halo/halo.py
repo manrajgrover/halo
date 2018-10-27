@@ -73,7 +73,7 @@ class Halo(object):
         self._spinner_thread = None
         self._stop_spinner = None
         self._spinner_id = None
-        self._enabled = enabled  # Need to check for stream
+        self.enabled = enabled
 
         environment = get_environment()
 
@@ -110,6 +110,27 @@ class Halo(object):
                 return f(*args, **kwargs)
 
         return wrapped
+
+    @property
+    def enabled(self):
+        """Getter for the enabled property.
+        Returns
+        -------
+        bool
+            whether the spinner is enabled and the stream is open
+        """
+        return self._enabled and not self._stream.closed
+
+    @enabled.setter
+    def enabled(self, enabled):
+        """Setter for enabled property.
+        Parameters
+        ----------
+        enabled: bool
+            Defines whether the spinner is allowed to write to the stream
+            (if the stream is open and writable)
+        """
+        self._enabled = enabled
 
     @property
     def spinner(self):
@@ -325,7 +346,7 @@ class Halo(object):
         -------
         self
         """
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         self._stream.write('\r')
@@ -337,6 +358,13 @@ class Halo(object):
         """Renders the frame on the line after clearing it.
         """
         frame = self.frame()
+
+        if not self.enabled:
+            # in case we're disabled or stream is closed while still rendering,
+            # we render the frame and increment the frame index, so the proper
+            # frame is rendered if we're reenabled or the stream opens again.
+            return
+
         output = '\r{0}'.format(frame)
         self.clear()
         try:
@@ -415,7 +443,7 @@ class Halo(object):
         if text is not None:
             self.text = text
 
-        if not self._enabled or self._spinner_id is not None:
+        if not self.enabled or self._spinner_id is not None:
             return self
 
         if self._stream.isatty():
@@ -436,7 +464,7 @@ class Halo(object):
         -------
         self
         """
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         if self._spinner_thread:
@@ -513,7 +541,7 @@ class Halo(object):
         -------
         self
         """
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         symbol = decode_utf_8_text(symbol)
