@@ -92,9 +92,9 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         output = self._get_test_output()['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
     def test_text_spinner_color(self):
         """Test basic spinner with available colors color (both spinner and text)
@@ -152,9 +152,9 @@ class TestHalo(unittest.TestCase):
         spinner.succeed('foo\n')
         output = self._get_test_output()['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
         pattern = re.compile(r'(✔|v) foo', re.UNICODE)
 
@@ -176,9 +176,9 @@ class TestHalo(unittest.TestCase):
         terminal_width = get_terminal_columns()
 
         # -6 of the ' (...)' ellipsis, -2 of the spinner and space
-        self.assertEqual(output[0], '{0} {1} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[1], '{0} {1} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[2], '{0} {1} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[0], '{} {} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[1], '{} {} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[2], '{} {} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -199,9 +199,9 @@ class TestHalo(unittest.TestCase):
 
         terminal_width = get_terminal_columns()
 
-        self.assertEqual(output[0], '{0} {1}'.format(frames[0], text[:terminal_width - 2]))
-        self.assertEqual(output[1], '{0} {1}'.format(frames[1], text[1:terminal_width - 1]))
-        self.assertEqual(output[2], '{0} {1}'.format(frames[2], text[2:terminal_width]))
+        self.assertEqual(output[0], '{} {}'.format(frames[0], text[:terminal_width - 2]))
+        self.assertEqual(output[1], '{} {}'.format(frames[1], text[1:terminal_width - 1]))
+        self.assertEqual(output[2], '{} {}'.format(frames[2], text[2:terminal_width]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -214,9 +214,9 @@ class TestHalo(unittest.TestCase):
             time.sleep(1)
         output = self._get_test_output()['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
     def test_context_manager_exceptions(self):
         """Test Halo context manager allows exceptions to bubble up
@@ -234,10 +234,9 @@ class TestHalo(unittest.TestCase):
 
         decorated_function()
         output = self._get_test_output()['text']
-
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
     def test_decorator_exceptions(self):
         """Test Halo decorator allows exceptions to bubble up"""
@@ -259,9 +258,9 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         output = self._get_test_output()['text']
 
-        self.assertEqual(output[0], '{0} bar'.format(frames[0]))
-        self.assertEqual(output[1], '{0} bar'.format(frames[1]))
-        self.assertEqual(output[2], '{0} bar'.format(frames[2]))
+        self.assertEqual(output[0], '{} bar'.format(frames[0]))
+        self.assertEqual(output[1], '{} bar'.format(frames[1]))
+        self.assertEqual(output[2], '{} bar'.format(frames[2]))
 
     def test_id_not_created_before_start(self):
         """Test Spinner ID not created before start.
@@ -547,7 +546,7 @@ class TestHalo(unittest.TestCase):
         ]
         # Prepend the actual spinner
         expected_frames = [
-            "{0} {1}".format(frames[idx % frames.__len__()], frame)
+            "{} {}".format(frames[idx % frames.__len__()], frame)
             for idx, frame in enumerate(expected_frames_without_appended_spinner)
         ]
         spinner = Halo(text, animation="bounce", stream=self._stream)

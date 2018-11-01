@@ -79,9 +79,9 @@ class TestHaloNotebook(unittest.TestCase):
         output = self._get_test_output(spinner)['text']
         spinner.stop()
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_text_spinner_color(self):
@@ -114,9 +114,9 @@ class TestHaloNotebook(unittest.TestCase):
         time.sleep(1)
         output = self._get_test_output(spinner)['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
         spinner.succeed('foo\n')
         output = self._get_test_output(spinner)['text']
@@ -140,9 +140,9 @@ class TestHaloNotebook(unittest.TestCase):
         terminal_width = get_terminal_columns()
 
         # -6 of the ' (...)' ellipsis, -2 of the spinner and space
-        self.assertEqual(output[0], '{0} {1} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[1], '{0} {1} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[2], '{0} {1} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[0], '{} {} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[1], '{} {} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[2], '{} {} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
 
         spinner.succeed('End!')
         output = self._get_test_output(spinner)['text']
@@ -165,9 +165,9 @@ class TestHaloNotebook(unittest.TestCase):
 
         terminal_width = get_terminal_columns()
 
-        self.assertEqual(output[0], '{0} {1}'.format(frames[0], text[:terminal_width - 2]))
-        self.assertEqual(output[1], '{0} {1}'.format(frames[1], text[1:terminal_width - 1]))
-        self.assertEqual(output[2], '{0} {1}'.format(frames[2], text[2:terminal_width]))
+        self.assertEqual(output[0], '{} {}'.format(frames[0], text[:terminal_width - 2]))
+        self.assertEqual(output[1], '{} {}'.format(frames[1], text[1:terminal_width - 1]))
+        self.assertEqual(output[2], '{} {}'.format(frames[2], text[2:terminal_width]))
 
         spinner.succeed('End!')
         output = self._get_test_output(spinner)['text']
@@ -183,9 +183,9 @@ class TestHaloNotebook(unittest.TestCase):
             time.sleep(1)
             output = self._get_test_output(spinner)['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_decorator_spinner(self):
@@ -201,9 +201,9 @@ class TestHaloNotebook(unittest.TestCase):
 
         output = decorated_function()
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
@@ -215,9 +215,9 @@ class TestHaloNotebook(unittest.TestCase):
         output = self._get_test_output(spinner)['text']
         spinner.stop()
 
-        self.assertEqual(output[0], '{0} bar'.format(frames[0]))
-        self.assertEqual(output[1], '{0} bar'.format(frames[1]))
-        self.assertEqual(output[2], '{0} bar'.format(frames[2]))
+        self.assertEqual(output[0], '{} bar'.format(frames[0]))
+        self.assertEqual(output[1], '{} bar'.format(frames[1]))
+        self.assertEqual(output[2], '{} bar'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_id_not_created_before_start(self):
