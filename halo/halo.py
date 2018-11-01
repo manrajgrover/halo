@@ -112,27 +112,6 @@ class Halo(object):
         return wrapped
 
     @property
-    def enabled(self):
-        """Getter for the enabled property.
-        Returns
-        -------
-        bool
-            whether the spinner is enabled and the stream is open
-        """
-        return self._enabled and not self._stream.closed
-
-    @enabled.setter
-    def enabled(self, enabled):
-        """Setter for enabled property.
-        Parameters
-        ----------
-        enabled: bool
-            Defines whether the spinner is allowed to write to the stream
-            (if the stream is open and writable)
-        """
-        self._enabled = enabled
-
-    @property
     def spinner(self):
         """Getter for spinner property.
         Returns
@@ -269,6 +248,49 @@ class Halo(object):
         self._animation = animation
         self._text = self._get_text(self._text['original'])
 
+    def _check_stream(self):
+        """Returns whether the stream is open, and if applicable, writable
+        Returns
+        -------
+        bool
+            Whether the stream is open
+        """
+        if self._stream.closed:
+            return False
+
+        try:
+            # Attribute access kept separate from invocation, to avoid
+            # swallowing AttributeErrors from the call which should bubble up.
+            check_stream_writable = self._stream.writable
+        except AttributeError:
+            pass
+        else:
+            return check_stream_writable()
+
+        return True
+
+    def _write(self, s):
+        """Write to the stream, if writable
+        Parameters
+        ----------
+        s : str
+            Characters to write to the stream
+        """
+        if self._check_stream():
+            self._stream.write(s)
+
+    def _hide_cursor(self):
+        """Disable the user's blinking cursor
+        """
+        if self._check_stream() and self._stream.isatty():
+            cursor.hide(stream=self._stream)
+
+    def _show_cursor(self):
+        """Re-enable the user's blinking cursor
+        """
+        if self._check_stream() and self._stream.isatty():
+            cursor.show(stream=self._stream)
+
     def _get_spinner(self, spinner):
         """Extracts spinner value from options and returns value
         containing spinner frames and interval, defaults to 'dots' spinner.
@@ -346,31 +368,26 @@ class Halo(object):
         -------
         self
         """
-        if not self.enabled:
-            return self
-
-        self._stream.write('\r')
-        self._stream.write(self.CLEAR_LINE)
-
+        self._write('\r')
+        self._write(self.CLEAR_LINE)
         return self
 
     def _render_frame(self):
         """Renders the frame on the line after clearing it.
         """
-        frame = self.frame()
-
         if not self.enabled:
             # in case we're disabled or stream is closed while still rendering,
             # we render the frame and increment the frame index, so the proper
             # frame is rendered if we're reenabled or the stream opens again.
             return
 
-        output = '\r{0}'.format(frame)
         self.clear()
+        frame = self.frame()
+        output = '\r{}'.format(frame)
         try:
-            self._stream.write(output)
+            self._write(output)
         except UnicodeEncodeError:
-            self._stream.write(encode_utf_8_text(output))
+            self._write(encode_utf_8_text(output))
 
     def render(self):
         """Runs the render until thread flag is set.
@@ -443,11 +460,13 @@ class Halo(object):
         if text is not None:
             self.text = text
 
-        if not self.enabled or self._spinner_id is not None:
+        if self._spinner_id is not None:
             return self
 
-        if self._stream.isatty():
-            cursor.hide(stream=self._stream)
+        if not (self.enabled and self._check_stream()):
+            return self
+
+        self._hide_cursor()
 
         self._stop_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
@@ -464,20 +483,16 @@ class Halo(object):
         -------
         self
         """
-        if not self.enabled:
-            return self
-
-        if self._spinner_thread:
+        if self._spinner_thread and self._spinner_thread.is_alive():
             self._stop_spinner.set()
             self._spinner_thread.join()
 
+        if self.enabled:
+            self.clear()
+
         self._frame_index = 0
         self._spinner_id = None
-        self.clear()
-
-        if self._stream.isatty():
-            cursor.show(stream=self._stream)
-
+        self._show_cursor()
         return self
 
     def succeed(self, text=None):

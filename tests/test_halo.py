@@ -407,30 +407,33 @@ class TestHalo(unittest.TestCase):
         spinner = Halo(text='foo', enabled=False, stream=self._stream)
         spinner.start()
         time.sleep(1)
-        spinner.clear()
         spinner.fail()
 
         output = self._get_test_output()['text']
         self.assertEqual(len(output), 0)
         self.assertEqual(output, [])
 
-    def test_if_enabled_with_closed_stream(self):
+    def test_writing_disabled_on_closed_stream(self):
         """Test no I/O is performed on closed streams
         """
-        stream = io.StringIO()
-        stream.close()
+        # BytesIO supports the writable() method, while StringIO does not, in
+        # some versions of Python. We want to check whether the stream is
+        # writable (e.g. for file streams which can be open but not writable),
+        # but only if the stream supports it — otherwise we assume
+        # open == writable.
+        for io_class in (io.StringIO, io.BytesIO):
+            stream = io_class()
+            stream.close()
 
-        # sanity checks
-        self.assertTrue(stream.closed)
-        self.assertRaises(ValueError, stream.isatty)
-        self.assertRaises(ValueError, stream.write, u'')
+            # sanity checks
+            self.assertTrue(stream.closed)
+            self.assertRaises(ValueError, stream.isatty)
+            self.assertRaises(ValueError, stream.write, u'')
 
-        spinner = Halo(text='foo', stream=stream)
-        self.assertFalse(spinner.enabled)
-
-        spinner.start()
-        time.sleep(1)
-        spinner.stop()
+            spinner = Halo(text='foo', stream=stream)
+            spinner.start()
+            time.sleep(0.5)
+            spinner.stop()
 
     def test_closing_stream_before_stopping(self):
         """Test no I/O is performed on streams closed before stop is called
