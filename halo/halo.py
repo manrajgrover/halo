@@ -94,12 +94,8 @@ class Halo(object):
         return self.start()
 
     def __exit__(self, type, value, traceback):
-        """Stops the spinner. For use in context managers.
-        Returns
-        -------
-        None
-        """
-        return self.stop()
+        """Stops the spinner. For use in context managers."""
+        self.stop()
 
     def __call__(self, f):
         """Allow the Halo object to be used as a regular function decorator."""
