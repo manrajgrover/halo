@@ -12,7 +12,7 @@ with open("README.md") as infile:
 setup(
     name='halo',
     packages=find_packages(exclude=('tests', 'examples')),
-    version='0.0.18',
+    version='0.0.21',
     license='MIT',
     description='Beautiful terminal spinners in Python',
     long_description=long_description,
