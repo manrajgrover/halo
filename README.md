@@ -182,7 +182,7 @@ Please see [Contributing guidelines](https://github.com/manrajgrover/halo/blob/m
 
 ## Like it?
 
-:star2: this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
+🌟 this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
 Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fmanrajgrover%2Fhalo&via=manrajsgrover&text=Checkout%20%23halo%20-%20a%20beautiful%20%23terminal%20%23spinners%20library%20for%20%23python&hashtags=github%2C%20pypi).
 
 ## Related
