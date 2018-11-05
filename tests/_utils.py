@@ -1,19 +1,17 @@
 """Utilities for tests.
 """
-import errno
 import codecs
-import os
 import re
 
 
 def strip_ansi(string):
     """Strip ANSI encoding from given string.
-    
+
     Parameters
     ----------
     string : str
         String from which encoding needs to be removed
-    
+
     Returns
     -------
     str
@@ -41,12 +39,12 @@ def find_colors(string):
 
 def decode_utf_8_text(text):
     """Decodes the text from utf-8 format.
-    
+
     Parameters
     ----------
     text : str
         Text to be decoded
-    
+
     Returns
     -------
     str
@@ -54,18 +52,18 @@ def decode_utf_8_text(text):
     """
     try:
         return codecs.decode(text, 'utf-8')
-    except:
+    except (TypeError, ValueError):
         return text
 
 
 def encode_utf_8_text(text):
     """Encodes the text to utf-8 format
-    
+
     Parameters
     ----------
     text : str
         Text to be encoded
-    
+
     Returns
     -------
     str
@@ -73,5 +71,5 @@ def encode_utf_8_text(text):
     """
     try:
         return codecs.encode(text, 'utf-8')
-    except:
+    except (TypeError, ValueError):
         return text

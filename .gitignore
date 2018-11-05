@@ -106,5 +106,11 @@ cover/
 # tests
 tests/*.txt
 
+# OS-specific files
+.DS_Store
+
+# IDE settings
+.vscode/
+
 # Idea
 .idea

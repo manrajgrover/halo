@@ -4,14 +4,15 @@
 import os
 import re
 import sys
-import unittest
 import time
+import unittest
 
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, encode_utf_8_text, decode_utf_8_text, find_colors
 from halo import HaloNotebook
-from halo._utils import is_supported, get_terminal_columns
+from halo._utils import get_terminal_columns, is_supported
+from tests._utils import decode_utf_8_text, encode_utf_8_text, strip_ansi
+from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
 
 from termcolor import COLORS
 

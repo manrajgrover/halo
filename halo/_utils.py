@@ -6,7 +6,7 @@ import platform
 import six
 try:
     from shutil import get_terminal_size
-except:
+except ImportError:
     from backports.shutil_get_terminal_size import get_terminal_size
 
 from colorama import init
@@ -17,7 +17,7 @@ init(autoreset=True)
 
 def is_supported():
     """Check whether operating system supports main symbols or not.
-    
+
     Returns
     -------
     boolean
@@ -31,6 +31,7 @@ def is_supported():
 
     return False
 
+
 def get_environment():
     """Get the environment in which halo is running
 
@@ -43,16 +44,16 @@ def get_environment():
         from IPython import get_ipython
     except ImportError:
         return 'terminal'
-    
+
     try:
         shell = get_ipython().__class__.__name__
 
-        if shell == 'ZMQInteractiveShell': # Jupyter notebook or qtconsole
+        if shell == 'ZMQInteractiveShell':  # Jupyter notebook or qtconsole
             return 'jupyter'
-        elif shell == 'TerminalInteractiveShell': # Terminal running IPython
+        elif shell == 'TerminalInteractiveShell':  # Terminal running IPython
             return 'ipython'
         else:
-            return 'terminal' # Other type (?)
+            return 'terminal'  # Other type (?)
 
     except NameError:
         return 'terminal'
@@ -60,14 +61,14 @@ def get_environment():
 
 def colored_frame(frame, color):
     """Color the frame with given color and returns.
-    
+
     Parameters
     ----------
     frame : str
         Frame to be colored
     color : str
         Color to be applied
-    
+
     Returns
     -------
     str
@@ -78,12 +79,12 @@ def colored_frame(frame, color):
 
 def is_text_type(text):
     """Check if given parameter is a string or not
-    
+
     Parameters
     ----------
     text : *
         Parameter to be checked for text type
-    
+
     Returns
     -------
     bool
@@ -97,12 +98,12 @@ def is_text_type(text):
 
 def decode_utf_8_text(text):
     """Decode the text from utf-8 format
-    
+
     Parameters
     ----------
     text : str
         String to be decoded
-    
+
     Returns
     -------
     str
@@ -110,7 +111,7 @@ def decode_utf_8_text(text):
     """
     try:
         return codecs.decode(text, 'utf-8')
-    except:
+    except (TypeError, ValueError):
         return text
 
 

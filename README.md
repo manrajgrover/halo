@@ -4,11 +4,11 @@
   halo
 </h1>
 
-[![Build Status](https://travis-ci.org/manrajgrover/halo.svg?branch=master)](https://travis-ci.org/manrajgrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/manrajgrover/halo)
+[![Build Status](https://travis-ci.org/manrajgrover/halo.svg?branch=master)](https://travis-ci.org/manrajgrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/manrajgrover/halo) [![Coverage Status](https://coveralls.io/repos/github/manrajgrover/halo/badge.svg?branch=master)](https://coveralls.io/github/manrajgrover/halo?branch=master)
  [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/manrajgrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
 > Beautiful spinners for terminal, IPython and Jupyter
 
-![halo](art/doge_spin.svg)
+![halo](https://raw.github.com/manrajgrover/halo/master/art/doge_spin.svg?sanitize=true)
 
 ## Install
 
@@ -171,7 +171,7 @@ Symbol to replace the spinner with. Defaults to `' '`.
 
 Text to be persisted. Defaults to instance text.
 
-![Persist spin](art/persist_spin.svg)
+![Persist spin](https://raw.github.com/manrajgrover/halo/master/art/persist_spin.svg?sanitize=true)
 
 #### `spinner.text`
 Change the text of spinner.
@@ -188,7 +188,7 @@ Please see [Contributing guidelines](https://github.com/manrajgrover/halo/blob/m
 
 ## Like it?
 
-:star2: this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
+🌟 this repo to show support. Let me know you liked it on [Twitter](https://twitter.com/manrajsgrover).
 Also, share the [project](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fmanrajgrover%2Fhalo&via=manrajsgrover&text=Checkout%20%23halo%20-%20a%20beautiful%20%23terminal%20%23spinners%20library%20for%20%23python&hashtags=github%2C%20pypi).
 
 ## Related

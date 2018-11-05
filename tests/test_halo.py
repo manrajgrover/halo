@@ -8,11 +8,12 @@ import sys
 import time
 import unittest
 
+from colorama import Fore
 from spinners.spinners import Spinners
 
-from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
 from halo import Halo
-from halo._utils import is_supported, get_terminal_columns
+from halo._utils import get_terminal_columns, is_supported
+from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
 
 from termcolor import COLORS
 
@@ -29,6 +30,10 @@ else:
     default_spinner = Spinners['line'].value
 
 
+class SpecificException(Exception):
+    """A unique exc class we know only our tests would raise"""
+
+
 class TestHalo(unittest.TestCase):
     """Test Halo enum for attribute values.
     """
@@ -40,7 +45,7 @@ class TestHalo(unittest.TestCase):
         self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
         self._stream = io.open(self._stream_file, 'w+')
 
-    def _get_test_output(self):
+    def _get_test_output(self, no_ansi=True):
         """Clean the output from stream and return it in list form.
 
         Returns
@@ -55,7 +60,7 @@ class TestHalo(unittest.TestCase):
         output_colors = []
 
         for line in data:
-            clean_line = strip_ansi(line.strip('\n'))
+            clean_line = strip_ansi(line.strip('\n')) if no_ansi else line.strip('\n')
             if clean_line != '':
                 output_text.append(get_coded_text(clean_line))
 
@@ -207,6 +212,13 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
 
+    def test_context_manager_exceptions(self):
+        """Test Halo context manager allows exceptions to bubble up
+        """
+        with self.assertRaises(SpecificException):
+            with Halo(text='foo', spinner='dots', stream=self._stream):
+                raise SpecificException
+
     def test_decorator_spinner(self):
         """Test basic usage of spinners with the decorator syntax."""
 
@@ -220,6 +232,16 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[0], '{0} foo'.format(frames[0]))
         self.assertEqual(output[1], '{0} foo'.format(frames[1]))
         self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+
+    def test_decorator_exceptions(self):
+        """Test Halo decorator allows exceptions to bubble up"""
+
+        @Halo(text="foo", spinner="dots", stream=self._stream)
+        def decorated_function():
+            raise SpecificException
+
+        with self.assertRaises(SpecificException):
+            decorated_function()
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
@@ -450,20 +472,22 @@ class TestHalo(unittest.TestCase):
         def filler_text(n_chars):
             return "_" * n_chars
 
-        text = "{}abc".format(filler_text(80))
+        terminal_width = get_terminal_columns()
+
+        text = "{}abc".format(filler_text(terminal_width))
         expected_frames_without_appended_spinner = [
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}a".format(filler_text(77)),
-            "{}ab".format(filler_text(76)),
-            "{}abc".format(filler_text(75)),
-            "{}abc".format(filler_text(75)),
-            "{}ab".format(filler_text(76)),
-            "{}a".format(filler_text(77)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
-            "{}".format(filler_text(78)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}a".format(filler_text(terminal_width - 3)),
+            "{}ab".format(filler_text(terminal_width - 4)),
+            "{}abc".format(filler_text(terminal_width - 5)),
+            "{}abc".format(filler_text(terminal_width - 5)),
+            "{}ab".format(filler_text(terminal_width - 4)),
+            "{}a".format(filler_text(terminal_width - 3)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
+            "{}".format(filler_text(terminal_width - 2)),
         ]
         # Prepend the actual spinner
         expected_frames = [
@@ -477,8 +501,8 @@ class TestHalo(unittest.TestCase):
         spinner.stop()
         output = self._get_test_output()['text']
 
-        zippped_expected_and_actual_frame = zip(expected_frames, output)
-        for multiple_frames in zippped_expected_and_actual_frame:
+        zipped_expected_and_actual_frame = zip(expected_frames, output)
+        for multiple_frames in zipped_expected_and_actual_frame:
             expected_frame, actual_frame = multiple_frames
             self.assertEquals(expected_frame, actual_frame)
 
@@ -488,6 +512,26 @@ class TestHalo(unittest.TestCase):
         self.assertEquals("bounce", spinner.animation)
         spinner.animation = "marquee"
         self.assertEquals("marquee", spinner.animation)
+
+    def test_spinner_color(self):
+        """Test ANSI escape characters are present
+        """
+        
+        colors = {
+            'cyan': Fore.CYAN,
+            'magenta': Fore.MAGENTA,
+            'yellow': Fore.YELLOW,
+            'blue': Fore.BLUE
+        }
+
+        for color_name, color_ascii in colors.items():
+            self._stream = io.open(self._stream_file, 'w+')  # reset stream
+            spinner = Halo(color=color_name, stream=self._stream)
+            spinner.start()
+            spinner.stop()
+
+            output = self._get_test_output(no_ansi=False)
+            self.assertEquals(color_ascii in output[1], True)
 
     def tearDown(self):
         pass
