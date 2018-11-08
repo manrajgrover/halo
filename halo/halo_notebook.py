@@ -6,7 +6,7 @@ import threading
 import cursor
 
 from halo import Halo
-from halo._utils import decode_utf_8_text
+from halo._utils import (colored_frame, decode_utf_8_text)
 
 
 class HaloNotebook(Halo):
@@ -94,6 +94,9 @@ class HaloNotebook(Halo):
             text = self._text['original']
 
         text = text.strip()
+
+        if self._text_color:
+            text = colored_frame(text, self._text_color)
 
         self.stop()
 

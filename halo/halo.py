@@ -521,6 +521,9 @@ class Halo(object):
 
         text = text.strip()
 
+        if self._text_color:
+            text = colored_frame(text, self._text_color)
+
         self.stop()
 
         output = u'{0} {1}\n'.format(*[
