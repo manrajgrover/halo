@@ -67,13 +67,6 @@ class TestHaloNotebook(unittest.TestCase):
         output['text'] = output_text
         output['colors'] = output_colors
 
-        # output = []
-        #
-        # for line in spinner.output.outputs:
-        #     clean_line = strip_ansi(line['text'].strip('\r'))
-        #     if clean_line != '':
-        #         output.append(get_coded_text(clean_line))
-
         return output
 
     def test_basic_spinner(self):
