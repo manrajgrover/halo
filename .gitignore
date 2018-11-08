@@ -111,3 +111,6 @@ tests/*.txt
 
 # IDE settings
 .vscode/
+
+# Idea
+.idea

@@ -54,12 +54,18 @@ long_running_function()
 
 ## API
 
-### `Halo([text|spinner|animation|placement|color|interval|stream|enabled])`
+### `Halo([text|text_color|spinner|animation|placement|color|interval|stream|enabled])`
 
 ##### `text`
 *Type*: `str`
 
 Text shown along with spinner.
+
+##### `text_color`
+*Type*: `str`
+*Values*: `grey`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`
+
+Color of the spinner text. Defaults to `None`.
 
 ##### `spinner`
 *Type*: `str|dict`
