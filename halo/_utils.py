@@ -115,6 +115,25 @@ def decode_utf_8_text(text):
         return text
 
 
+def encode_utf_8_text(text):
+    """Decode the text from utf-8 format
+
+     Parameters
+    ----------
+    text : str
+        String to be encoded
+
+    Returns
+    -------
+    str
+        Encoded string
+    """
+    try:
+        return codecs.encode(text, 'utf-8', 'ignore')
+    except (TypeError, ValueError):
+        return text
+
+
 def get_terminal_columns():
     """Determine the amount of available columns in the terminal
 
