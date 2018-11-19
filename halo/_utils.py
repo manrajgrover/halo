@@ -118,7 +118,7 @@ def decode_utf_8_text(text):
 def encode_utf_8_text(text):
     """Encodes the text to utf-8 format
 
-     Parameters
+    Parameters
     ----------
     text : str
         String to be encoded
