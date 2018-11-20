@@ -15,7 +15,8 @@ from log_symbols.symbols import LogSymbols
 from spinners.spinners import Spinners
 
 from halo._utils import (colored_frame, decode_utf_8_text, get_environment,
-                         get_terminal_columns, is_supported, is_text_type)
+                         get_terminal_columns, is_supported, is_text_type,
+                         encode_utf_8_text)
 
 
 class Halo(object):
@@ -338,7 +339,10 @@ class Halo(object):
         frame = self.frame()
         output = '\r{0}'.format(frame)
         self.clear()
-        self._stream.write(output)
+        try:
+            self._stream.write(output)
+        except UnicodeEncodeError:
+            self._stream.write(encode_utf_8_text(output))
 
     def render(self):
         """Runs the render until thread flag is set.
@@ -531,6 +535,10 @@ class Halo(object):
             if self._placement == 'right' else
             (symbol, text)
         ][0])
-        self._stream.write(output)
+
+        try:
+            self._stream.write(output)
+        except UnicodeEncodeError:
+            self._stream.write(encode_utf_8_text(output))
 
         return self

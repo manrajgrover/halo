@@ -8,6 +8,11 @@ import sys
 import time
 import unittest
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 from colorama import Fore
 from spinners.spinners import Spinners
 
@@ -44,6 +49,7 @@ class TestHalo(unittest.TestCase):
         """
         self._stream_file = os.path.join(self.TEST_FOLDER, 'test.txt')
         self._stream = io.open(self._stream_file, 'w+')
+        self._stream_no_tty = StringIO()
 
     def _get_test_output(self, no_ansi=True):
         """Clean the output from stream and return it in list form.
@@ -527,6 +533,23 @@ class TestHalo(unittest.TestCase):
             output_merged = [arr for c in output['colors'] for arr in c]
 
             self.assertEquals(str(color_int) in output_merged, True)
+
+    def test_redirect_stdout(self):
+        """Test redirect stdout
+        """
+        out = self._stream
+        try:
+            self._stream = self._stream_no_tty
+            spinner = Halo(text='foo', spinner='dots', stream=self._stream)
+
+            spinner.start()
+            time.sleep(1)
+            spinner.stop()
+            output = self._get_test_output()['text']
+        finally:
+            self._stream = out
+
+        self.assertIn('foo', output[0])
 
     def tearDown(self):
         pass
