@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages  # pylint: disable=no-name-in-module,import-error
-
+import io
 
 def dependencies(file):
     with open(file) as f:
         return f.read().splitlines()
 
 
-with open("README.md") as infile:
+with io.open("README.md", 'r', encoding='utf-8') as infile:
     long_description = infile.read()
 
 setup(
