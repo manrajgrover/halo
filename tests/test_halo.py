@@ -551,6 +551,22 @@ class TestHalo(unittest.TestCase):
 
         self.assertIn('foo', output[0])
 
+    def test_windows_whitelist(self):
+        if is_supported():
+            pass
+        else:
+            instance = Halo()
+            default_spinner_value = "line"
+
+            instance.spinner = default_spinner_value
+            self.assertEqual(default_spinner, instance.spinner)
+
+            instance.spinner = "balloon"
+            self.assertEqual(Spinners['balloon'].value, instance.spinner)
+
+            instance.spinner = "monkey"
+            self.assertEqual(default_spinner, instance.spinner)
+
     def tearDown(self):
         pass
 
