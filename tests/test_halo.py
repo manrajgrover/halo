@@ -567,6 +567,17 @@ class TestHalo(unittest.TestCase):
             instance.spinner = "monkey"
             self.assertEqual(default_spinner, instance.spinner)
 
+            spinner = Halo(text='foo', spinner='balloon2', stream=self._stream)
+            frames_ = [get_coded_text(frame_) for frame_ in Spinners['balloon2'].value['frames']]
+
+            spinner.start()
+            time.sleep(1)
+            spinner.stop()
+            output = self._get_test_output()['text']
+
+            for i in range(len(frames_)):
+                self.assertEqual(output[i], '{0} foo'.format(frames_[i]))
+
     def tearDown(self):
         pass
 
