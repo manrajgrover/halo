@@ -552,6 +552,8 @@ class TestHalo(unittest.TestCase):
         self.assertIn('foo', output[0])
 
     def test_windows_whitelist(self):
+        """Test whitelist of Windows-compatible spinners
+        """
         if is_supported():
             pass
         else:
