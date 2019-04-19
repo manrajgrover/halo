@@ -554,9 +554,7 @@ class TestHalo(unittest.TestCase):
     def test_windows_whitelist(self):
         """Test whitelist of Windows-compatible spinners
         """
-        if is_supported():
-            pass
-        else:
+        if not is_supported():
             instance = Halo()
             default_spinner_value = "line"
 
