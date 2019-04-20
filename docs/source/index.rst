@@ -60,13 +60,6 @@ Finally, you can use halo as a decorator:
 
    long_running_function()
 
-How to contribute?
-------------------
-
-Please see `Contributing guidelines`_ for more information.
-
-.. _Contributing guidelines: https://github.com/manrajgrover/halo/blob/master/.github/CONTRIBUTING.md
-
 Like it?
 --------
 
