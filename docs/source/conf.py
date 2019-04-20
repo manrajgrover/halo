@@ -52,8 +52,10 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
 }
 
-autodoc_default_flags = ['members', 'undoc-members', 'private-members',
-                         'special-members', 'inherited-members', 'show-inheritance']
+autodoc_default_options = {
+    'members': True,
+    'private-members': True,
+}
 
 # -- Options for HTML output -------------------------------------------------
 
