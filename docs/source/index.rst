@@ -105,3 +105,5 @@ License
    :caption: About
 
    about/faqs
+   about/DEVELOPMENT
+   Contributing <about/CONTRIBUTING>
