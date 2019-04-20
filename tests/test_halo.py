@@ -429,10 +429,13 @@ class TestHalo(unittest.TestCase):
             self.assertRaises(ValueError, stream.isatty)
             self.assertRaises(ValueError, stream.write, u'')
 
-            spinner = Halo(text='foo', stream=stream)
-            spinner.start()
-            time.sleep(0.5)
-            spinner.stop()
+            try:
+                spinner = Halo(text='foo', stream=stream)
+                spinner.start()
+                time.sleep(0.5)
+                spinner.stop()
+            except ValueError as e:
+                self.fail('Attempted to write to a closed stream: {}'.format(e))
 
     def test_closing_stream_before_stopping(self):
         """Test no I/O is performed on streams closed before stop is called
@@ -443,10 +446,13 @@ class TestHalo(unittest.TestCase):
         time.sleep(0.5)
 
         # no exception raised after closing the stream means test was successful
-        stream.close()
+        try:
+            stream.close()
 
-        time.sleep(0.5)
-        spinner.stop()
+            time.sleep(0.5)
+            spinner.stop()
+        except ValueError as e:
+            self.fail('Attempted to write to a closed stream: {}'.format(e))
 
     def test_setting_enabled_property(self):
         """Test if spinner stops writing when enabled property set to False
