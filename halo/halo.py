@@ -338,8 +338,7 @@ class Halo(object):
         }
 
     def clear(self):
-        """Clears the line and returns cursor to the start.
-        of line
+        """Clears the line and returns cursor to the start of line.
 
         Returns
         -------
