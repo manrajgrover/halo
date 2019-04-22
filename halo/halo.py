@@ -38,26 +38,36 @@ class Halo(object):
         Parameters
         ----------
         text : str, optional
-            Text to display.
+            Text shown along with spinner.
         text_color : str, optional
-            Color of the text.
+            Color of the text to dislpay. Can be ``grey``, ``red``, ``green``,
+            ``yellow``, ``blue``, ``magenta``, ``cyan``, or ``white``. Defaults to ``None``.
         color : str, optional
-            Color of the text to display.
+            Color of the spinner. Can be ``grey``, ``red``, ``green``,
+            ``yellow``, ``blue``, ``magenta``, ``cyan``, or ``white``. Defaults to ``cyan``.
         spinner : str|dict, optional
             String or dictionary representing spinner. String can be one of 60+ spinners
-            supported.
+            supported. If a dict is passed, it should define ``interval`` and ``frames``.
+            Something like::
+
+                {
+                    'interval': 100,
+                    'frames': ['-', '+', '*', '+', '-']
+                }
+
         animation: str, optional
-            Animation to apply if text is too large. Can be one of `bounce`, `marquee`.
-            Defaults to ellipses.
+            Animation to apply if text is too large. Can be ``bounce`` or ``marquee``.
+            If no animation is defined, the text will be ellipsed.
         placement: str, optional
-            Side of the text to place the spinner on. Can be `left` or `right`.
-            Defaults to `left`.
-        interval : integer, optional
+            Side of the text to place the spinner on. Can be ``left`` or ``right``.
+            Defaults to ``left``.
+        interval : int, optional
             Interval between each frame of the spinner in milliseconds.
-        enabled : boolean, optional
-            Spinner enabled or not.
+            Defaults to spinner interval (recommended).
+        enabled : bool, optional
+            Enable or disable the spinner. Defaults to ``True``.
         stream : io, optional
-            Output.
+            Stream to write the output. Defaults to ``sys.stdout``.
         """
         self._color = color
         self._animation = animation
@@ -266,7 +276,7 @@ class Halo(object):
 
     def _get_spinner(self, spinner):
         """Extracts spinner value from options and returns value
-        containing spinner frames and interval, defaults to 'dots' spinner.
+        containing spinner frames and interval, defaults to ``dots`` spinner.
 
         Parameters
         ----------
@@ -478,7 +488,8 @@ class Halo(object):
         return self
 
     def succeed(self, text=None):
-        """Shows and persists success symbol and text and exits.
+        """Stops the spinner and changes symbol to ``✔``. If text is provided,
+        it is persisted else current text is persisted.
 
         Parameters
         ----------
@@ -492,7 +503,8 @@ class Halo(object):
         return self.stop_and_persist(symbol=LogSymbols.SUCCESS.value, text=text)
 
     def fail(self, text=None):
-        """Shows and persists fail symbol and text and exits.
+        """Stops the spinner and changes symbol to ``✖``. If text is provided,
+        it is persisted else current text is persisted.
 
         Parameters
         ----------
@@ -506,7 +518,8 @@ class Halo(object):
         return self.stop_and_persist(symbol=LogSymbols.ERROR.value, text=text)
 
     def warn(self, text=None):
-        """Shows and persists warn symbol and text and exits.
+        """Stops the spinner and changes symbol to ``⚠``. If text is provided,
+        it is persisted else current text is persisted.
 
         Parameters
         ----------
@@ -520,7 +533,8 @@ class Halo(object):
         return self.stop_and_persist(symbol=LogSymbols.WARNING.value, text=text)
 
     def info(self, text=None):
-        """Shows and persists info symbol and text and exits.
+        """Stops the spinner and changes symbol to `ℹ`. If text is provided,
+        it is persisted else current text is persisted.
 
         Parameters
         ----------
@@ -534,14 +548,17 @@ class Halo(object):
         return self.stop_and_persist(symbol=LogSymbols.INFO.value, text=text)
 
     def stop_and_persist(self, symbol=' ', text=None):
-        """Stops the spinner and persists the final frame to be shown.
+        """Stops the spinner and changes symbol and text.
 
         Parameters
         ----------
         symbol : str, optional
-            Symbol to be shown in final frame
+            Symbol to replace the spinner with. Defaults to ``' '``.
         text: str, optional
-            Text to be shown in final frame
+            Text to be persisted. Defaults to instance text.
+
+
+        .. image:: https://raw.github.com/manrajgrover/halo/master/art/persist_spin.svg?sanitize=true
 
         Returns
         -------
