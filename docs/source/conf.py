@@ -53,10 +53,14 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
 }
 
+# Document private members
 autodoc_default_options = {
     'members': True,
     'private-members': True,
 }
+
+# Document class' and __init__ docstrings combined
+autoclass_content = 'both'
 
 # -- Options for HTML output -------------------------------------------------
 
