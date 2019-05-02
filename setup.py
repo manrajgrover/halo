@@ -6,7 +6,7 @@ def dependencies(file):
         return f.read().splitlines()
 
 
-with open("README.md") as infile:
+with open("README.md", encoding='utf-8') as infile:
     long_description = infile.read()
 
 setup(
