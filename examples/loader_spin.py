@@ -16,7 +16,7 @@ spinner = Halo(text='Downloading dataset.zip', spinner='dots')
 try:
     spinner.start()
     for i in range(100):
-        spinner.text = '{0}% Downloaded dataset.zip'.format(i)
+        spinner.text = '{}% Downloaded dataset.zip'.format(i)
         time.sleep(random.random())
     spinner.succeed('Downloaded dataset.zip')
 except (KeyboardInterrupt, SystemExit):
