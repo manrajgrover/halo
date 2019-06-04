@@ -11,8 +11,7 @@ from spinners.spinners import Spinners
 
 from halo import HaloNotebook
 from halo._utils import get_terminal_columns, is_supported
-from tests._utils import decode_utf_8_text, encode_utf_8_text, strip_ansi
-from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
+from tests._utils import decode_utf_8_text, encode_utf_8_text, find_colors, strip_ansi
 
 from termcolor import COLORS
 
@@ -40,7 +39,7 @@ class TestHaloNotebook(unittest.TestCase):
         """
         pass
 
-    def _get_test_output(self, spinner):
+    def _get_test_output(self, spinner, no_ansi=True):
         """Clean the output from Output widget and return it in list form.
 
         Returns
@@ -53,7 +52,11 @@ class TestHaloNotebook(unittest.TestCase):
         output_colors = []
 
         for line in spinner.output.outputs:
-            clean_line = strip_ansi(line['text'].strip('\r'))
+            if no_ansi:
+                clean_line = strip_ansi(line['text'].strip('\r'))
+            else:
+                clean_line = line['text'].strip('\r')
+
             if clean_line != '':
                 output_text.append(get_coded_text(clean_line))
 
@@ -406,6 +409,20 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(text, "foo")
         self.assertRegexpMatches(symbol, pattern)
         spinner.stop()
+
+    def test_spinner_color(self):
+        """Test ANSI escape characters are present
+        """
+
+        for color, color_int in COLORS.items():
+            spinner = HaloNotebook(color=color)
+            spinner.start()
+            output = self._get_test_output(spinner, no_ansi=False)
+            spinner.stop()
+
+            output_merged = [arr for c in output['colors'] for arr in c]
+
+            self.assertEquals(str(color_int) in output_merged, True)
 
     def tearDown(self):
         """Clean up things after every test.

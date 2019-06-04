@@ -13,7 +13,6 @@ try:
 except ImportError:
     from io import StringIO
 
-from colorama import Fore
 from spinners.spinners import Spinners
 
 from halo import Halo
