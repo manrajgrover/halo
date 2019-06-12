@@ -605,6 +605,33 @@ class TestHalo(unittest.TestCase):
 
         self.assertIn('foo', output[0])
 
+    def test_windows_whitelist(self):
+        """Test whitelist of Windows-compatible spinners
+        """
+        if not is_supported():
+            instance = Halo()
+            default_spinner_value = "line"
+
+            instance.spinner = default_spinner_value
+            self.assertEqual(default_spinner, instance.spinner)
+
+            instance.spinner = "balloon"
+            self.assertEqual(Spinners['balloon'].value, instance.spinner)
+
+            instance.spinner = "monkey"
+            self.assertEqual(default_spinner, instance.spinner)
+
+            spinner = Halo(text='foo', spinner='balloon2', stream=self._stream)
+            frames_ = [get_coded_text(frame_) for frame_ in Spinners['balloon2'].value['frames']]
+
+            spinner.start()
+            time.sleep(1)
+            spinner.stop()
+            output = self._get_test_output()['text']
+
+            for i in range(len(frames_)):
+                self.assertEqual(output[i], '{0} foo'.format(frames_[i]))
+
     def tearDown(self):
         pass
 

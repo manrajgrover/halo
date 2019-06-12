@@ -304,6 +304,8 @@ class Halo(object):
             Contains frames and interval defining spinner
         """
         default_spinner = Spinners['dots'].value
+        windows_spinners = ['balloon', 'balloon2', 'bouncingBar', 'dqpb', 'flip', 'layer', 'line', 'pipe',
+                            'simpleDots', 'simpleDotsScrolling', 'star2', 'shark', 'toggle13']
 
         if spinner and type(spinner) == dict:
             return spinner
@@ -314,7 +316,10 @@ class Halo(object):
             else:
                 return default_spinner
         else:
-            return Spinners['line'].value
+            if all([is_text_type(spinner), spinner in Spinners.__members__, spinner in windows_spinners]):
+                return Spinners[spinner].value
+            else:
+                return Spinners['line'].value
 
     def _get_text(self, text):
         """Creates frames based on the selected animation
