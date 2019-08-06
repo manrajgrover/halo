@@ -1,4 +1,4 @@
-backports.shutil_get_terminal_size>=1.0.0;python_version < '3.3'
+backports.shutil_get_terminal_size>=1.0.0; python_version < "3.3"
 log_symbols>=0.0.13
 spinners>=0.0.23
 cursor>=1.2.0
