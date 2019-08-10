@@ -580,8 +580,8 @@ class Halo(object):
         ][0])
 
         try:
-            self._stream.write(output)
+            self._write(output)
         except UnicodeEncodeError:
-            self._stream.write(encode_utf_8_text(output))
+            self._write(encode_utf_8_text(output))
 
         return self
