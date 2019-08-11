@@ -453,6 +453,23 @@ class TestHalo(unittest.TestCase):
         except ValueError as e:
             self.fail('Attempted to write to a closed stream: {}'.format(e))
 
+    def test_closing_stream_before_persistent(self):
+        """Test no I/O is performed on streams closed before stop_and_persist is called
+        """
+        stream = io.StringIO()
+        spinner = Halo(text='foo', stream=stream)
+        spinner.start()
+        time.sleep(0.5)
+
+        # no exception raised after closing the stream means test was successful
+        try:
+            stream.close()
+
+            time.sleep(0.5)
+            spinner.stop_and_persist('done')
+        except ValueError as e:
+            self.fail('Attempted to write to a closed stream: {}'.format(e))
+
     def test_setting_enabled_property(self):
         """Test if spinner stops writing when enabled property set to False
         """
