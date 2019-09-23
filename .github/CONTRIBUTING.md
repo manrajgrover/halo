@@ -2,7 +2,7 @@
 
 ## Development Guidelines
 
-Please read [development guidelines](https://github.com/manrajgrover/halo/blob/master/DEVELOPMENT.md) inorder to setup dev environment and run tests.
+Please read [development guidelines](./DEVELOPMENT.md) inorder to setup dev environment and run tests.
 
 ## Steps to contribute
 
