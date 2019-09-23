@@ -182,6 +182,9 @@ Change the color of spinner
 #### `spinner.spinner`
 Change the spinner itself.
 
+#### `spinner.enabled`
+Enable or disable the spinner.
+
 ## How to contribute?
 
 Please see [Contributing guidelines](https://github.com/manrajgrover/halo/blob/master/.github/CONTRIBUTING.md) for more information.

@@ -11,8 +11,7 @@ from spinners.spinners import Spinners
 
 from halo import HaloNotebook
 from halo._utils import get_terminal_columns, is_supported
-from tests._utils import decode_utf_8_text, encode_utf_8_text, strip_ansi
-from tests._utils import strip_ansi, find_colors, encode_utf_8_text, decode_utf_8_text
+from tests._utils import decode_utf_8_text, encode_utf_8_text, find_colors, strip_ansi
 
 from termcolor import COLORS
 
@@ -40,7 +39,7 @@ class TestHaloNotebook(unittest.TestCase):
         """
         pass
 
-    def _get_test_output(self, spinner):
+    def _get_test_output(self, spinner, no_ansi=True):
         """Clean the output from Output widget and return it in list form.
 
         Returns
@@ -53,7 +52,11 @@ class TestHaloNotebook(unittest.TestCase):
         output_colors = []
 
         for line in spinner.output.outputs:
-            clean_line = strip_ansi(line['text'].strip('\r'))
+            if no_ansi:
+                clean_line = strip_ansi(line['text'].strip('\r'))
+            else:
+                clean_line = line['text'].strip('\r')
+
             if clean_line != '':
                 output_text.append(get_coded_text(clean_line))
 
@@ -79,9 +82,9 @@ class TestHaloNotebook(unittest.TestCase):
         output = self._get_test_output(spinner)['text']
         spinner.stop()
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_text_spinner_color(self):
@@ -114,9 +117,9 @@ class TestHaloNotebook(unittest.TestCase):
         time.sleep(1)
         output = self._get_test_output(spinner)['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
         spinner.succeed('foo\n')
         output = self._get_test_output(spinner)['text']
@@ -140,9 +143,9 @@ class TestHaloNotebook(unittest.TestCase):
         terminal_width = get_terminal_columns()
 
         # -6 of the ' (...)' ellipsis, -2 of the spinner and space
-        self.assertEqual(output[0], '{0} {1} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[1], '{0} {1} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[2], '{0} {1} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[0], '{} {} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[1], '{} {} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[2], '{} {} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
 
         spinner.succeed('End!')
         output = self._get_test_output(spinner)['text']
@@ -165,9 +168,9 @@ class TestHaloNotebook(unittest.TestCase):
 
         terminal_width = get_terminal_columns()
 
-        self.assertEqual(output[0], '{0} {1}'.format(frames[0], text[:terminal_width - 2]))
-        self.assertEqual(output[1], '{0} {1}'.format(frames[1], text[1:terminal_width - 1]))
-        self.assertEqual(output[2], '{0} {1}'.format(frames[2], text[2:terminal_width]))
+        self.assertEqual(output[0], '{} {}'.format(frames[0], text[:terminal_width - 2]))
+        self.assertEqual(output[1], '{} {}'.format(frames[1], text[1:terminal_width - 1]))
+        self.assertEqual(output[2], '{} {}'.format(frames[2], text[2:terminal_width]))
 
         spinner.succeed('End!')
         output = self._get_test_output(spinner)['text']
@@ -183,9 +186,9 @@ class TestHaloNotebook(unittest.TestCase):
             time.sleep(1)
             output = self._get_test_output(spinner)['text']
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_decorator_spinner(self):
@@ -201,9 +204,9 @@ class TestHaloNotebook(unittest.TestCase):
 
         output = decorated_function()
 
-        self.assertEqual(output[0], '{0} foo'.format(frames[0]))
-        self.assertEqual(output[1], '{0} foo'.format(frames[1]))
-        self.assertEqual(output[2], '{0} foo'.format(frames[2]))
+        self.assertEqual(output[0], '{} foo'.format(frames[0]))
+        self.assertEqual(output[1], '{} foo'.format(frames[1]))
+        self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
     def test_initial_title_spinner(self):
         """Test Halo with initial title.
@@ -215,9 +218,9 @@ class TestHaloNotebook(unittest.TestCase):
         output = self._get_test_output(spinner)['text']
         spinner.stop()
 
-        self.assertEqual(output[0], '{0} bar'.format(frames[0]))
-        self.assertEqual(output[1], '{0} bar'.format(frames[1]))
-        self.assertEqual(output[2], '{0} bar'.format(frames[2]))
+        self.assertEqual(output[0], '{} bar'.format(frames[0]))
+        self.assertEqual(output[1], '{} bar'.format(frames[1]))
+        self.assertEqual(output[2], '{} bar'.format(frames[2]))
         self.assertEqual(spinner.output.outputs, spinner._output(''))
 
     def test_id_not_created_before_start(self):
@@ -406,6 +409,20 @@ class TestHaloNotebook(unittest.TestCase):
         self.assertEqual(text, "foo")
         self.assertRegexpMatches(symbol, pattern)
         spinner.stop()
+
+    def test_spinner_color(self):
+        """Test ANSI escape characters are present
+        """
+
+        for color, color_int in COLORS.items():
+            spinner = HaloNotebook(color=color)
+            spinner.start()
+            output = self._get_test_output(spinner, no_ansi=False)
+            spinner.stop()
+
+            output_merged = [arr for c in output['colors'] for arr in c]
+
+            self.assertEquals(str(color_int) in output_merged, True)
 
     def tearDown(self):
         """Clean up things after every test.

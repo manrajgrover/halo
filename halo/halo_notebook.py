@@ -31,7 +31,7 @@ class HaloNotebook(Halo):
         return ({'name': 'stdout', 'output_type': 'stream', 'text': text},)
 
     def clear(self):
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         with self.output:
@@ -43,7 +43,7 @@ class HaloNotebook(Halo):
 
     def _render_frame(self):
         frame = self.frame()
-        output = '\r{0}'.format(frame)
+        output = '\r{}'.format(frame)
         with self.output:
             self.output.outputs += self._output(output)
 
@@ -51,7 +51,7 @@ class HaloNotebook(Halo):
         if text is not None:
             self.text = text
 
-        if not self._enabled or self._spinner_id is not None:
+        if not self.enabled or self._spinner_id is not None:
             return self
 
         if self._stream.isatty():
@@ -84,7 +84,7 @@ class HaloNotebook(Halo):
         -------
         self
         """
-        if not self._enabled:
+        if not self.enabled:
             return self
 
         symbol = decode_utf_8_text(symbol)
@@ -101,7 +101,7 @@ class HaloNotebook(Halo):
 
         self.stop()
 
-        output = '\r{0} {1}\n'.format(*[
+        output = '\r{} {}\n'.format(*[
             (text, symbol)
             if self._placement == 'right' else
             (symbol, text)
