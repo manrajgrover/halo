@@ -54,10 +54,10 @@ intersphinx_mapping = {
 }
 
 # Document private members
-autodoc_default_options = {
-    'members': True,
-    'private-members': True,
-}
+autodoc_default_flags = [
+    'members',
+    'private-members'
+]
 
 # Document class' and __init__ docstrings combined
 autoclass_content = 'both'
