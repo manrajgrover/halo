@@ -10,6 +10,21 @@
 halo
 ====
 
+.. image:: https://travis-ci.org/manrajgrover/halo.svg?branch=master
+   :target: https://travis-ci.org/manrajgrover/halo
+   :alt: Travis CI Build Status
+.. image:: https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true
+   :target: https://ci.appveyor.com/project/manrajgrover/halo
+   :alt: AppVeyor Build status
+.. image:: https://coveralls.io/repos/github/manrajgrover/halo/badge.svg?branch=master
+   :target: https://coveralls.io/github/manrajgrover/halo?branch=master
+   :alt: Coveralls Status
+.. image:: https://img.shields.io/pypi/v/halo.svg
+   :target: https://github.com/manrajgrover/halo
+   :alt: PyPI
+.. image:: https://img.shields.io/badge/awesome-yes-green.svg
+   :alt: awesome
+
 Beautiful spinners for terminal, IPython and Jupyter
 
 .. image:: ../../art/doge_spin.svg
