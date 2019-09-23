@@ -59,6 +59,9 @@ autodoc_default_flags = [
     'private-members'
 ]
 
+# Define master document
+master_doc = 'index'
+
 # Document class' and __init__ docstrings combined
 autoclass_content = 'both'
 
