@@ -10,8 +10,8 @@ Compatible spinners are defined in :meth:`~halo.halo.Halo._get_spinner()` from :
 
 .. literalinclude:: ../../../halo/halo.py
     :linenos:
-    :lineno-start: 277
+    :lineno-start: 320
     :language: python
-    :lines: 277-302
+    :lines: 320-345
 
 Currently, it defaults to ``line``.
