@@ -63,11 +63,12 @@ Documentation will be located in `docs/build/html`.
 #### Adding Documentation
 
 After editing or adding to the module's docstrings, update the Sphinx documentation with `sphinx-apidoc`, 
-then rebuild the html pages:
+clear the output directory, then rebuild the html pages:
 
 ```bash
 $ sphinx-apidoc -f -o ./docs/source halo
 $ cd docs
+$ make clean
 $ make html
 ``` 
 
