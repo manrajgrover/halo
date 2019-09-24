@@ -23,6 +23,7 @@ project = 'halo'
 copyright = '2019, Manraj Singh'
 author = 'Manraj Singh'
 
+# TODO: Single source version info
 # The short X.Y version
 version = '0.0'
 
