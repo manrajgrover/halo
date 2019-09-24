@@ -298,6 +298,7 @@ class Halo(object):
 
     def _write(self, s):
         """Write to the stream, if writable
+
         Parameters
         ----------
         s : str
