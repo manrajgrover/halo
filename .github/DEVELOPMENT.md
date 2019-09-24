@@ -72,6 +72,15 @@ $ make clean
 $ make html
 ``` 
 
+After adding content to the `docs/source` folder, update the Sphinx documentation by clearing the output directory, 
+then rebuilding the html pages:
+
+```bash
+$ cd docs
+$ make clean
+$ make html
+```
+
 #### Testing Documentation
 
 Documentation testing is integrated with `tox`.
