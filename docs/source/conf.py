@@ -27,7 +27,7 @@ author = 'Manraj Singh'
 version = '0.0'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.23'
+release = '0.0.28'
 
 
 # -- General configuration ---------------------------------------------------
