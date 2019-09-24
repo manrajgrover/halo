@@ -276,6 +276,7 @@ class Halo(object):
 
     def _check_stream(self):
         """Returns whether the stream is open, and if applicable, writable
+
         Returns
         -------
         bool
