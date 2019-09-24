@@ -42,3 +42,43 @@ For checking lint issues:
 ```bash
 $ tox -e lint
 ```
+
+### Building Documentation
+
+To install documentation dependencies, run:
+
+```bash
+$ pip install -r requirements-docs.txt
+```
+
+To build the docs, change directories and then run the `html` make target:
+
+```bash
+$ cd docs
+$ make html
+```
+
+Documentation will be located in `docs/build/html`.
+
+#### Adding Documentation
+
+After editing or adding to the module's docstrings, update the Sphinx documentation with `sphinx-apidoc`, 
+then rebuild the html pages:
+
+```bash
+$ sphinx-apidoc -f -o ./docs/source halo
+$ cd docs
+$ make html
+``` 
+
+#### Testing Documentation
+
+Documentation testing is integrated with `tox`.
+
+Simply run:
+
+```bash
+$ tox -e sphinx
+```
+
+If `linkcheck` fails, a list of broken external links will be located in `docs/build/linkcheck/output.txt`.
