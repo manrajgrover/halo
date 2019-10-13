@@ -621,7 +621,18 @@ class TestHalo(unittest.TestCase):
             self._stream = out
 
         self.assertIn('foo', output[0])
-
+    
+    def test_manual_step(self):
+        """Test manual step
+        """
+        default_spinner = Halo()
+        self.assertEqual(default_spinner.manual_step, False)
+        
+        manual_spinner = Halo(manual_step=True)
+        self.assertEqual(manual_spinner.manual_step, True)
+        manual_spinner.step()
+        self.assertEqual(manual_spinner._frame_index, 1)
+        
     def tearDown(self):
         pass
 
