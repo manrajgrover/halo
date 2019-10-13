@@ -13,7 +13,7 @@ import time
 import cursor
 from log_symbols.symbols import LogSymbols
 from spinners.spinners import Spinners
-sys.path += [r"E:\User Files\Documents\Repos\halo\halo"]
+
 from halo._utils import (colored_frame, decode_utf_8_text, get_environment,
                          get_terminal_columns, is_supported, is_text_type,
                          encode_utf_8_text)
@@ -76,7 +76,7 @@ class Halo(object):
         self._stop_spinner = None
         self._spinner_id = None
         self.enabled = enabled
-        
+
         environment = get_environment()
 
         def clean_up():
