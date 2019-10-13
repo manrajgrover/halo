@@ -13,7 +13,7 @@ import time
 import cursor
 from log_symbols.symbols import LogSymbols
 from spinners.spinners import Spinners
-
+sys.path += [r"E:\User Files\Documents\Repos\halo\halo"]
 from halo._utils import (colored_frame, decode_utf_8_text, get_environment,
                          get_terminal_columns, is_supported, is_text_type,
                          encode_utf_8_text)
@@ -31,7 +31,8 @@ class Halo(object):
     SPINNER_PLACEMENTS = ('left', 'right',)
 
     def __init__(self, text='', color='cyan', text_color=None, spinner=None,
-                 animation=None, placement='left', interval=-1, enabled=True, stream=sys.stdout):
+                 animation=None, placement='left', interval=-1, enabled=True,
+                 manual_step=False, stream=sys.stdout):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -59,6 +60,7 @@ class Halo(object):
         """
         self._color = color
         self._animation = animation
+        self.manual_step = manual_step
 
         self.spinner = spinner
         self.text = text
@@ -74,7 +76,7 @@ class Halo(object):
         self._stop_spinner = None
         self._spinner_id = None
         self.enabled = enabled
-
+        
         environment = get_environment()
 
         def clean_up():
@@ -395,10 +397,21 @@ class Halo(object):
         -------
         self
         """
-        while not self._stop_spinner.is_set():
+        while not self._stop_spinner.is_set() and not self.manual_step:
             self._render_frame()
             time.sleep(0.001 * self._interval)
 
+        return self
+    
+    def step(self):
+        """Runs the render once.
+        Returns
+        -------
+        self
+        """
+        if not self._stop_spinner.is_set():
+            self._render_frame()
+        
         return self
 
     def frame(self):
