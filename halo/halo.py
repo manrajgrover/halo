@@ -74,6 +74,7 @@ class Halo(object):
         self._text_index = 0
         self._spinner_thread = None
         self._stop_spinner = None
+        self._run_spinner = None
         self._spinner_id = None
         self.enabled = enabled
 
@@ -398,7 +399,10 @@ class Halo(object):
         self
         """
         while not self._stop_spinner.is_set():
-            self._render_frame()
+            if self._run_spinner.is_set():
+                self._render_frame()
+                if self.manual_step:
+                    self._run_spinner.clear()
             time.sleep(0.001 * self._interval)
 
         return self
@@ -409,7 +413,8 @@ class Halo(object):
         -------
         self
         """
-        self._render_frame()
+        if self._spinner_thread and self._spinner_thread.is_alive():
+            self._run_spinner.set()
         
         return self
 
@@ -479,14 +484,16 @@ class Halo(object):
             return self
 
         self._hide_cursor()
-        
+
+        self._stop_spinner = threading.Event()
+        self._run_spinner = threading.Event()
+        self._spinner_thread = threading.Thread(target=self.render)
+        self._spinner_thread.setDaemon(True)
         if not self.manual_step:
-            self._stop_spinner = threading.Event()
-            self._spinner_thread = threading.Thread(target=self.render)
-            self._spinner_thread.setDaemon(True)
             self._render_frame()
-            self._spinner_id = self._spinner_thread.name
-            self._spinner_thread.start()
+            self._run_spinner.set()
+        self._spinner_id = self._spinner_thread.name
+        self._spinner_thread.start()
 
         return self
 

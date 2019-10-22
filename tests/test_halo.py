@@ -628,11 +628,24 @@ class TestHalo(unittest.TestCase):
         default_spinner = Halo()
         self.assertEqual(default_spinner.manual_step, False)
         
-        manual_spinner = Halo(manual_step=True)
-        self.assertEqual(manual_spinner.manual_step, True)
-        manual_spinner.step()
-        self.assertEqual(manual_spinner._frame_index, 1)
         
+        manual_spinner = Halo(spinner="dots", manual_step=True, interval=0.0001,
+                              stream=self._stream)
+        
+        texts = ["foo", "bar"]
+        
+        manual_spinner.start()
+        for text in texts:
+            manual_spinner.text=text
+            manual_spinner.step()
+            time.sleep(1)
+        manual_spinner.stop()
+        
+        output = self._get_test_output()["text"]
+        frames = manual_spinner.spinner["frames"]
+        for n in range(len(texts)): 
+            self.assertEqual(output[n], frames[n] + " " + texts[n])
+
     def tearDown(self):
         pass
 
