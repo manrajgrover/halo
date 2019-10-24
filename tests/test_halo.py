@@ -627,8 +627,6 @@ class TestHalo(unittest.TestCase):
         """
         default_spinner = Halo()
         self.assertEqual(default_spinner.manual_step, False)
-
-
         manual_spinner = Halo(spinner='dots', manual_step=True,
                               stream=self._stream)
 
