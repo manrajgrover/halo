@@ -644,7 +644,7 @@ class TestHalo(unittest.TestCase):
         output = self._get_test_output()["text"]
         frames = manual_spinner.spinner["frames"]
         for n in range(len(texts)): 
-            self.assertEqual(output[n], frames[n] + " " + texts[n])
+            self.assertEqual(output[n], "{} {}".format(frames[n], texts[n]))
 
     def tearDown(self):
         pass
