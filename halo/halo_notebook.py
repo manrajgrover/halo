@@ -10,15 +10,18 @@ from halo._utils import (colored_frame, decode_utf_8_text)
 
 
 class HaloNotebook(Halo):
-    def __init__(self, text='', color='cyan', text_color=None, spinner=None, placement='left',
-                 animation=None, interval=-1, enabled=True, stream=sys.stdout):
+    def __init__(self, text='', color='cyan', text_color=None, spinner=None,
+                 placement='left', animation=None, interval=-1, enabled=True,
+                 manual_step=False, stream=sys.stdout):
         super(HaloNotebook, self).__init__(text=text,
                                            color=color,
                                            text_color=text_color,
                                            spinner=spinner,
                                            placement=placement,
                                            animation=animation,
-                                           interval=interval, enabled=enabled,
+                                           interval=interval,
+                                           enabled=enabled,
+                                           manual_step=manual_step,
                                            stream=stream)
         self.output = self._make_output_widget()
 
@@ -62,9 +65,12 @@ class HaloNotebook(Halo):
 
         display(self.output)
         self._stop_spinner = threading.Event()
+        self._run_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
         self._spinner_thread.setDaemon(True)
-        self._render_frame()
+        if not self.manual_step:
+            self._render_frame()
+            self._run_spinner.set()
         self._spinner_id = self._spinner_thread.name
         self._spinner_thread.start()
 
