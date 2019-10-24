@@ -646,6 +646,7 @@ class TestHalo(unittest.TestCase):
         for n in range(len(texts)): 
             self.assertEqual(output[n], '{} {}'.format(frames[n], texts[n]))
 
+
     def tearDown(self):
         pass
 
