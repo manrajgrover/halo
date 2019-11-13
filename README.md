@@ -54,7 +54,7 @@ long_running_function()
 
 ## API
 
-### `Halo([text|text_color|spinner|animation|placement|color|interval|stream|enabled])`
+#### `Halo([text|text_color|spinner|animation|placement|color|interval|stream|enabled])`
 
 ##### `text`
 *Type*: `str`
