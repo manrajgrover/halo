@@ -72,6 +72,7 @@ class HaloNotebook(Halo):
 
     def stop_and_persist(self, symbol=' ', text=None):
         """Stops the spinner and persists the final frame to be shown.
+
         Parameters
         ----------
         symbol : str, optional
