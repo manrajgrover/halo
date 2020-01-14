@@ -3,6 +3,7 @@
 """
 import codecs
 import platform
+import os
 import six
 try:
     from shutil import get_terminal_size
@@ -26,10 +27,10 @@ def is_supported():
 
     os_arch = platform.system()
 
-    if os_arch != 'Windows':
+    if os_arch != 'Windows' or os.environ.get('WT_SESSION') is not None:
         return True
 
-    return False
+    return True
 
 
 def get_environment():
