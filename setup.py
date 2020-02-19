@@ -13,7 +13,7 @@ with io.open("README.md", encoding='utf-8') as infile:
 setup(
     name='halo',
     packages=find_packages(exclude=('tests', 'examples')),
-    version='0.0.28',
+    version='0.0.29',
     license='MIT',
     description='Beautiful terminal spinners in Python',
     long_description=long_description,
