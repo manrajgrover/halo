@@ -5,7 +5,7 @@
 </h1>
 
 [![Build Status](https://travis-ci.org/manrajgrover/halo.svg?branch=master)](https://travis-ci.org/manrajgrover/halo) [![Build status](https://ci.appveyor.com/api/projects/status/wa6t414gltr403ff?svg=true)](https://ci.appveyor.com/project/manrajgrover/halo) [![Coverage Status](https://coveralls.io/repos/github/manrajgrover/halo/badge.svg?branch=master)](https://coveralls.io/github/manrajgrover/halo?branch=master)
- [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/manrajgrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg)
+ [![PyPI](https://img.shields.io/pypi/v/halo.svg)](https://github.com/manrajgrover/halo) ![awesome](https://img.shields.io/badge/awesome-yes-green.svg) [![Downloads](https://pepy.tech/badge/halo)](https://pepy.tech/project/halo) [![Downloads](https://pepy.tech/badge/halo/month)](https://pepy.tech/project/halo/month)
 > Beautiful spinners for terminal, IPython and Jupyter
 
 ![halo](https://raw.github.com/manrajgrover/halo/master/art/doge_spin.svg?sanitize=true)
