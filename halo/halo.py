@@ -31,7 +31,7 @@ class Halo(object):
     SPINNER_PLACEMENTS = ('left', 'right',)
 
     def __init__(self, text='', color='cyan', text_color=None, spinner=None,
-                 animation=None, placement='left', interval=-1, enabled=True, stream=sys.stdout):
+                 animation=None, placement='left', interval=-1, enabled=True, strip=True, stream=sys.stdout):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -54,12 +54,15 @@ class Halo(object):
             Interval between each frame of the spinner in milliseconds.
         enabled : boolean, optional
             Spinner enabled or not.
+        strip: boolean, optional
+            Allow text stripping from spaces.
         stream : io, optional
             Output.
         """
         self._color = color
         self._animation = animation
 
+        self.strip = strip
         self.spinner = spinner
         self.text = text
         self._text_color = text_color
@@ -323,7 +326,12 @@ class Halo(object):
         self
         """
         animation = self._animation
-        stripped_text = text.strip()
+        
+        # Check from the strip option whether to strip the text or not.
+        if self.strip:
+            modified_text = text.strip()
+        else:
+            modified_text = text
 
         # Check which frame of the animation is the widest
         max_spinner_length = max([len(i) for i in self._spinner['frames']])
@@ -331,7 +339,7 @@ class Halo(object):
         # Subtract to the current terminal size the max spinner length
         # (-1 to leave room for the extra space between spinner and text)
         terminal_width = get_terminal_columns() - max_spinner_length - 1
-        text_length = len(stripped_text)
+        text_length = len(modified_text)
 
         frames = []
 
@@ -341,20 +349,20 @@ class Halo(object):
                 Make the text bounce back and forth
                 """
                 for x in range(0, text_length - terminal_width + 1):
-                    frames.append(stripped_text[x:terminal_width + x])
+                    frames.append(modified_text[x:terminal_width + x])
                 frames.extend(list(reversed(frames)))
             elif 'marquee':
                 """
                 Make the text scroll like a marquee
                 """
-                stripped_text = stripped_text + ' ' + stripped_text[:terminal_width]
+                modified_text = modified_text + ' ' + modified_text[:terminal_width]
                 for x in range(0, text_length + 1):
-                    frames.append(stripped_text[x:terminal_width + x])
+                    frames.append(modified_text[x:terminal_width + x])
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
-            frames = [stripped_text[:terminal_width - 6] + ' (...)']
+            frames = [modified_text[:terminal_width - 6] + ' (...)']
         else:
-            frames = [stripped_text]
+            frames = [modified_text]
 
         return {
             'original': text,
