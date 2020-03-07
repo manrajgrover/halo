@@ -6,8 +6,8 @@ import threading
 import halo.cursor as cursor
 
 from halo import Halo
-from halo._utils import colored_frame, decode_utf_8_text
-
+from halo._utils import colored_frame, decode_utf_8_text, is_text_type
+from spinners.spinners import Spinners
 
 class HaloNotebook(Halo):
     def __init__(
@@ -120,3 +120,25 @@ class HaloNotebook(Halo):
 
         with self.output:
             self.output.outputs = self._output(output)
+
+    def _get_spinner(self, spinner):
+        """Extracts spinner value from options and returns value
+        containing spinner frames and interval, defaults to 'dots' spinner.
+        Parameters
+        ----------
+        spinner : dict, str
+            Contains spinner value or type of spinner to be used
+        Returns
+        -------
+        dict
+            Contains frames and interval defining spinner
+        """
+        default_spinner = Spinners['dots'].value
+
+        if spinner and type(spinner) == dict:
+            return spinner
+
+        if all([is_text_type(spinner), spinner in Spinners.__members__]):
+            return Spinners[spinner].value
+        else:
+            return default_spinner
