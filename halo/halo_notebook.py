@@ -40,26 +40,23 @@ class HaloNotebook(Halo):
 
         return Output()
 
-    # TODO: using property and setter
-    def _output(self, text=""):
-        return ({"name": "stdout", "output_type": "stream", "text": text},)
-
     def clear(self):
         if not self.enabled:
             return self
 
         with self.output:
-            self.output.outputs += self._output("\r")
-            self.output.outputs += self._output(self.CLEAR_LINE)
+            print('\r', end="")
+            print(self.CLEAR_LINE, end="")
 
-        self.output.outputs = self._output()
         return self
 
     def _render_frame(self):
+        self.output.clear_output(wait=True)
         frame = self.frame()
-        output = "\r{}".format(frame)
+        output = '\r{}'.format(frame)
+
         with self.output:
-            self.output.outputs += self._output(output)
+            print(output, end="")
 
     def start(self, text=None):
         if text is not None:
@@ -114,31 +111,13 @@ class HaloNotebook(Halo):
 
         self.stop()
 
-        output = "\r{} {}\n".format(
-            *[(text, symbol) if self._placement == "right" else (symbol, text)][0]
-        )
+        output = '\r{} {}\n'.format(*[
+            (text, symbol)
+            if self._placement == 'right' else
+            (symbol, text)
+        ][0])
+        
+        self.output.clear_output(wait=True)
 
         with self.output:
-            self.output.outputs = self._output(output)
-
-    def _get_spinner(self, spinner):
-        """Extracts spinner value from options and returns value
-        containing spinner frames and interval, defaults to 'dots' spinner.
-        Parameters
-        ----------
-        spinner : dict, str
-            Contains spinner value or type of spinner to be used
-        Returns
-        -------
-        dict
-            Contains frames and interval defining spinner
-        """
-        default_spinner = Spinners['dots'].value
-
-        if spinner and type(spinner) == dict:
-            return spinner
-
-        if all([is_text_type(spinner), spinner in Spinners.__members__]):
-            return Spinners[spinner].value
-        else:
-            return default_spinner
+            print(output, end="")
