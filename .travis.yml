@@ -4,9 +4,7 @@ git:
   depth: 5
 matrix:
   include:
-  - python: '2.7'
-    env: TOXENV=py27
-  - python: '2.7'
+  - python: '3.5'
     env: TOXENV=lint
   - python: '3.5'
     env: TOXENV=py35
@@ -16,6 +14,10 @@ matrix:
     dist: xenial
     sudo: true
     env: TOXENV=py37
+    - python: '3.8'
+    dist: xenial
+    sudo: true
+    env: TOXENV=py38
   fast_finish: true
 install:
   - pip install tox coveralls
