@@ -25,13 +25,7 @@ $ tox
 
 To run tests for specific environment, run:
 
-1. For Python 2.7:
-
-```bash
-$ tox -e py27
-```
-
-2. For Python 3.6:
+For Python 3.6:
 
 ```bash
 $ tox -e py36

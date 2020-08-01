@@ -9,11 +9,6 @@ clone_depth: 5
 environment:
   fast_finish: true
   matrix:
-    - TOXENV: 'py27'
-      TOXPYTHON: C:\Python27\python.exe
-      PYTHON_HOME: C:\Python27
-      PYTHON_VERSION: '2.7'
-      PYTHON_ARCH: '32'
 
     - TOXENV: 'py35'
       TOXPYTHON: C:\Python35\python.exe
@@ -33,10 +28,16 @@ environment:
       PYTHON_VERSION: '3.7'
       PYTHON_ARCH: '32'
 
+    - TOXENV: 'py38'
+      TOXPYTHON: C:\Python38\python.exe
+      PYTHON_HOME: C:\Python38
+      PYTHON_VERSION: '3.8'
+      PYTHON_ARCH: '32'
+    
     - TOXENV: 'lint'
-      TOXPYTHON: C:\Python27\python.exe
-      PYTHON_HOME: C:\Python27
-      PYTHON_VERSION: '2.7'
+      TOXPYTHON: C:\Python35\python.exe
+      PYTHON_HOME: C:\Python35
+      PYTHON_VERSION: '3.5'
       PYTHON_ARCH: '32'
 
 matrix:
