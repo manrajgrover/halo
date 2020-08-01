@@ -12,7 +12,7 @@ if os.name == "nt":
         _fields_ = [("size", ctypes.c_int), ("visible", ctypes.c_byte)]
 
 
-def hide_cursor(stream=sys.stdout):
+def hide(stream=sys.stdout):
     """Hide cursor.
     Parameters
     ----------
@@ -30,7 +30,7 @@ def hide_cursor(stream=sys.stdout):
         stream.flush()
 
 
-def show_cursor(stream=sys.stdout):
+def show(stream=sys.stdout):
     """Show cursor.
     Parameters
     ----------
