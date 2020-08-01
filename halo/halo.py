@@ -10,7 +10,7 @@ import sys
 import threading
 import time
 
-import halo.cursor
+import halo.cursor as cursor
 
 from log_symbols.symbols import LogSymbols
 from spinners.spinners import Spinners

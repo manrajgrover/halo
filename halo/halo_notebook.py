@@ -3,7 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import sys
 import threading
 
-import halo.cursor
+import halo.cursor as cursor
 
 from halo import Halo
 from halo._utils import colored_frame, decode_utf_8_text
