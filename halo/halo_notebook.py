@@ -3,39 +3,53 @@ from __future__ import absolute_import, print_function, unicode_literals
 import sys
 import threading
 
-import cursor
+import halo.cursor as cursor
 
 from halo import Halo
-from halo._utils import (colored_frame, decode_utf_8_text)
+from halo._utils import colored_frame, decode_utf_8_text
 
 
 class HaloNotebook(Halo):
-    def __init__(self, text='', color='cyan', text_color=None, spinner=None, placement='left',
-                 animation=None, interval=-1, enabled=True, stream=sys.stdout):
-        super(HaloNotebook, self).__init__(text=text,
-                                           color=color,
-                                           text_color=text_color,
-                                           spinner=spinner,
-                                           placement=placement,
-                                           animation=animation,
-                                           interval=interval, enabled=enabled,
-                                           stream=stream)
+    def __init__(
+        self,
+        text="",
+        color="cyan",
+        text_color=None,
+        spinner=None,
+        placement="left",
+        animation=None,
+        interval=-1,
+        enabled=True,
+        stream=sys.stdout,
+    ):
+        super(HaloNotebook, self).__init__(
+            text=text,
+            color=color,
+            text_color=text_color,
+            spinner=spinner,
+            placement=placement,
+            animation=animation,
+            interval=interval,
+            enabled=enabled,
+            stream=stream,
+        )
         self.output = self._make_output_widget()
 
     def _make_output_widget(self):
         from ipywidgets.widgets import Output
+
         return Output()
 
     # TODO: using property and setter
-    def _output(self, text=''):
-        return ({'name': 'stdout', 'output_type': 'stream', 'text': text},)
+    def _output(self, text=""):
+        return ({"name": "stdout", "output_type": "stream", "text": text},)
 
     def clear(self):
         if not self.enabled:
             return self
 
         with self.output:
-            self.output.outputs += self._output('\r')
+            self.output.outputs += self._output("\r")
             self.output.outputs += self._output(self.CLEAR_LINE)
 
         self.output.outputs = self._output()
@@ -43,7 +57,7 @@ class HaloNotebook(Halo):
 
     def _render_frame(self):
         frame = self.frame()
-        output = '\r{}'.format(frame)
+        output = "\r{}".format(frame)
         with self.output:
             self.output.outputs += self._output(output)
 
@@ -70,7 +84,7 @@ class HaloNotebook(Halo):
 
         return self
 
-    def stop_and_persist(self, symbol=' ', text=None):
+    def stop_and_persist(self, symbol=" ", text=None):
         """Stops the spinner and persists the final frame to be shown.
         Parameters
         ----------
@@ -91,7 +105,7 @@ class HaloNotebook(Halo):
         if text is not None:
             text = decode_utf_8_text(text)
         else:
-            text = self._text['original']
+            text = self._text["original"]
 
         text = text.strip()
 
@@ -100,11 +114,9 @@ class HaloNotebook(Halo):
 
         self.stop()
 
-        output = '\r{} {}\n'.format(*[
-            (text, symbol)
-            if self._placement == 'right' else
-            (symbol, text)
-        ][0])
+        output = "\r{} {}\n".format(
+            *[(text, symbol) if self._placement == "right" else (symbol, text)][0]
+        )
 
         with self.output:
             self.output.outputs = self._output(output)
