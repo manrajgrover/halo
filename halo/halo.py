@@ -10,13 +10,20 @@ import sys
 import threading
 import time
 
-import cursor
+import halo.cursor as cursor
+
 from log_symbols.symbols import LogSymbols
 from spinners.spinners import Spinners
 
-from halo._utils import (colored_frame, decode_utf_8_text, get_environment,
-                         get_terminal_columns, is_supported, is_text_type,
-                         encode_utf_8_text)
+from halo._utils import (
+    colored_frame,
+    decode_utf_8_text,
+    get_environment,
+    get_terminal_columns,
+    is_supported,
+    is_text_type,
+    encode_utf_8_text,
+)
 
 
 class Halo(object):
@@ -27,11 +34,24 @@ class Halo(object):
         Code to clear the line
     """
 
-    CLEAR_LINE = '\033[K'
-    SPINNER_PLACEMENTS = ('left', 'right',)
+    CLEAR_LINE = "\033[K"
+    SPINNER_PLACEMENTS = (
+        "left",
+        "right",
+    )
 
-    def __init__(self, text='', color='cyan', text_color=None, spinner=None,
-                 animation=None, placement='left', interval=-1, enabled=True, stream=sys.stdout):
+    def __init__(
+        self,
+        text="",
+        color="cyan",
+        text_color=None,
+        spinner=None,
+        animation=None,
+        placement="left",
+        interval=-1,
+        enabled=True,
+        stream=sys.stdout,
+    ):
         """Constructs the Halo object.
         Parameters
         ----------
@@ -64,7 +84,9 @@ class Halo(object):
         self.text = text
         self._text_color = text_color
 
-        self._interval = int(interval) if int(interval) > 0 else self._spinner['interval']
+        self._interval = (
+            int(interval) if int(interval) > 0 else self._spinner["interval"]
+        )
         self._stream = stream
 
         self.placement = placement
@@ -81,11 +103,11 @@ class Halo(object):
             """Handle cell execution"""
             self.stop()
 
-        if environment in ('ipython', 'jupyter'):
+        if environment in ("ipython", "jupyter"):
             from IPython import get_ipython
 
             ip = get_ipython()
-            ip.events.register('post_run_cell', clean_up)
+            ip.events.register("post_run_cell", clean_up)
         else:  # default terminal
             atexit.register(clean_up)
 
@@ -142,7 +164,7 @@ class Halo(object):
         str
             text value
         """
-        return self._text['original']
+        return self._text["original"]
 
     @text.setter
     def text(self, text):
@@ -214,7 +236,10 @@ class Halo(object):
         """
         if placement not in self.SPINNER_PLACEMENTS:
             raise ValueError(
-                "Unknown spinner placement '{0}', available are {1}".format(placement, self.SPINNER_PLACEMENTS))
+                "Unknown spinner placement '{0}', available are {1}".format(
+                    placement, self.SPINNER_PLACEMENTS
+                )
+            )
         self._placement = placement
 
     @property
@@ -246,7 +271,7 @@ class Halo(object):
             Defines the animation of the spinner
         """
         self._animation = animation
-        self._text = self._get_text(self._text['original'])
+        self._text = self._get_text(self._text["original"])
 
     def _check_stream(self):
         """Returns whether the stream is open, and if applicable, writable
@@ -303,7 +328,7 @@ class Halo(object):
         dict
             Contains frames and interval defining spinner
         """
-        default_spinner = Spinners['dots'].value
+        default_spinner = Spinners["dots"].value
 
         if spinner and type(spinner) == dict:
             return spinner
@@ -314,7 +339,7 @@ class Halo(object):
             else:
                 return default_spinner
         else:
-            return Spinners['line'].value
+            return Spinners["line"].value
 
     def _get_text(self, text):
         """Creates frames based on the selected animation
@@ -326,7 +351,7 @@ class Halo(object):
         stripped_text = text.strip()
 
         # Check which frame of the animation is the widest
-        max_spinner_length = max([len(i) for i in self._spinner['frames']])
+        max_spinner_length = max([len(i) for i in self._spinner["frames"]])
 
         # Subtract to the current terminal size the max spinner length
         # (-1 to leave room for the extra space between spinner and text)
@@ -336,30 +361,27 @@ class Halo(object):
         frames = []
 
         if terminal_width < text_length and animation:
-            if animation == 'bounce':
+            if animation == "bounce":
                 """
                 Make the text bounce back and forth
                 """
                 for x in range(0, text_length - terminal_width + 1):
-                    frames.append(stripped_text[x:terminal_width + x])
+                    frames.append(stripped_text[x : terminal_width + x])
                 frames.extend(list(reversed(frames)))
-            elif 'marquee':
+            elif "marquee":
                 """
                 Make the text scroll like a marquee
                 """
-                stripped_text = stripped_text + ' ' + stripped_text[:terminal_width]
+                stripped_text = stripped_text + " " + stripped_text[:terminal_width]
                 for x in range(0, text_length + 1):
-                    frames.append(stripped_text[x:terminal_width + x])
+                    frames.append(stripped_text[x : terminal_width + x])
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
-            frames = [stripped_text[:terminal_width - 6] + ' (...)']
+            frames = [stripped_text[: terminal_width - 6] + " (...)"]
         else:
             frames = [stripped_text]
 
-        return {
-            'original': text,
-            'frames': frames
-        }
+        return {"original": text, "frames": frames}
 
     def clear(self):
         """Clears the line and returns cursor to the start.
@@ -368,7 +390,7 @@ class Halo(object):
         -------
         self
         """
-        self._write('\r')
+        self._write("\r")
         self._write(self.CLEAR_LINE)
         return self
 
@@ -383,7 +405,7 @@ class Halo(object):
 
         self.clear()
         frame = self.frame()
-        output = '\r{}'.format(frame)
+        output = "\r{}".format(frame)
         try:
             self._write(output)
         except UnicodeEncodeError:
@@ -407,7 +429,7 @@ class Halo(object):
         -------
         self
         """
-        frames = self._spinner['frames']
+        frames = self._spinner["frames"]
         frame = frames[self._frame_index]
 
         if self._color:
@@ -417,11 +439,13 @@ class Halo(object):
         self._frame_index = self._frame_index % len(frames)
 
         text_frame = self.text_frame()
-        return u'{0} {1}'.format(*[
-            (text_frame, frame)
-            if self._placement == 'right' else
-            (frame, text_frame)
-        ][0])
+        return "{0} {1}".format(
+            *[
+                (text_frame, frame)
+                if self._placement == "right"
+                else (frame, text_frame)
+            ][0]
+        )
 
     def text_frame(self):
         """Builds and returns the text frame to be rendered
@@ -429,14 +453,14 @@ class Halo(object):
         -------
         self
         """
-        if len(self._text['frames']) == 1:
+        if len(self._text["frames"]) == 1:
             if self._text_color:
-                return colored_frame(self._text['frames'][0], self._text_color)
+                return colored_frame(self._text["frames"][0], self._text_color)
 
             # Return first frame (can't return original text because at this point it might be ellipsed)
-            return self._text['frames'][0]
+            return self._text["frames"][0]
 
-        frames = self._text['frames']
+        frames = self._text["frames"]
         frame = frames[self._text_index]
 
         self._text_index += 1
@@ -543,7 +567,7 @@ class Halo(object):
         """
         return self.stop_and_persist(symbol=LogSymbols.INFO.value, text=text)
 
-    def stop_and_persist(self, symbol=' ', text=None):
+    def stop_and_persist(self, symbol=" ", text=None):
         """Stops the spinner and persists the final frame to be shown.
         Parameters
         ----------
@@ -564,7 +588,7 @@ class Halo(object):
         if text is not None:
             text = decode_utf_8_text(text)
         else:
-            text = self._text['original']
+            text = self._text["original"]
 
         text = text.strip()
 
@@ -573,11 +597,9 @@ class Halo(object):
 
         self.stop()
 
-        output = u'{0} {1}\n'.format(*[
-            (text, symbol)
-            if self._placement == 'right' else
-            (symbol, text)
-        ][0])
+        output = "{0} {1}\n".format(
+            *[(text, symbol) if self._placement == "right" else (symbol, text)][0]
+        )
 
         try:
             self._write(output)
