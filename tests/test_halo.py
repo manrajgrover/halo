@@ -95,6 +95,7 @@ class TestHalo(unittest.TestCase):
         self.assertEqual(output[1], '{} foo'.format(frames[1]))
         self.assertEqual(output[2], '{} foo'.format(frames[2]))
 
+    @unittest.skipIf(sys.platform.startswith("win"), "ANSI not supported on Windows")
     def test_text_spinner_color(self):
         """Test basic spinner with available colors color (both spinner and text)
         """
@@ -590,6 +591,7 @@ class TestHalo(unittest.TestCase):
         spinner.animation = "marquee"
         self.assertEquals("marquee", spinner.animation)
 
+    @unittest.skipIf(sys.platform.startswith("win"), "ANSI not supported on Windows")
     def test_spinner_color(self):
         """Test ANSI escape characters are present
         """
