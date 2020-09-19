@@ -622,6 +622,17 @@ class TestHalo(unittest.TestCase):
 
         self.assertIn('foo', output[0])
 
+    def test_indent(self):
+        """Test indents spinner
+        """
+        indent = "  "
+        spinner = Halo(text="spam", spinner="dots", indent=indent, stream=self._stream)
+        spinner.start()
+        spinner.stop()
+        output = self._get_test_output()["text"]
+        print(f"\t\tDEBUG: {output}")
+        self.assertEqual(indent, output[0][:len(indent)])
+
     def tearDown(self):
         pass
 
