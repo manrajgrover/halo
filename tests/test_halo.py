@@ -630,7 +630,6 @@ class TestHalo(unittest.TestCase):
         spinner.start()
         spinner.stop()
         output = self._get_test_output()["text"]
-        print(f"\t\tDEBUG: {output}")
         self.assertEqual(indent, output[0][:len(indent)])
 
     def tearDown(self):
