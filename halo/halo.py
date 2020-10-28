@@ -35,10 +35,15 @@ class Halo(object):
     """
 
     CLEAR_LINE = "\033[K"
+    CLEAR_REST = "\033[J"
     SPINNER_PLACEMENTS = (
         "left",
         "right",
     )
+
+    # a global list to keep all Halo instances
+    _instances = []
+    _lock = threading.Lock()
 
     def __init__(
         self,
@@ -96,6 +101,8 @@ class Halo(object):
         self._stop_spinner = None
         self._spinner_id = None
         self.enabled = enabled
+        self._stopped = False
+        self._content = ""
 
         environment = get_environment()
 
@@ -294,6 +301,33 @@ class Halo(object):
 
         return True
 
+    def _pop_stream_content_until_self(self, clear_self=False):
+        """Move cursor to the end of this instance's content and erase all contents
+        following it.
+        Parameters
+        ----------
+        clear_self: bool
+            If equals True, the content of current line will also get cleared
+        Returns
+        -------
+        str
+            The content of stream following this instance.
+        """
+        erased_content = []
+        lines_to_erase = self._content.count("\n") if clear_self else 0
+        for inst in Halo._instances[::-1]:
+            if inst is self:
+                break
+            erased_content.append(inst._content)
+            lines_to_erase += inst._content.count("\n")
+
+        if lines_to_erase > 0:
+            # Move cursor up n lines
+            self._write("\033[{}A".format(lines_to_erase))
+            # Erase rest content
+            self._write(self.CLEAR_REST)
+        return "".join(reversed(erased_content))
+
     def _write(self, s):
         """Write to the stream, if writable
         Parameters
@@ -304,15 +338,27 @@ class Halo(object):
         if self._check_stream():
             self._stream.write(s)
 
-    def _hide_cursor(self):
-        """Disable the user's blinking cursor
+    def write(self, s):
+        """Write to the stream and keep following lines unchanged.
+        Parameters
+        ----------
+        s : str
+            Characters to write to the stream
         """
+        with Halo._lock:
+            erased_content = self._pop_stream_content_until_self()
+            self._write(s)
+            # Write back following lines
+            self._write(erased_content)
+            self._content += s
+
+    def _hide_cursor(self):
+        """Disable the user's blinking cursor"""
         if self._check_stream() and self._stream.isatty():
             cursor.hide(stream=self._stream)
 
     def _show_cursor(self):
-        """Re-enable the user's blinking cursor
-        """
+        """Re-enable the user's blinking cursor"""
         if self._check_stream() and self._stream.isatty():
             cursor.show(stream=self._stream)
 
@@ -390,13 +436,14 @@ class Halo(object):
         -------
         self
         """
-        self._write("\r")
-        self._write(self.CLEAR_LINE)
+        with Halo._lock:
+            erased_content = self._pop_stream_content_until_self(True)
+            self._content = ""
+            self._write(erased_content)
         return self
 
     def _render_frame(self):
-        """Renders the frame on the line after clearing it.
-        """
+        """Renders the frame on the line after clearing it."""
         if not self.enabled:
             # in case we're disabled or stream is closed while still rendering,
             # we render the frame and increment the frame index, so the proper
@@ -405,11 +452,11 @@ class Halo(object):
 
         self.clear()
         frame = self.frame()
-        output = "\r{}".format(frame)
+        output = "\r{}\n".format(frame)
         try:
-            self._write(output)
+            self.write(output)
         except UnicodeEncodeError:
-            self._write(encode_utf_8_text(output))
+            self.write(encode_utf_8_text(output))
 
     def render(self):
         """Runs the render until thread flag is set.
@@ -490,6 +537,12 @@ class Halo(object):
         if not (self.enabled and self._check_stream()):
             return self
 
+        # Clear all stale Halo instances created before
+        # Check against Halo._instances instead of self._instances
+        # to avoid possible overriding in subclasses.
+        if all(inst._stopped for inst in Halo._instances):
+            Halo._instances[:] = []
+        Halo._instances.append(self)
         self._hide_cursor()
 
         self._stop_spinner = threading.Event()
@@ -511,12 +564,17 @@ class Halo(object):
             self._stop_spinner.set()
             self._spinner_thread.join()
 
+        if self._stopped:
+            return
+
         if self.enabled:
             self.clear()
 
         self._frame_index = 0
         self._spinner_id = None
         self._show_cursor()
+        self._stopped = True
+
         return self
 
     def succeed(self, text=None):
@@ -602,8 +660,8 @@ class Halo(object):
         )
 
         try:
-            self._write(output)
+            self.write(output)
         except UnicodeEncodeError:
-            self._write(encode_utf_8_text(output))
+            self.write(encode_utf_8_text(output))
 
         return self
