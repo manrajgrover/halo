@@ -352,7 +352,7 @@ class Halo(object):
             self._write(s)
             # Write back following lines
             self._write(erased_content)
-            self._content += s
+            self._content = s if overwrite else self._content + s
 
     def _hide_cursor(self):
         """Disable the user's blinking cursor"""
