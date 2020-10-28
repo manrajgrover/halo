@@ -542,7 +542,9 @@ class Halo(object):
         # to avoid possible overriding in subclasses.
         if all(inst._stopped for inst in Halo._instances):
             Halo._instances[:] = []
-        Halo._instances.append(self)
+        if self not in Halo._instances:
+            # Allow for calling start() multiple times
+            Halo._instances.append(self)
         self._hide_cursor()
 
         self._stop_spinner = threading.Event()
