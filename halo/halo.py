@@ -338,15 +338,17 @@ class Halo(object):
         if self._check_stream():
             self._stream.write(s)
 
-    def write(self, s):
+    def write(self, s, overwrite=False):
         """Write to the stream and keep following lines unchanged.
         Parameters
         ----------
         s : str
             Characters to write to the stream
+        overwrite: bool
+            If set to True, overwrite the content of current instance.
         """
         with Halo._lock:
-            erased_content = self._pop_stream_content_until_self()
+            erased_content = self._pop_stream_content_until_self(overwrite)
             self._write(s)
             # Write back following lines
             self._write(erased_content)
@@ -450,13 +452,12 @@ class Halo(object):
             # frame is rendered if we're reenabled or the stream opens again.
             return
 
-        self.clear()
         frame = self.frame()
         output = "\r{}\n".format(frame)
         try:
-            self.write(output)
+            self.write(output, True)
         except UnicodeEncodeError:
-            self.write(encode_utf_8_text(output))
+            self.write(encode_utf_8_text(output), True)
 
     def render(self):
         """Runs the render until thread flag is set.
