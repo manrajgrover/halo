@@ -323,12 +323,12 @@ class Halo(object):
 
         if lines_to_erase > 0:
             # Move cursor up n lines
-            self._write("\033[{}A".format(lines_to_erase))
+            self._write_stream("\033[{}A".format(lines_to_erase))
             # Erase rest content
-            self._write(self.CLEAR_REST)
+            self._write_stream(self.CLEAR_REST)
         return "".join(reversed(erased_content))
 
-    def _write(self, s):
+    def _write_stream(self, s):
         """Write to the stream, if writable
         Parameters
         ----------
@@ -338,7 +338,7 @@ class Halo(object):
         if self._check_stream():
             self._stream.write(s)
 
-    def write(self, s, overwrite=False):
+    def _write(self, s, overwrite=False):
         """Write to the stream and keep following lines unchanged.
         Parameters
         ----------
@@ -349,9 +349,9 @@ class Halo(object):
         """
         with Halo._lock:
             erased_content = self._pop_stream_content_until_self(overwrite)
-            self._write(s)
+            self._write_stream(s)
             # Write back following lines
-            self._write(erased_content)
+            self._write_stream(erased_content)
             self._content = s if overwrite else self._content + s
 
     def _hide_cursor(self):
@@ -441,7 +441,7 @@ class Halo(object):
         with Halo._lock:
             erased_content = self._pop_stream_content_until_self(True)
             self._content = ""
-            self._write(erased_content)
+            self._write_stream(erased_content)
         return self
 
     def _render_frame(self):
@@ -455,9 +455,9 @@ class Halo(object):
         frame = self.frame()
         output = "\r{}\n".format(frame)
         try:
-            self.write(output, True)
+            self._write(output, True)
         except UnicodeEncodeError:
-            self.write(encode_utf_8_text(output), True)
+            self._write(encode_utf_8_text(output), True)
 
     def render(self):
         """Runs the render until thread flag is set.
@@ -663,8 +663,8 @@ class Halo(object):
         )
 
         try:
-            self.write(output)
+            self._write(output)
         except UnicodeEncodeError:
-            self.write(encode_utf_8_text(output))
+            self._write(encode_utf_8_text(output))
 
         return self
