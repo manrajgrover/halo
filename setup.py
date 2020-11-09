@@ -16,7 +16,7 @@ with io.open("README.md", encoding="utf-8") as infile:
 setup(
     name="halo",
     packages=find_packages(exclude=("tests", "examples")),
-    version="0.0.30",
+    version="0.0.31",
     license="MIT",
     classifiers=[
         "Programming Language :: Python",
