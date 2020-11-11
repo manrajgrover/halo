@@ -2,5 +2,5 @@ backports.shutil_get_terminal_size>=1.0.0;python_version < '3.3'
 log_symbols>=0.0.14
 spinners>=0.0.24
 termcolor>=1.1.0
-colorama>=0.3.9
+colorama>=0.3.9; sys_platform == "win32"
 six>=1.12.0

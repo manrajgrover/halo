@@ -23,6 +23,7 @@ from halo._utils import (
     is_supported,
     is_text_type,
     encode_utf_8_text,
+    wrap_stream_for_win,
 )
 
 
@@ -87,6 +88,8 @@ class Halo(object):
         self._interval = (
             int(interval) if int(interval) > 0 else self._spinner["interval"]
         )
+        if wrap_stream_for_win:
+            stream = wrap_stream_for_win(stream)
         self._stream = stream
 
         self.placement = placement
