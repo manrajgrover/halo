@@ -128,8 +128,17 @@ class Halo(object):
 
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
-            with self:
-                return f(*args, **kwargs)
+            with self as spinner:
+                try:
+                    # Inject the spinner as a function parameter.
+                    # The injected parameter is merged with the original arguments
+                    wrapped_kwargs = dict(spinner=spinner)
+                    wrapped_kwargs.update(kwargs)
+                    return f(*args, **wrapped_kwargs)
+                except TypeError:
+                    # This happens when the wrapped function does not declare the optional parameter
+                    # In this case we do not inject the parameter
+                    return f(*args, **kwargs)
 
         return wrapped
 
