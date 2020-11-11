@@ -52,7 +52,7 @@ class HaloNotebook(Halo):
             self.output.outputs += self._output("\r")
             self.output.outputs += self._output(self.CLEAR_LINE)
 
-        self.output.outputs = self._output()
+        self.output.outputs += self._output()
         return self
 
     def _render_frame(self):
