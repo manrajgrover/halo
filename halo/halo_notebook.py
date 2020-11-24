@@ -6,8 +6,8 @@ import threading
 import halo.cursor as cursor
 
 from halo import Halo
-from halo._utils import colored_frame, decode_utf_8_text
-
+from halo._utils import colored_frame, decode_utf_8_text, is_text_type
+from spinners.spinners import Spinners
 
 class HaloNotebook(Halo):
     def __init__(
@@ -40,26 +40,23 @@ class HaloNotebook(Halo):
 
         return Output()
 
-    # TODO: using property and setter
-    def _output(self, text=""):
-        return ({"name": "stdout", "output_type": "stream", "text": text},)
-
     def clear(self):
         if not self.enabled:
             return self
 
         with self.output:
-            self.output.outputs += self._output("\r")
-            self.output.outputs += self._output(self.CLEAR_LINE)
+            print('\r', end="")
+            print(self.CLEAR_LINE, end="")
 
-        self.output.outputs = self._output()
         return self
 
     def _render_frame(self):
+        self.output.clear_output(wait=True)
         frame = self.frame()
-        output = "\r{}".format(frame)
+        output = '\r{}'.format(frame)
+
         with self.output:
-            self.output.outputs += self._output(output)
+            print(output, end="")
 
     def start(self, text=None):
         if text is not None:
@@ -114,9 +111,13 @@ class HaloNotebook(Halo):
 
         self.stop()
 
-        output = "\r{} {}\n".format(
-            *[(text, symbol) if self._placement == "right" else (symbol, text)][0]
-        )
+        output = '\r{} {}\n'.format(*[
+            (text, symbol)
+            if self._placement == 'right' else
+            (symbol, text)
+        ][0])
+        
+        self.output.clear_output(wait=True)
 
         with self.output:
-            self.output.outputs = self._output(output)
+            print(output, end="")
