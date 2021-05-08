@@ -77,6 +77,15 @@ class Halo(object):
         stream : io, optional
             Output.
         """
+        
+        # To reset Values in deleter
+        self.reset_values = {"text": text,
+                            "color": color,
+                            "text_color": text_color,
+                            "spinner": spinner,
+                            "animation": animation,
+                            "placement": placement,}
+        
         self._color = color
         self._animation = animation
 
@@ -156,6 +165,12 @@ class Halo(object):
         self._frame_index = 0
         self._text_index = 0
 
+    @spinner.deleter
+    def spinner(self):
+        """set spinner to None when delete spinner is
+        """
+        self._spinner = self.reset_values["spinner"]
+
     @property
     def text(self):
         """Getter for text property.
@@ -175,6 +190,10 @@ class Halo(object):
             Defines the text value for spinner
         """
         self._text = self._get_text(text)
+
+    @text.deleter
+    def text(self):
+        self.text = self.reset_values["text"]
 
     @property
     def text_color(self):
@@ -196,6 +215,10 @@ class Halo(object):
         """
         self._text_color = text_color
 
+    @text_color.deleter
+    def text_color(self):
+        self._text_color = self.reset_values["text_color"]
+
     @property
     def color(self):
         """Getter for color property.
@@ -215,6 +238,10 @@ class Halo(object):
             Defines the color value for spinner
         """
         self._color = color
+
+    @color.deleter
+    def color(self):
+        self._color = self.reset_values["color"]
 
     @property
     def placement(self):
@@ -241,6 +268,10 @@ class Halo(object):
                 )
             )
         self._placement = placement
+
+    @placement.deleter
+    def placement(self):
+        self.placement = self.reset_values["placement"]
 
     @property
     def spinner_id(self):
@@ -272,6 +303,10 @@ class Halo(object):
         """
         self._animation = animation
         self._text = self._get_text(self._text["original"])
+
+    @animation.deleter
+    def animation(self):
+        self._animation = self.reset_values["animation"]
 
     def _check_stream(self):
         """Returns whether the stream is open, and if applicable, writable
@@ -334,10 +369,7 @@ class Halo(object):
             return spinner
 
         if is_supported():
-            if all([is_text_type(spinner), spinner in Spinners.__members__]):
-                return Spinners[spinner].value
-            else:
-                return default_spinner
+            return Spinners[spinner].valueif if all([is_text_type(spinner), spinner in Spinners.__members__]) else default_spinner
         else:
             return Spinners["line"].value
 
@@ -354,8 +386,8 @@ class Halo(object):
         max_spinner_length = max([len(i) for i in self._spinner["frames"]])
 
         # Subtract to the current terminal size the max spinner length
-        # (-1 to leave room for the extra space between spinner and text)
-        terminal_width = get_terminal_columns() - max_spinner_length - 1
+        # (+1 to leave room for the extra space between spinner and text)
+        terminal_width = get_terminal_columns() - (max_spinner_length + 1)
         text_length = len(stripped_text)
 
         frames = []

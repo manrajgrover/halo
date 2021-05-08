@@ -2,6 +2,8 @@
 __author__ = 'Manraj Singh'
 __email__ = 'manrajsinghgrover@gmail.com'
 
+all = ["cursor.py", "halo_notebook.py", "halo.py"]
+
 import logging
 
 from .halo import Halo
