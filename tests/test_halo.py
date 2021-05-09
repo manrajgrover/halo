@@ -27,10 +27,12 @@ else:
     get_coded_text = decode_utf_8_text
 
 if is_supported():
-    frames = [get_coded_text(frame) for frame in Spinners['dots'].value['frames']]
+    frames = [get_coded_text(frame)
+              for frame in Spinners['dots'].value['frames']]
     default_spinner = Spinners['dots'].value
 else:
-    frames = [get_coded_text(frame) for frame in Spinners['line'].value['frames']]
+    frames = [get_coded_text(frame)
+              for frame in Spinners['line'].value['frames']]
     default_spinner = Spinners['line'].value
 
 
@@ -65,7 +67,8 @@ class TestHalo(unittest.TestCase):
         output_colors = []
 
         for line in data:
-            clean_line = strip_ansi(line.strip('\n')) if no_ansi else line.strip('\n')
+            clean_line = strip_ansi(line.strip(
+                '\n')) if no_ansi else line.strip('\n')
             if clean_line != '':
                 output_text.append(get_coded_text(clean_line))
 
@@ -175,9 +178,12 @@ class TestHalo(unittest.TestCase):
         terminal_width = get_terminal_columns()
 
         # -6 of the ' (...)' ellipsis, -2 of the spinner and space
-        self.assertEqual(output[0], '{} {} (...)'.format(frames[0], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[1], '{} {} (...)'.format(frames[1], text[:terminal_width - 6 - 2]))
-        self.assertEqual(output[2], '{} {} (...)'.format(frames[2], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[0], '{} {} (...)'.format(
+            frames[0], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[1], '{} {} (...)'.format(
+            frames[1], text[:terminal_width - 6 - 2]))
+        self.assertEqual(output[2], '{} {} (...)'.format(
+            frames[2], text[:terminal_width - 6 - 2]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
@@ -189,7 +195,8 @@ class TestHalo(unittest.TestCase):
         text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
                'terminal width, which forces the text frame renderer to add an ellipse at the end of the ' \
                'text. ' * 6
-        spinner = Halo(text=text, spinner='dots', stream=self._stream, animation='marquee')
+        spinner = Halo(text=text, spinner='dots',
+                       stream=self._stream, animation='marquee')
 
         spinner.start()
         time.sleep(1)
@@ -198,9 +205,12 @@ class TestHalo(unittest.TestCase):
 
         terminal_width = get_terminal_columns()
 
-        self.assertEqual(output[0], '{} {}'.format(frames[0], text[:terminal_width - 2]))
-        self.assertEqual(output[1], '{} {}'.format(frames[1], text[1:terminal_width - 1]))
-        self.assertEqual(output[2], '{} {}'.format(frames[2], text[2:terminal_width]))
+        self.assertEqual(output[0], '{} {}'.format(
+            frames[0], text[:terminal_width - 2]))
+        self.assertEqual(output[1], '{} {}'.format(
+            frames[1], text[1:terminal_width - 1]))
+        self.assertEqual(output[2], '{} {}'.format(
+            frames[2], text[2:terminal_width]))
 
         pattern = re.compile(r'(✔|v) End!', re.UNICODE)
 
