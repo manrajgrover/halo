@@ -23,6 +23,6 @@ try:
     spinner.spinner = 'hearts'
     spinner.text_color = 'magenta'
     time.sleep(2)
-    spinner.stop_and_persist(symbol='🦄 '.encode('utf-8'), text='Wow!')
+    spinner.stop_and_persist(symbol='🦄'.encode('utf-8'), text='Wow!')
 except (KeyboardInterrupt, SystemExit):
     spinner.stop()

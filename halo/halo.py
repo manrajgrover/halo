@@ -10,6 +10,9 @@ import sys
 import threading
 import time
 
+import re
+
+
 import halo.cursor as cursor
 
 from log_symbols.symbols import LogSymbols
@@ -77,14 +80,18 @@ class Halo(object):
         stream : io, optional
             Output.
         """
-        
+
         # To reset Values in deleter
         self.reset_values = {"text": text,
-                            "color": color,
-                            "text_color": text_color,
-                            "spinner": spinner,
-                            "animation": animation,
-                            "placement": placement,}
+                             "color": color,
+                             "text_color": text_color,
+                             "spinner": spinner,
+                             "animation": animation,
+                             "placement": placement, }
+
+        self._symbol = "  "
+        self._stop_persist = False
+
         
         self._color = color
         self._animation = animation
@@ -129,8 +136,11 @@ class Halo(object):
         return self.start()
 
     def __exit__(self, type, value, traceback):
-        """Stops the spinner. For use in context managers."""
-        self.stop()
+        """Stops the spinner with show text at the end or not. For use in context managers."""
+        if self._stop_persist:
+            self.stop_and_persist(symbol=self._symbol, text=self.text)
+        else:
+            self.stop()
 
     def __call__(self, f):
         """Allow the Halo object to be used as a regular function decorator."""
@@ -138,9 +148,47 @@ class Halo(object):
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
             with self:
+                self._change_text(f, *args, **kwargs)
                 return f(*args, **kwargs)
 
         return wrapped
+
+    def _change_text(self, f, *args, **kwargs):
+        """if you want to change text in decorator as your function is in a loop
+        * you have to use halo_iter as the argument of function
+        * if you want to show finished text use stop_persist:bool, stop_text:str and stop_symbol:str
+
+        Args:
+            f (callable): the function which supposed to be in a loop
+        """
+        if "halo_iter" in kwargs:
+            if type(kwargs['halo_iter']) in [list, tuple, dict]:
+                main_text = self.text
+                curl_brackets = re.findall(
+                    r'\{([a-zA-Z_]*)\}', main_text)
+                results = []
+                for text in kwargs['halo_iter']:
+                    for k, curl_value in enumerate(curl_brackets):
+                        if len(curl_brackets) > 1:
+                            text = list(text)[k]
+                        self.text = main_text.format(
+                            **{curl_value: text})
+                        results.append(f(*args, **kwargs))
+        
+            if 'stop_text' in kwargs:
+                self._stop_persist = True
+                self.text = kwargs['stop_text']
+
+            if 'stop_symbol' in kwargs:
+                self._stop_persist = True
+                self._symbol = kwargs['stop_symbol']
+            else:
+                self._symbol = '  '
+
+            return results
+                
+        else:
+            self._stop_persist = False
 
     @property
     def spinner(self):
@@ -193,7 +241,7 @@ class Halo(object):
 
     @text.deleter
     def text(self):
-        self.text = self.reset_values["text"]
+        self._text = self.reset_values["text"]
 
     @property
     def text_color(self):
@@ -398,15 +446,16 @@ class Halo(object):
                 Make the text bounce back and forth
                 """
                 for x in range(0, text_length - terminal_width + 1):
-                    frames.append(stripped_text[x : terminal_width + x])
+                    frames.append(stripped_text[x: terminal_width + x])
                 frames.extend(list(reversed(frames)))
             elif "marquee":
                 """
                 Make the text scroll like a marquee
                 """
-                stripped_text = stripped_text + " " + stripped_text[:terminal_width]
+                stripped_text = stripped_text + " " + \
+                    stripped_text[:terminal_width]
                 for x in range(0, text_length + 1):
-                    frames.append(stripped_text[x : terminal_width + x])
+                    frames.append(stripped_text[x: terminal_width + x])
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
             frames = [stripped_text[: terminal_width - 6] + " (...)"]
