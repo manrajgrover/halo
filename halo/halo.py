@@ -92,7 +92,6 @@ class Halo(object):
         self._symbol = "  "
         self._stop_persist = False
 
-        
         self._color = color
         self._animation = animation
 
@@ -163,18 +162,20 @@ class Halo(object):
         """
         if "halo_iter" in kwargs:
             if type(kwargs['halo_iter']) in [list, tuple, dict]:
-                main_text = self.text
+                main_text = self.text   # text have curl-brackets like
+                # 'This is task {number}'
                 curl_brackets = re.findall(
-                    r'\{([a-zA-Z_]*)\}', main_text)
-                results = []
+                    r'\{([^\s\{\}]+)\}', main_text)
+                results = []  # store all return f(*args, **kwargs) in loop
                 for text in kwargs['halo_iter']:
-                    for k, curl_value in enumerate(curl_brackets):
-                        if len(curl_brackets) > 1:
-                            text = list(text)[k]
-                        self.text = main_text.format(
-                            **{curl_value: text})
-                        results.append(f(*args, **kwargs))
-        
+                    #* type(text) is str in single curl-bracket 
+                    #* or list[str] in multiple curl-brackets
+                    text_dict = dict(list(zip(curl_brackets, text))) if len(
+                        curl_brackets) > 1 else dict([(curl_brackets[0], text)])
+
+                    self.text = main_text.format(**text_dict)
+                    results.append(f(*args, **kwargs))
+
             if 'stop_text' in kwargs:
                 self._stop_persist = True
                 self.text = kwargs['stop_text']
@@ -186,7 +187,7 @@ class Halo(object):
                 self._symbol = '  '
 
             return results
-                
+
         else:
             self._stop_persist = False
 
