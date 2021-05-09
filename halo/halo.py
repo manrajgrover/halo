@@ -417,7 +417,7 @@ class Halo(object):
             return spinner
 
         if is_supported():
-            return Spinners[spinner].valueif if all([is_text_type(spinner), spinner in Spinners.__members__]) else default_spinner
+            return Spinners[spinner].value if all([is_text_type(spinner), spinner in Spinners.__members__]) else default_spinner
         else:
             return Spinners["line"].value
 
