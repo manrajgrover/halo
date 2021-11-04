@@ -4,15 +4,22 @@
 import codecs
 import platform
 import six
+import sys
+
 try:
     from shutil import get_terminal_size
 except ImportError:
     from backports.shutil_get_terminal_size import get_terminal_size
 
-from colorama import init
 from termcolor import colored
 
-init(autoreset=True)
+
+IS_WIN = any(sys.platform.startswith(i) for i in ['win32', 'cygwin'])
+
+if IS_WIN:
+    import colorama
+    colorama.init(autoreset=True)
+
 
 
 def is_supported():
