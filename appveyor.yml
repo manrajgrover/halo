@@ -9,36 +9,41 @@ clone_depth: 5
 environment:
   fast_finish: true
   matrix:
-
-    - TOXENV: 'py35'
+    - TOXENV: "py35"
       TOXPYTHON: C:\Python35\python.exe
       PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
+      PYTHON_VERSION: "3.5"
+      PYTHON_ARCH: "32"
 
-    - TOXENV: 'py36'
+    - TOXENV: "py36"
       TOXPYTHON: C:\Python36\python.exe
       PYTHON_HOME: C:\Python36
-      PYTHON_VERSION: '3.6'
-      PYTHON_ARCH: '32'
-    
-    - TOXENV: 'py37'
+      PYTHON_VERSION: "3.6"
+      PYTHON_ARCH: "32"
+
+    - TOXENV: "py37"
       TOXPYTHON: C:\Python37\python.exe
       PYTHON_HOME: C:\Python37
-      PYTHON_VERSION: '3.7'
-      PYTHON_ARCH: '32'
+      PYTHON_VERSION: "3.7"
+      PYTHON_ARCH: "32"
 
-    - TOXENV: 'py38'
+    - TOXENV: "py38"
       TOXPYTHON: C:\Python38\python.exe
       PYTHON_HOME: C:\Python38
-      PYTHON_VERSION: '3.8'
-      PYTHON_ARCH: '32'
-    
-    - TOXENV: 'lint'
+      PYTHON_VERSION: "3.8"
+      PYTHON_ARCH: "32"
+
+    - TOXENV: "py39"
+      TOXPYTHON: C:\Python39\python.exe
+      PYTHON_HOME: C:\Python39
+      PYTHON_VERSION: "3.9"
+      PYTHON_ARCH: "32"
+
+    - TOXENV: "lint"
       TOXPYTHON: C:\Python35\python.exe
       PYTHON_HOME: C:\Python35
-      PYTHON_VERSION: '3.5'
-      PYTHON_ARCH: '32'
+      PYTHON_VERSION: "3.5"
+      PYTHON_ARCH: "32"
 
 matrix:
   fast_finish: true
