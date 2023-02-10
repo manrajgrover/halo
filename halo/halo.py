@@ -128,8 +128,16 @@ class Halo(object):
 
         @functools.wraps(f)
         def wrapped(*args, **kwargs):
-            with self:
-                return f(*args, **kwargs)
+            try:
+                if 'spinner' in f.__code__.co_varnames[:f.__code__.co_argcount]:
+                    with self as h:
+                        return f(spinner=h, *args, **kwargs)
+                else:
+                    with self:
+                        return f(*args, **kwargs)
+            except ValueError:
+                with self:
+                    return f(*args, **kwargs)
 
         return wrapped
 
