@@ -35,7 +35,7 @@ def is_supported():
 
     try:
         current_encoding.encode('\u280b')
-    except UnicodeEncodeError:
+    except UnicodeError:
         return False
     else:
         return True
