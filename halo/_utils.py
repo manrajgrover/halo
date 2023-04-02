@@ -3,6 +3,7 @@
 """
 import codecs
 import locale
+import os
 import sys
 import six
 try:
@@ -31,7 +32,10 @@ def is_supported():
         try: 
             current_encoding = codecs.lookup(sys.stdin.encoding)
         except TypeError:
-            current_encoding = codecs.lookup(locale.getpreferredencoding(False))
+            try:
+                current_encoding = codecs.lookup(os.device_encoding(sys.__stdout__.fileno()))
+            except TypeError:
+                current_encoding = codecs.lookup(locale.getpreferredencoding(False))
 
     try:
         current_encoding.encode('\u280b')
