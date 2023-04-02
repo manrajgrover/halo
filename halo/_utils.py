@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """Utilities for Halo library.
 """
-import builtins
 import codecs
-import platform
+import sys
 import six
 try:
     from shutil import get_terminal_size
@@ -25,12 +24,14 @@ def is_supported():
         Whether operating system supports main symbols or not
     """
 
-    os_arch = platform.system()
+    current_encoding = codecs.lookup(sys.stdout.encoding)
 
-    if os_arch != 'Windows' or getattr(builtins, '__IPYTHON__', False):
+    try:
+        current_encoding.encode('\u280b')
+    except UnicodeEncodeError:
+        return False
+    else:
         return True
-
-    return False
 
 
 def get_environment():
