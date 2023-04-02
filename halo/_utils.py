@@ -31,7 +31,7 @@ def is_supported():
         try: 
             current_encoding = codecs.lookup(sys.stdin.encoding)
         except TypeError:
-            current_encoding = codecs.lookup(locale.getpreferredencoding())
+            current_encoding = codecs.lookup(locale.getpreferredencoding(False))
 
     try:
         current_encoding.encode('\u280b')
