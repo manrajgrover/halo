@@ -26,20 +26,19 @@ def is_supported():
         Whether operating system supports main symbols or not
     """
     possible_encodings = (
-        sys.stdout.encoding,
-        sys.stdin.encoding,
+        # the original stdout at the time python started
         sys.__stdout__.encoding,
-        sys.__stdin__.encoding,
-        os.device_encoding(sys.__stdout__.fileno()),
-        os.device_encoding(sys.__stdin__.fileno()),
+        (os.device_encoding(sys.__stdout__.fileno()) if sys.__stdout__.isatty() else None),
         locale.getpreferredencoding(),
-        locale.getpreferredencoding(False)
+        locale.getpreferredencoding(False),
+        # the current, possibly redirected stdout
+        sys.stdout.encoding
     )
 
     for encoding in possible_encodings:
         try:
             current_encoding = codecs.lookup(encoding)
-        except TypeError:
+        except:
             continue
         else:
             break
