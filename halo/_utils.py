@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Utilities for Halo library.
 """
+import builtins
 import codecs
 import platform
 import six
@@ -26,7 +27,7 @@ def is_supported():
 
     os_arch = platform.system()
 
-    if os_arch != 'Windows':
+    if os_arch != 'Windows' or getattr(builtins, '__IPYTHON__', False):
         return True
 
     return False
