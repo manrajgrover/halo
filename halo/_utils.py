@@ -2,6 +2,7 @@
 """Utilities for Halo library.
 """
 import codecs
+import locale
 import sys
 import six
 try:
@@ -24,7 +25,13 @@ def is_supported():
         Whether operating system supports main symbols or not
     """
 
-    current_encoding = codecs.lookup(sys.stdout.encoding)
+    try:
+        current_encoding = codecs.lookup(sys.stdout.encoding)
+    except TypeError:
+        try: 
+            current_encoding = codecs.lookup(sys.stdin.encoding)
+        except TypeError:
+            current_encoding = codecs.lookup(locale.getpreferredencoding())
 
     try:
         current_encoding.encode('\u280b')
