@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Utilities for Halo library.
 """
+import builtins
 import codecs
 import locale
 import os
@@ -26,13 +27,13 @@ def is_supported():
         Whether operating system supports main symbols or not
     """
     possible_encodings = (
+        # the current, possibly redirected stdout
+        (sys.stdout.encoding if getattr(builtins, '__IPYTHON__', False) else None),
         # the original stdout at the time python started
         sys.__stdout__.encoding,
         (os.device_encoding(sys.__stdout__.fileno()) if sys.__stdout__.isatty() else None),
         locale.getpreferredencoding(),
         locale.getpreferredencoding(False),
-        # the current, possibly redirected stdout
-        sys.stdout.encoding
     )
 
     for encoding in possible_encodings:
