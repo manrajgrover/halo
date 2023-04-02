@@ -25,17 +25,26 @@ def is_supported():
     boolean
         Whether operating system supports main symbols or not
     """
+    possible_encodings = (
+        sys.stdout.encoding,
+        sys.stdin.encoding,
+        sys.__stdout__.encoding,
+        sys.__stdin__.encoding,
+        os.device_encoding(sys.__stdout__.fileno()),
+        os.device_encoding(sys.__stdin__.fileno()),
+        locale.getpreferredencoding(),
+        locale.getpreferredencoding(False)
+    )
 
-    try:
-        current_encoding = codecs.lookup(sys.stdout.encoding)
-    except TypeError:
-        try: 
-            current_encoding = codecs.lookup(sys.stdin.encoding)
+    for encoding in possible_encodings:
+        try:
+            current_encoding = codecs.lookup(encoding)
         except TypeError:
-            try:
-                current_encoding = codecs.lookup(os.device_encoding(sys.__stdout__.fileno()))
-            except TypeError:
-                current_encoding = codecs.lookup(locale.getpreferredencoding(False))
+            continue
+        else:
+            break
+    else:
+        return False
 
     try:
         current_encoding.encode('\u280b')
