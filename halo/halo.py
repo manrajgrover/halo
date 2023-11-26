@@ -77,6 +77,8 @@ class Halo(object):
             Spinner enabled or not.
         stream : io, optional
             Output.
+        force : bool, optional
+            Should force the use of the custom spinner if the platform is not supported
         """
         self._color = color
         self._animation = animation
