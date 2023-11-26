@@ -80,6 +80,7 @@ class Halo(object):
         force : bool, optional
             Should force the use of the custom spinner if the platform is not supported
         """
+        self.force = force
         self._color = color
         self._animation = animation
 
@@ -91,7 +92,6 @@ class Halo(object):
             int(interval) if int(interval) > 0 else self._spinner["interval"]
         )
         self._stream = stream
-        self.force = force
         self.placement = placement
         self._frame_index = 0
         self._text_index = 0
