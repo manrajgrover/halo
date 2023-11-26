@@ -51,6 +51,7 @@ class Halo(object):
         interval=-1,
         enabled=True,
         stream=sys.stdout,
+        force=False
     ):
         """Constructs the Halo object.
         Parameters
@@ -88,7 +89,7 @@ class Halo(object):
             int(interval) if int(interval) > 0 else self._spinner["interval"]
         )
         self._stream = stream
-
+        self.force = force
         self.placement = placement
         self._frame_index = 0
         self._text_index = 0
@@ -333,7 +334,7 @@ class Halo(object):
         if spinner and type(spinner) == dict:
             return spinner
 
-        if is_supported():
+        if is_supported() or self.force:
             if all([is_text_type(spinner), spinner in Spinners.__members__]):
                 return Spinners[spinner].value
             else:
