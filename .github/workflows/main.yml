@@ -1,4 +1,4 @@
-name: Test python package
+name: halo
 
 on:
   push:
@@ -8,16 +8,14 @@ on:
 
 jobs:
   test:
-    name: Test with ${{ matrix.py }} on ${{ matrix.os }}
+    name: Test with ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         python-version:
-          - "3.12"
-          - "3.11"
-          - "3.10"
-          - "3.9"
+          - "3.6"
+          - "3.7"
           - "3.8"
         os:
           - ubuntu-latest
