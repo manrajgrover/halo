@@ -15,7 +15,7 @@ with io.open("README.md", encoding="utf-8") as infile:
 
 setup(
     name="halo",
-    packages=find_packages(exclude=("tests", "examples")),
+    packages=find_packages(exclude=("tests", "examples", "art")),
     version="0.0.31",
     license="MIT",
     classifiers=[
@@ -50,5 +50,10 @@ setup(
     install_requires=dependencies("requirements.txt"),
     tests_require=dependencies("requirements-dev.txt"),
     include_package_data=True,
-    extras_require={"ipython": ["IPython>=8.25.0", "ipywidgets>=8.1.3",]},
+    extras_require={
+        "ipython": [
+            "IPython>=8.12.3",
+            "ipywidgets>=8.1.3",
+        ]
+    },
 )

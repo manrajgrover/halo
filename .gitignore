@@ -105,6 +105,7 @@ cover/
 
 # tests
 tests/*.txt
+.pytest_cache
 
 # OS-specific files
 .DS_Store
