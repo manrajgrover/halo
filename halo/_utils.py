@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """Utilities for Halo library.
 """
+import builtins
 import codecs
-import platform
+import locale
+import os
+import sys
 import six
 
 from colorama import init
@@ -20,13 +23,32 @@ def is_supported():
     boolean
         Whether operating system supports main symbols or not
     """
+    possible_encodings = (
+        # the current, possibly redirected stdout
+        (sys.stdout.encoding if getattr(builtins, '__IPYTHON__', False) else None),
+        # the original stdout at the time python started
+        sys.__stdout__.encoding,
+        (os.device_encoding(sys.__stdout__.fileno()) if sys.__stdout__.isatty() else None),
+        locale.getpreferredencoding(),
+        locale.getpreferredencoding(False),
+    )
 
-    os_arch = platform.system()
+    for encoding in possible_encodings:
+        try:
+            current_encoding = codecs.lookup(encoding)
+        except:
+            continue
+        else:
+            break
+    else:
+        return False
 
-    if os_arch != 'Windows':
+    try:
+        current_encoding.encode('\u280b')
+    except UnicodeError:
+        return False
+    else:
         return True
-
-    return False
 
 
 def get_environment():
