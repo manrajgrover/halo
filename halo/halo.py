@@ -99,7 +99,7 @@ class Halo(object):
 
         environment = get_environment()
 
-        def clean_up():
+        def clean_up(args):
             """Handle cell execution"""
             self.stop()
 
