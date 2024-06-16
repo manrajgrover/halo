@@ -4,12 +4,23 @@
 import codecs
 import platform
 import six
+import sys
 
 from colorama import init
 from shutil import get_terminal_size
 from termcolor import colored
 
-init(autoreset=True)
+
+wrap_stream_for_win = None
+
+if sys.platform.startswith("win"):
+    try:
+        import colorama
+    except ImportError:
+        pass
+    else:
+        def wrap_stream_for_win(stream):  # pylint: disable=function-redefined
+            return colorama.AnsiToWin32(stream, autoreset=True).stream
 
 
 def is_supported():
