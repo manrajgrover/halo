@@ -5,11 +5,9 @@ import codecs
 import platform
 import six
 import sys
-try:
-    from shutil import get_terminal_size
-except ImportError:
-    from backports.shutil_get_terminal_size import get_terminal_size
 
+from colorama import init
+from shutil import get_terminal_size
 from termcolor import colored
 
 

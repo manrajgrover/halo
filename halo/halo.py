@@ -102,7 +102,7 @@ class Halo(object):
 
         environment = get_environment()
 
-        def clean_up():
+        def clean_up(args):
             """Handle cell execution"""
             self.stop()
 
@@ -497,7 +497,7 @@ class Halo(object):
 
         self._stop_spinner = threading.Event()
         self._spinner_thread = threading.Thread(target=self.render)
-        self._spinner_thread.setDaemon(True)
+        self._spinner_thread.daemon = True
         self._render_frame()
         self._spinner_id = self._spinner_thread.name
         self._spinner_thread.start()
