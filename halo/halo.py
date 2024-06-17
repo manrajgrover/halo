@@ -348,15 +348,18 @@ class Halo(object):
         self
         """
         animation = self._animation
-        stripped_text = text.strip()
+        if hasattr(text, "__call__"):
+            stripped_text = lambda: text().strip()
+        else:
+            stripped_text = text.strip()
 
         # Check which frame of the animation is the widest
         max_spinner_length = max([len(i) for i in self._spinner["frames"]])
 
-        # Subtract to the current terminal size the max spinner length
+        # Subtract from the current terminal size the max spinner length
         # (-1 to leave room for the extra space between spinner and text)
         terminal_width = get_terminal_columns() - max_spinner_length - 1
-        text_length = len(stripped_text)
+        text_length = len(stripped_text()) if hasattr(text, '__call__') else len(stripped_text)
 
         frames = []
 
@@ -366,18 +369,30 @@ class Halo(object):
                 Make the text bounce back and forth
                 """
                 for x in range(0, text_length - terminal_width + 1):
-                    frames.append(stripped_text[x : terminal_width + x])
+                    if hasattr(text, '__call__'):
+                        frame = stripped_text()[x: terminal_width + x]
+                    else:
+                        frame = stripped_text[x: terminal_width + x]
+                    frames.append(frame)
                 frames.extend(list(reversed(frames)))
             elif "marquee":
                 """
                 Make the text scroll like a marquee
                 """
-                stripped_text = stripped_text + " " + stripped_text[:terminal_width]
-                for x in range(0, text_length + 1):
-                    frames.append(stripped_text[x : terminal_width + x])
+                if hasattr(text, '__call__'):
+                    new_stripped_text = lambda: stripped_text() + " " + stripped_text()[:terminal_width]
+                    for x in range(0, text_length + 1):
+                        frames.append(new_stripped_text()[x: terminal_width + x])
+                else:
+                    stripped_text = stripped_text + " " + stripped_text[:terminal_width]
+                    for x in range(0, text_length + 1):
+                        frames.append(stripped_text[x: terminal_width + x])
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
-            frames = [stripped_text[: terminal_width - 6] + " (...)"]
+            if hasattr(text, '__call__'):
+                frames = [lambda: stripped_text()[: terminal_width - 6] + " (...)"]
+            else:
+                frames = [stripped_text[: terminal_width - 6] + " (...)"]
         else:
             frames = [stripped_text]
 
@@ -454,14 +469,19 @@ class Halo(object):
         self
         """
         if len(self._text["frames"]) == 1:
+            frame = self._text["frames"][0]
+            if hasattr(frame, '__call__'):
+                frame = frame()
             if self._text_color:
-                return colored_frame(self._text["frames"][0], self._text_color)
+                return colored_frame(frame, self._text_color)
 
             # Return first frame (can't return original text because at this point it might be ellipsed)
-            return self._text["frames"][0]
+            return frame
 
         frames = self._text["frames"]
         frame = frames[self._text_index]
+        if hasattr(frame, '__call__'):
+            frame = frame()
 
         self._text_index += 1
         self._text_index = self._text_index % len(frames)
