@@ -622,8 +622,26 @@ class TestHalo(unittest.TestCase):
 
         self.assertIn('foo', output[0])
 
+    def test_running_multiple_instances(self):
+        spinner = Halo("foo", stream=self._stream)
+        _instance = Halo()
+        # Pretend that another spinner is being displayed under spinner
+        _instance._content = "Some lines\n"
+        Halo._instances.extend([spinner, _instance])
+        spinner.start()
+        time.sleep(1)
+        spinner.stop()
+        spinner.stop_and_persist(text="Done")
+        output = self._get_test_output()["text"]
+        self.assertEqual(output[0], "{} foo".format(frames[0]))
+        self.assertEqual(output[1], "Some lines")
+        self.assertEqual(output[2], "{} foo".format(frames[1]))
+        self.assertEqual(output[3], "Some lines")
+        self.assertEqual(output[-2], "  Done")
+        self.assertEqual(output[-1], "Some lines")
+
     def tearDown(self):
-        pass
+        self._stream.close()
 
 
 if __name__ == '__main__':
