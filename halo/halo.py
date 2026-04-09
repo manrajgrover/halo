@@ -45,6 +45,7 @@ class Halo(object):
         text="",
         color="cyan",
         text_color=None,
+        force_color=None,
         spinner=None,
         animation=None,
         placement="left",
@@ -59,6 +60,9 @@ class Halo(object):
             Text to display.
         text_color : str, optional
             Color of the text.
+        force_color : bool, optional
+            Force ANSI color output when supported by termcolor. If None,
+            termcolor decides automatically.
         color : str, optional
             Color of the text to display.
         spinner : str|dict, optional
@@ -78,6 +82,7 @@ class Halo(object):
             Output.
         """
         self._color = color
+        self._force_color = force_color
         self._animation = animation
 
         self.spinner = spinner
@@ -99,7 +104,7 @@ class Halo(object):
 
         environment = get_environment()
 
-        def clean_up(args):
+        def clean_up(*args, **kwargs):
             """Handle cell execution"""
             self.stop()
 
@@ -433,7 +438,7 @@ class Halo(object):
         frame = frames[self._frame_index]
 
         if self._color:
-            frame = colored_frame(frame, self._color)
+            frame = colored_frame(frame, self._color, self._force_color)
 
         self._frame_index += 1
         self._frame_index = self._frame_index % len(frames)
@@ -455,7 +460,9 @@ class Halo(object):
         """
         if len(self._text["frames"]) == 1:
             if self._text_color:
-                return colored_frame(self._text["frames"][0], self._text_color)
+                return colored_frame(
+                    self._text["frames"][0], self._text_color, self._force_color
+                )
 
             # Return first frame (can't return original text because at this point it might be ellipsed)
             return self._text["frames"][0]
@@ -467,7 +474,7 @@ class Halo(object):
         self._text_index = self._text_index % len(frames)
 
         if self._text_color:
-            return colored_frame(frame, self._text_color)
+            return colored_frame(frame, self._text_color, self._force_color)
 
         return frame
 
@@ -593,7 +600,7 @@ class Halo(object):
         text = text.strip()
 
         if self._text_color:
-            text = colored_frame(text, self._text_color)
+            text = colored_frame(text, self._text_color, self._force_color)
 
         self.stop()
 

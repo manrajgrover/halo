@@ -91,7 +91,7 @@ class TestHaloNotebook(unittest.TestCase):
         """Test basic spinner with available colors color (both spinner and text)
         """
         for color, color_int in COLORS.items():
-            spinner = HaloNotebook(text='foo', text_color=color, color=color, spinner='dots')
+            spinner = HaloNotebook(text='foo', text_color=color, color=color, force_color=True, spinner='dots')
 
             spinner.start()
             time.sleep(1)
@@ -415,7 +415,7 @@ class TestHaloNotebook(unittest.TestCase):
         """
 
         for color, color_int in COLORS.items():
-            spinner = HaloNotebook(color=color)
+            spinner = HaloNotebook(color=color, force_color=True)
             spinner.start()
             output = self._get_test_output(spinner, no_ansi=False)
             spinner.stop()

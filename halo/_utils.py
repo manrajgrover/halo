@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Utilities for Halo library.
-"""
+"""Utilities for Halo library."""
+
 import codecs
 import platform
 import six
@@ -9,7 +9,7 @@ from colorama import init
 from shutil import get_terminal_size
 from termcolor import colored
 
-init(autoreset=True)
+init(autoreset=True, strip=False)
 
 
 def is_supported():
@@ -23,7 +23,7 @@ def is_supported():
 
     os_arch = platform.system()
 
-    if os_arch != 'Windows':
+    if os_arch != "Windows":
         return True
 
     return False
@@ -40,23 +40,23 @@ def get_environment():
     try:
         from IPython import get_ipython
     except ImportError:
-        return 'terminal'
+        return "terminal"
 
     try:
         shell = get_ipython().__class__.__name__
 
-        if shell == 'ZMQInteractiveShell':  # Jupyter notebook or qtconsole
-            return 'jupyter'
-        elif shell == 'TerminalInteractiveShell':  # Terminal running IPython
-            return 'ipython'
+        if shell == "ZMQInteractiveShell":  # Jupyter notebook or qtconsole
+            return "jupyter"
+        elif shell == "TerminalInteractiveShell":  # Terminal running IPython
+            return "ipython"
         else:
-            return 'terminal'  # Other type (?)
+            return "terminal"  # Other type (?)
 
     except NameError:
-        return 'terminal'
+        return "terminal"
 
 
-def colored_frame(frame, color):
+def colored_frame(frame, color, force_color=None):
     """Color the frame with given color and returns.
 
     Parameters
@@ -71,7 +71,7 @@ def colored_frame(frame, color):
     str
         Colored frame
     """
-    return colored(frame, color, attrs=['bold'])
+    return colored(frame, color, attrs=["bold"], force_color=force_color or False)
 
 
 def is_text_type(text):
@@ -107,7 +107,7 @@ def decode_utf_8_text(text):
         Decoded string
     """
     try:
-        return codecs.decode(text, 'utf-8')
+        return codecs.decode(text, "utf-8")
     except (TypeError, ValueError):
         return text
 
@@ -126,7 +126,7 @@ def encode_utf_8_text(text):
         Encoded string
     """
     try:
-        return codecs.encode(text, 'utf-8', 'ignore')
+        return codecs.encode(text, "utf-8", "ignore")
     except (TypeError, ValueError):
         return text
 

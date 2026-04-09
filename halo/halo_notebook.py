@@ -15,6 +15,7 @@ class HaloNotebook(Halo):
         text="",
         color="cyan",
         text_color=None,
+        force_color=None,
         spinner=None,
         placement="left",
         animation=None,
@@ -26,6 +27,7 @@ class HaloNotebook(Halo):
             text=text,
             color=color,
             text_color=text_color,
+            force_color=force_color,
             spinner=spinner,
             placement=placement,
             animation=animation,
@@ -111,7 +113,7 @@ class HaloNotebook(Halo):
         text = text.strip()
 
         if self._text_color:
-            text = colored_frame(text, self._text_color)
+            text = colored_frame(text, self._text_color, self._force_color)
 
         self.stop()
 
