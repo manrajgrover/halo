@@ -206,6 +206,15 @@ class TestHalo(unittest.TestCase):
 
         self.assertRegex(output[-1], pattern)
 
+    def test_unknown_animation_does_not_animate(self):
+        """Test an unrecognised animation does not produce a runaway frame list
+        """
+        text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
+               'terminal width, which forces the text frame renderer to handle it. ' * 6
+        spinner = Halo(text=text, spinner='dots', stream=self._stream, animation='not-a-real-animation')
+
+        self.assertEqual(spinner._text['frames'], [text.strip()])
+
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """
