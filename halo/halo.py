@@ -368,13 +368,15 @@ class Halo(object):
                 for x in range(0, text_length - terminal_width + 1):
                     frames.append(stripped_text[x : terminal_width + x])
                 frames.extend(list(reversed(frames)))
-            elif "marquee":
+            elif animation == "marquee":
                 """
                 Make the text scroll like a marquee
                 """
                 stripped_text = stripped_text + " " + stripped_text[:terminal_width]
                 for x in range(0, text_length + 1):
                     frames.append(stripped_text[x : terminal_width + x])
+            else:
+                frames = [stripped_text]
         elif terminal_width < text_length and not animation:
             # Add ellipsis if text is larger than terminal width and no animation was specified
             frames = [stripped_text[: terminal_width - 6] + " (...)"]
