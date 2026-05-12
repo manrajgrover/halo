@@ -206,6 +206,19 @@ class TestHalo(unittest.TestCase):
 
         self.assertRegex(output[-1], pattern)
 
+    def test_text_index_reset_on_text_change(self):
+        """Test the text frame index is reset when the text is reassigned
+        """
+        long_text = 'This is a text that it is too long. In fact, it exceeds the eighty column standard ' \
+                    'terminal width, which forces the text frame renderer to animate it. ' * 6
+        spinner = Halo(text=long_text, spinner='dots', stream=self._stream, animation='marquee')
+
+        spinner._text_index = len(spinner._text['frames']) - 1
+        spinner.text = 'short'
+
+        self.assertEqual(spinner._text_index, 0)
+        self.assertEqual(spinner.text_frame(), 'short')
+
     def test_context_manager(self):
         """Test the basic of basic spinners used through the with statement.
         """

@@ -175,6 +175,7 @@ class Halo(object):
             Defines the text value for spinner
         """
         self._text = self._get_text(text)
+        self._text_index = 0
 
     @property
     def text_color(self):
