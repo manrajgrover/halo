@@ -22,18 +22,22 @@ class HaloNotebook(Halo):
         enabled=True,
         stream=sys.stdout,
     ):
-        super(HaloNotebook, self).__init__(
-            text=text,
-            color=color,
-            text_color=text_color,
-            spinner=spinner,
-            placement=placement,
-            animation=animation,
-            interval=interval,
-            enabled=enabled,
-            stream=stream,
-        )
         self.output = self._make_output_widget()
+        try:
+            super(HaloNotebook, self).__init__(
+                text=text,
+                color=color,
+                text_color=text_color,
+                spinner=spinner,
+                placement=placement,
+                animation=animation,
+                interval=interval,
+                enabled=enabled,
+                stream=stream,
+            )
+        except BaseException:
+            self.output.close()
+            raise
 
     def _make_output_widget(self):
         from ipywidgets.widgets import Output
